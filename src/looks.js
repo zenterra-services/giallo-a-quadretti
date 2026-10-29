@@ -1,0 +1,11 @@
+var LOOKS={
+Luca:[1,'short','d',['headphones'],'teal','smile'],Sofia:[0,'long','r',['earrings'],'pink','smirk'],Marco:[3,'curly','k',['glasses'],'orange','flat'],Rossi:[1,'bald','g',['mustache'],'blue','x'],
+Giulia:[2,'bun','b',['glasses'],'green','smile'],Paolo:[4,'buzz','k',['cap'],'yellow','smirk'],Anna:[0,'bob','y',['freckles'],'orange','smile'],Bianchi:[1,'short','w',['beard'],'teal','x'],
+Matteo:[2,'mohawk','u',[],'pink','smirk'],Chiara:[3,'ponytail','k',['earrings'],'yellow','smile'],Davide:[0,'short','r',['freckles','glasses'],'green','flat'],Elena:[5,'long','d',['headband'],'blue','smirk'],Gino:[1,'bald','g',['chef','mustache'],'red','x'],
+Federico:[5,'curly','b',['glasses'],'blue','flat'],Martina:[1,'long','p',['earrings'],'teal','smile'],Lorenzo:[3,'short','k',['beanie'],'orange','smirk'],Alice:[0,'bun','y',[],'pink','smile'],Ferri:[2,'short','g',['glasses','beard'],'black','x'],
+Riccardo:[2,'short','b',['cap'],'green','smile'],Beatrice:[4,'curly','k',['earrings'],'yellow','smirk'],Tommaso:[0,'buzz','y',['headphones'],'blue','flat'],Giorgia:[1,'ponytail','r',['glasses'],'orange','smile'],Pietro:[3,'short','k',['mustache'],'teal','flat'],Moretti:[1,'bald','w',['cap','mustache'],'blue','x'],
+Vittoria:[0,'long','y',['tiara'],'pink','smirk'],Edoardo:[2,'short','d',['glasses'],'black','smirk'],Camilla:[4,'bob','k',['earrings'],'teal','smile'],Leonardo:[1,'curly','r',['beard'],'green','flat'],Aurora:[0,'long','u',['headband'],'yellow','smile'],'Conte Neri':[0,'short','g',['mustache','monocle'],'red','x'],
+Gabriele:[3,'mohawk','k',['headphones'],'orange','smirk'],Emma:[1,'ponytail','b',['freckles','beanie'],'green','smile'],'Nicolò':[0,'short','y',['cap'],'teal','smile'],Greta:[2,'bun','r',['glasses'],'pink','flat'],Simone:[5,'buzz','k',['earrings'],'yellow','smirk'],Irene:[1,'long','k',['headband'],'blue','smile'],'Zio Bruno':[2,'bald','d',['beard','beanie'],'red','x'],
+Alessandro:[1,'short','k',['glasses'],'blue','flat'],Ginevra:[0,'long','r',['earrings'],'green','smirk'],Filippo:[4,'curly','k',['cap'],'pink','smile'],Bianca:[0,'bob','w',['glasses'],'yellow','smile'],Mattia:[2,'mohawk','p',[],'teal','smirk'],Ludovica:[3,'bun','k',['headphones'],'orange','smile'],'Signor Galli':[1,'bald','g',['glasses','mustache'],'black','x']
+};
+if(typeof module!=='undefined')module.exports=LOOKS;
