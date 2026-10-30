@@ -312,7 +312,7 @@ function hint(){
   const nm=cs.people[target][0];
   S.msg={it:fill(T('hintMsg'),{n:nm,r:r+1,c:c+1}),hu:`Kis segítség: ${nm} a ${r+1}. sorban, ${c+1}. oszlopban van.`,kind:'good'};
   if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; st.hints=(st.hints||0)+1; });
-  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); if(S.hist.length>200) S.hist.shift(); S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
 }
 function undo(){
   if(S.coop) return;
@@ -411,7 +411,7 @@ function renderHub(app){
   app.append(caseGrid(i=>startCase(i)));
   const solvedCases=CASES.filter(c=>S.solved[c.id]);
   if(solvedCases.length){
-    app.append(h('div',{class:'section-h'},h('h2',{},T('notebook')),h('span',{class:'hu'},'A taccuinód')));
+    app.append(h('div',{class:'section-h'},h('h2',{},T('notebook')),S.huAll?h('span',{class:'hu'},'A taccuinód'):null));
     app.append(h('div',{class:'reviews'},...solvedCases.map(cs=>h('button',{class:'reviewchip',onclick:()=>showReview(cs)},
       h('b',{},caseTitle(cs)),h('small',{},T('time')+' '+fmt(S.solved[cs.id].time)+(S.solved[cs.id].hints?` · ${T('hints')} ${S.solved[cs.id].hints}`:''))))));
   }
@@ -449,7 +449,7 @@ function caseGrid(onPick){
 
 /* ---------- lobby ---------- */
 function playerChip(p,k){ const me=S.coop&&p.id===S.coop.me.id;
-  return h('span',{class:'player'},h('span',{class:'av',style:`background:${PCOL[k%PCOL.length]}`},(p.name||'?')[0].toUpperCase()),
+  return h('span',{class:'player'},h('span',{class:'av',style:`background:${PCOL[k%PCOL.length]}`},(Array.from(p.name||'?')[0]||'?').toUpperCase()),
     h('span',{},p.name,me?' ('+T('you')+')':'',k===0?' · '+T('host'):''),h('small',{},(LANGS[p.lang]||LANGS.it).name)); }
 async function shareInvite(){
   if(!S.coop) return;
@@ -583,7 +583,7 @@ function renderCase(app){
   app.append(tipBox());
   const cards=h('div',{class:'cards'}); cs.people.forEach((_,i)=>cards.append(suspectCard(cs,i)));
   const left=h('div',{style:'min-width:0'},h('div',{class:'section-h',style:'margin-top:4px'},h('h2',{},T('suspects'))),cards,
-    h('div',{class:'section-h'},h('h2',{},T('words')),h('span',{class:'hu'},'szószedet')),glossary(cs));
+    h('div',{class:'section-h'},h('h2',{},T('words')),S.huAll?h('span',{class:'hu'},'szószedet'):null),glossary(cs));
   const clip=h('div',{class:'clip'});
   if(S.phase==='play'){
     const tools=h('div',{class:'tools',role:'toolbar'});
