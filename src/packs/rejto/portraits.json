@@ -1,1 +1,72 @@
-﻿{}
+{
+  "Piszkos Fred": {
+    "full": "portraits/full/piszkos-fred.webp",
+    "head": "portraits/head/piszkos-fred.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Fülig Jimmy": {
+    "full": "portraits/full/fulig-jimmy.webp",
+    "head": "portraits/head/fulig-jimmy.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Vanek úr": {
+    "full": "portraits/full/vanek-ur.webp",
+    "head": "portraits/head/vanek-ur.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Csülök": {
+    "full": "portraits/full/csulok.webp",
+    "head": "portraits/head/csulok.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Senki Alfonz": {
+    "full": "portraits/full/senki-alfonz.webp",
+    "head": "portraits/head/senki-alfonz.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Glória": {
+    "full": "portraits/full/gloria.webp",
+    "head": "portraits/head/gloria.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Török Szultán": {
+    "full": "portraits/full/torok-szultan.webp",
+    "head": "portraits/head/torok-szultan.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Böffentő": {
+    "full": "portraits/full/boffentoo.webp",
+    "head": "portraits/head/boffentoo.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Privát Elek": {
+    "full": "portraits/full/privat-elek.webp",
+    "head": "portraits/head/privat-elek.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Mr. Hobbs": {
+    "full": "portraits/full/mr-hobbs.webp",
+    "head": "portraits/head/mr-hobbs.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Sir Egmont": {
+    "full": "portraits/full/sir-egmont.webp",
+    "head": "portraits/head/sir-egmont.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Holdvilág Charley": {
+    "full": "portraits/full/holdvilag-charley.webp",
+    "head": "portraits/head/holdvilag-charley.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Nagy Brezely": {
+    "full": "portraits/full/nagy-brezely.webp",
+    "head": "portraits/head/nagy-brezely.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  },
+  "Fortély Róka": {
+    "full": "portraits/full/fortely-roka.webp",
+    "head": "portraits/head/fortely-roka.webp",
+    "credit": "AI-generated with Kimi image generation, 2026-10-30; original design after the classic Rejtő register"
+  }
+}
