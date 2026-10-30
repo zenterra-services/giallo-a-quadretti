@@ -934,7 +934,14 @@ function curElapsed(){ if(S.coop){ const st=S.coop.st; return st.t0? Math.floor(
   return S.elapsed + (S.phase==='done'?0:Math.floor((Date.now()-S.t0)/1000)); }
 function fmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function tick(){ const el=document.getElementById('timer'); if(el) el.textContent=fmt(curElapsed()); }
-function goHub(){ saveProg(); clearInterval(timerId); if(S.coop) leaveRoom(); S.view='hub'; S.cs=null; try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}; render(); window.scrollTo(0,0); }
+function siteStyleId(){ try{ const v=localStorage.getItem('gq:style'); return (v&&STYLES.some(s=>s.id===v))?v:null; }catch(e){ return null; } }
+function goHub(){
+  const wasCoop=!!S.coop;
+  saveProg(); clearInterval(timerId); if(S.coop) leaveRoom();
+  const target=wasCoop?siteStyleId():null;
+  if(target&&target!==PACK.id){ const s=STYLES.find(x=>x.id===target); if(s){ location.href=styleHref(s); return; } }
+  S.view='hub'; S.cs=null; try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}; render(); window.scrollTo(0,0);
+}
 
 /* ---------- co-op ---------- */
 const CODE_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ';

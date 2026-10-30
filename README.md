@@ -17,7 +17,7 @@ Play: https://zenterra-services.github.io/giallo-a-quadretti/
 The root page is a **style chooser**. Pick Giallo or Rejtő; the choice is saved as your default site style, and the **Style** link in the game brings the chooser back.
 
 - **Whole site:** the chooser saves your default; opening the root again takes you to that pack.
-- **Current room:** when you create a co-op room, the host picks a **room style** in the create form. The room keeps that style for everyone; the invite link points at the matching style. Creating a room in another style does **not** change your site default.
+- **Current room:** when you create a co-op room, the host picks a **room style** in the create form. The room keeps that style for everyone; the invite link points at the matching style. Creating a room in another style does **not** change your site default. Leaving the room returns you to your saved site style.
 - A room’s style is fixed when it is created. To change it, create a new room in the desired style and share the new code.
 - Different styles are different case libraries and casts, so one room cannot mix content from two styles. Per-player visual skins would be a separate theme layer, not this content-pack system.
 
