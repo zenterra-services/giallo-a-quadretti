@@ -207,10 +207,10 @@
   /* ---------- stamp ---------- */
   function stamp(text, color) {
     var c = INK[color] || INK.red;
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80" role="img" aria-label="' + text + '"><g transform="rotate(-6 110 40)">' +
-      '<rect x="8" y="10" width="204" height="60" rx="8" fill="none" stroke="' + c + '" stroke-width="5"/>' +
-      '<rect x="15" y="17" width="190" height="46" rx="4" fill="none" stroke="' + c + '" stroke-width="2"/>' +
-      '<text x="110" y="52" text-anchor="middle" font-family="Dela Gothic One, Impact, sans-serif" font-size="30" fill="' + c + '" letter-spacing="2">' + text + '</text></g></svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 80" role="img" aria-label="' + text + '"><g transform="rotate(-6 130 40)">' +
+      '<rect x="8" y="10" width="244" height="60" rx="8" fill="none" stroke="' + c + '" stroke-width="5"/>' +
+      '<rect x="15" y="17" width="230" height="46" rx="4" fill="none" stroke="' + c + '" stroke-width="2"/>' +
+      '<text x="130" y="52" text-anchor="middle" font-family="Dela Gothic One, Impact, sans-serif" font-size="28" fill="' + c + '" letter-spacing="1">' + text + '</text></g></svg>';
   }
 
   root.GQArt = { INK: INK, SKIN: SKIN, HAIR: HAIR, portrait: portrait, object: object, objects: Object.keys(OBJ), pigeon: pigeon, stamp: stamp };

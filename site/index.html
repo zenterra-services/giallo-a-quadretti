@@ -146,6 +146,9 @@ mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 
 .tool.done{opacity:.5}
 .tool.xmark{padding:2px 12px;font-family:var(--type)}
 .toolhint{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.toolhint.kbd{font-size:.74rem;margin-top:-6px;opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--shadow)}
+.modal:focus{outline:none}
 .boardwrap{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:4px}
 .colnums,.rownums{display:grid;font:700 .78rem var(--type);color:var(--muted);text-align:center}
 .rownums{align-items:center;padding-right:3px}
@@ -183,8 +186,9 @@ mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 
 
 .modal{position:fixed;inset:0;background:rgba(15,15,22,.6);display:grid;place-items:center;padding:20px;z-index:20}
 .modal .box{background:var(--card);border:3px solid var(--ink);border-radius:18px;max-width:420px;width:100%;padding:22px;text-align:center;box-sizing:border-box;box-shadow:8px 8px 0 var(--pink)}
-.modal .who{width:140px;margin:0 auto -6px}
-.modal .stp{width:230px;margin:0 auto 8px}
+.modal .who{width:140px;margin:0 auto -6px;display:block}
+.modal .stp{width:230px;margin:0 auto 8px;display:block}
+.modal .who svg,.modal .stp svg,.case .stampwrap svg{width:100%;height:auto}
 .modal h3{font-size:1.6rem}
 .modal p{margin:.4em 0}
 @media (prefers-reduced-motion:no-preference){
@@ -211,6 +215,7 @@ footer{margin-top:34px;color:var(--muted);font-size:.85rem}
 .row2 .field{flex:1;min-width:120px;margin:0}
 .lobby{display:grid;gap:18px}
 .bigcode{font:700 clamp(2.4rem,9vw,4rem)/1 var(--type);letter-spacing:.2em;background:var(--yellow);color:var(--on-yellow);display:inline-block;padding:6px 14px;border:3px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--pink);transform:rotate(-1.5deg)}
+.coderow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .players{display:flex;flex-wrap:wrap;gap:10px}
 .player{display:flex;align-items:center;gap:8px;background:var(--card);border:2.5px solid var(--ink);border-radius:999px;padding:4px 12px 4px 4px;font-weight:700}
 .player .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:400 1rem var(--display);color:var(--on-yellow);border:2.5px solid var(--ink)}
@@ -229,6 +234,31 @@ details.drawer summary{cursor:pointer;padding:10px 14px;font-family:var(--displa
 details.drawer summary::after{content:"+";font-family:var(--type);font-weight:700}
 details.drawer[open] summary::after{content:"–"}
 details.drawer .inner{padding:0 12px 12px}
+
+/* ---- review notebook ---- */
+.reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:10px}
+.reviewchip{text-align:left;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;box-shadow:3px 3px 0 var(--shadow)}
+.reviewchip:hover{transform:translate(-1px,-1px)}
+.reviewchip b{font-family:var(--display);font-weight:400;font-size:1.05rem;line-height:1.1}
+.reviewchip small{font:700 .72rem var(--type);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.modal.review .box{max-width:780px;max-height:90vh;overflow:auto;text-align:left;padding:22px 24px;position:relative}
+.xclose{position:absolute;right:10px;top:8px;border:none;background:none;font:700 1.2rem var(--body);padding:6px 10px;border-radius:8px;color:var(--muted)}
+.xclose:hover{background:var(--grid)}
+.revhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding-right:24px}
+.revhead h3{font-size:1.6rem}
+.hu-toggle{font-size:.75rem;padding:4px 10px;flex:none}
+.revsolved{margin:.4em 0 0;font:700 .9rem var(--type);color:var(--ok)}
+.reviewlead{margin:.4em 0 0;color:var(--muted)}
+.modal.review h4{font:700 .8rem var(--type);letter-spacing:.08em;text-transform:uppercase;margin:20px 0 8px;color:var(--muted)}
+.revlist{display:grid;gap:10px}
+.revperson{display:grid;grid-template-columns:56px 1fr;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:8px 10px;align-items:start}
+.revperson.victim{background:color-mix(in srgb,var(--red) 9%,var(--card))}
+.revperson .hd{width:52px;margin-top:-10px}
+.revbody b{font-family:var(--display);font-weight:400;font-size:1.05rem}
+.revclue{margin-top:4px;border-top:1px dashed var(--grid);padding-top:4px}
+.revclue .clue{font-size:.95rem}
+.revclue .hu{font-size:.82rem}
+@media (max-width:520px){.revperson{grid-template-columns:44px 1fr}.revperson .hd{width:42px}.revhead h3{font-size:1.3rem}}
 
 /* phone game screen */
 .ph .casehead{margin:2px 0 10px;gap:10px}
@@ -466,10 +496,10 @@ details.drawer .inner{padding:0 12px 12px}
   /* ---------- stamp ---------- */
   function stamp(text, color) {
     var c = INK[color] || INK.red;
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80" role="img" aria-label="' + text + '"><g transform="rotate(-6 110 40)">' +
-      '<rect x="8" y="10" width="204" height="60" rx="8" fill="none" stroke="' + c + '" stroke-width="5"/>' +
-      '<rect x="15" y="17" width="190" height="46" rx="4" fill="none" stroke="' + c + '" stroke-width="2"/>' +
-      '<text x="110" y="52" text-anchor="middle" font-family="Dela Gothic One, Impact, sans-serif" font-size="30" fill="' + c + '" letter-spacing="2">' + text + '</text></g></svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 80" role="img" aria-label="' + text + '"><g transform="rotate(-6 130 40)">' +
+      '<rect x="8" y="10" width="244" height="60" rx="8" fill="none" stroke="' + c + '" stroke-width="5"/>' +
+      '<rect x="15" y="17" width="230" height="46" rx="4" fill="none" stroke="' + c + '" stroke-width="2"/>' +
+      '<text x="130" y="52" text-anchor="middle" font-family="Dela Gothic One, Impact, sans-serif" font-size="28" fill="' + c + '" letter-spacing="1">' + text + '</text></g></svg>';
   }
 
   root.GQArt = { INK: INK, SKIN: SKIN, HAIR: HAIR, portrait: portrait, object: object, objects: Object.keys(OBJ), pigeon: pigeon, stamp: stamp };
@@ -641,77 +671,85 @@ var CLUE = {
 var CASEL = {
   'cucina-nonna': { en: ["At Grandma's", "Grandma's cake has vanished... and so has Mr Rossi."], de: ['Bei Oma', 'Omas Kuchen ist verschwunden... und Herr Rossi auch.'], fr: ['Chez mamie', 'Le gâteau de mamie a disparu... et monsieur Rossi aussi.'], es: ['En casa de la abuela', 'La tarta de la abuela ha desaparecido... y el señor Rossi también.'] },
   'giardino': { en: ['In the garden', 'Someone trampled the roses. Then things got worse.'], de: ['Im Garten', 'Jemand ist auf die Rosen getreten. Dann wurde es schlimmer.'], fr: ['Au jardin', "Quelqu'un a piétiné les roses. Puis le pire est arrivé."], es: ['En el jardín', 'Alguien pisoteó las rosas. Y luego pasó lo peor.'] },
+  'panetteria': { en: ['The night of the oven', 'The bread is burnt. And the baker no longer answers.'], de: ['Die Nacht des Ofens', 'Das Brot ist verbrannt. Und der Bäcker antwortet nicht mehr.'], fr: ['La nuit du four', 'Le pain a brûlé. Et le boulanger ne répond plus.'], es: ['La noche del horno', 'El pan se ha quemado. Y el panadero ya no responde.'] },
+  'barca': { en: ['Last crossing', 'The sea was calm. The captain, much less so.'], de: ['Letzte Überfahrt', 'Die See war ruhig. Der Kapitän deutlich weniger.'], fr: ['Dernière traversée', 'La mer était calme. Le capitaine beaucoup moins.'], es: ['Última travesía', 'El mar estaba calmado. El capitán, mucho menos.'] },
   'pizzeria': { en: ['At the pizzeria', 'Margherita for everyone, except the chef.'], de: ['In der Pizzeria', 'Margherita für alle, nur nicht für den Koch.'], fr: ['À la pizzeria', 'Une margherita pour tout le monde, sauf pour le cuisinier.'], es: ['En la pizzería', 'Margarita para todos, menos para el cocinero.'] },
   'scuola': { en: ['At school', 'The bell rings. One teacher will not get up again.'], de: ['In der Schule', 'Es klingelt. Ein Lehrer steht nicht mehr auf.'], fr: ["À l'école", 'La cloche sonne. Un professeur ne se relèvera pas.'], es: ['En el colegio', 'Suena el timbre. Un profesor no volverá a levantarse.'] },
+  'teatro': { en: ['Behind the curtain', 'The show is over. The lead actor is not.'], de: ['Hinter dem Vorhang', 'Die Vorstellung ist vorbei. Der Hauptdarsteller nicht.'], fr: ['Derrière le rideau', 'Le spectacle est fini. Le protagoniste non.'], es: ['Detrás del telón', 'La función ha terminado. El protagonista no.'] },
+  'piscina': { en: ['Poolside', 'Someone pushed the lifeguard. Nobody saw anything.'], de: ['Am Beckenrand', 'Jemand hat den Bademeister geschubst. Niemand hat etwas gesehen.'], fr: ['Au bord de la piscine', "Quelqu'un a poussé le maître-nageur. Personne n'a rien vu."], es: ['Al borde de la piscina', 'Alguien empujó al socorrista. Nadie vio nada.'] },
   'stazione': { en: ['At the station', 'The eight o’clock train left on time. The stationmaster did not.'], de: ['Am Bahnhof', 'Der Acht-Uhr-Zug fuhr pünktlich ab. Der Bahnhofsvorsteher nicht.'], fr: ['À la gare', 'Le train de huit heures est parti à l’heure. Le chef de gare, non.'], es: ['En la estación', 'El tren de las ocho salió puntual. El jefe de estación, no.'] },
   'castello': { en: ['In the castle', 'The castle ghost swears it knows nothing.'], de: ['Im Schloss', 'Das Schlossgespenst schwört, nichts zu wissen.'], fr: ['Au château', 'Le fantôme du château jure ne rien savoir.'], es: ['En el castillo', 'El fantasma del castillo jura que no sabe nada.'] },
+  'ospedale': { en: ['Night shift', "The doctor didn't finish his rounds. Someone finished them for him."], de: ['Nachtschicht', 'Der Arzt hat seine Runde nicht beendet. Jemand hat sie für ihn beendet.'], fr: ['Garde de nuit', "Le médecin n'a pas fini sa tournée. Quelqu'un l'a finie pour lui."], es: ['Turno de noche', 'El médico no terminó su ronda. Alguien la terminó por él.'] },
+  'treno': { en: ['Last stop', 'The train stopped. So did the conductor.'], de: ['Letzter Halt', 'Der Zug hielt an. Der Schaffner auch.'], fr: ['Dernier arrêt', "Le train s'est arrêté. Le contrôleur aussi."], es: ['Última parada', 'El tren se detuvo. El revisor también.'] },
   'campeggio': { en: ['At the campsite', 'Marshmallows on the fire, stars in the sky, and a mystery in the tent.'], de: ['Auf dem Campingplatz', 'Marshmallows am Feuer, Sterne am Himmel und ein Rätsel im Zelt.'], fr: ['Au camping', 'Des marshmallows sur le feu, des étoiles dans le ciel, et un mystère sous la tente.'], es: ['En el camping', 'Nubes en el fuego, estrellas en el cielo y un misterio en la tienda.'] },
-  'museo': { en: ['At the museum', 'Among statues and paintings, only one thing is off: the guard.'], de: ['Im Museum', 'Zwischen Statuen und Gemälden stimmt nur eines nicht: der Wächter.'], fr: ['Au musée', 'Entre statues et tableaux, une seule chose cloche : le gardien.'], es: ['En el museo', 'Entre estatuas y cuadros, solo una cosa no encaja: el vigilante.'] }
+  'museo': { en: ['At the museum', 'Among statues and paintings, only one thing is off: the guard.'], de: ['Im Museum', 'Zwischen Statuen und Gemälden stimmt nur eines nicht: der Wächter.'], fr: ['Au musée', 'Entre statues et tableaux, une seule chose cloche : le gardien.'], es: ['En el museo', 'Entre estatuas y cuadros, solo una cosa no encaja: el vigilante.'] },
+  'spiaggia': { en: ['The last dive', 'The lifeguard blew his whistle once too often.'], de: ['Der letzte Sprung', 'Der Bademeister hat einmal zu oft gepfiffen.'], fr: ['Le dernier plongeon', 'Le maître-nageur a sifflé une fois de trop.'], es: ['El último salto', 'El socorrista pitó una vez de más.'] },
+  'villa': { en: ['The villa party', 'The music stopped. The host said goodbye to no one.'], de: ['Das Fest in der Villa', 'Die Musik ist verstummt. Der Hausherr hat niemanden verabschiedet.'], fr: ['La fête à la villa', "La musique s'est arrêtée. Le maître de maison n'a salué personne."], es: ['La fiesta en la villa', 'La música se acabó. El dueño de la casa no se despidió de nadie.'] }
 };
 
 /* interface text */
 var UI = {
-  it: { tag: 'Gialli logici', eyebrow: 'Dossier · 8 casi', h1a: 'Chi è ', h1b: 'stato?', lead: 'Leggi gli indizi in italiano. Metti ogni sospettato sulla mappa. Trova chi era da solo con la vittima.',
+  it: { tag: 'Gialli logici', eyebrow: 'Dossier · {n} casi', h1a: 'Chi è ', h1b: 'stato?', lead: 'Leggi gli indizi in italiano. Metti ogni sospettato sulla mappa. Trova chi era da solo con la vittima.',
     start: 'Apri il primo caso', cont: "Continua l'indagine", cases: 'I casi', how: 'Come si gioca', yes: 'Ci puoi stare sopra', no: 'Non ci puoi stare sopra',
     back: 'Tutti i casi', caso: 'Caso n°', levels: ['', 'Facile', 'Medio', 'Difficile', 'Esperto'], suspects: 'Sospettati', words: 'Parole del caso', rooms: 'Stanze', tip: 'Consiglio',
     mark: '✕ segna', hintX: 'Tocca una casella per segnarla con ✕, o per togliere una persona.', hintPlace: 'Tocca una casella per mettere {n}.', longpress: 'Tieni premuto per segnare ✕.',
-    check: 'Controlla', help: 'Aiutino', restart: 'Ricomincia', allRight: 'Tutti al posto giusto', killerIs: "L'assassino è…", next: 'Prossimo caso', again: 'Gioca di nuovo', solved: "L'assassino è {n}!", time: 'Tempo', hints: 'aiutini',
+    check: 'Controlla', help: 'Aiutino', restart: 'Ricomincia', undo: 'Annulla', keys: 'Frecce per spostarti, Canc per segnare ✕.', allRight: 'Tutti al posto giusto', killerIs: "L'assassino è…", next: 'Prossimo caso', again: 'Gioca di nuovo', review: 'Ripassa', notebook: 'Il tuo taccuino', cluesReview: 'Gli indizi', reviewLead: 'Rileggi con calma gli indizi e le parole di questo caso.', close: 'Chiudi', solved: "L'assassino è {n}!", time: 'Tempo', hints: 'aiutini',
     missing: 'Persone ancora da mettere: ⟦{k}⟧.', clash: 'Due persone sono nella stessa ⟦riga⟧ o ⟦colonna⟧.', wrong: 'Quasi! Al posto sbagliato: ⟦{k}⟧. Rileggi gli indizi.', hintMsg: '{n} è in ⟦riga {r}⟧, ⟦colonna {c}⟧.', blocked: 'Non puoi stare qui.', nope: 'No! {n} non era nella ⟦stanza⟧ della vittima.',
     more: 'Un altro consiglio →', victim: 'VITTIMA', lang: 'Lingua che impari',
     coop: 'Gioca in squadra', coopLead: 'Ognuno vede solo alcuni indizi, nella lingua che impara. Leggeteli ad alta voce, condivideteli e risolvete il caso insieme.', yourName: 'Il tuo nome', create: 'Crea una stanza', join: 'Entra', code: 'Codice',
-    room: 'Stanza', team: 'Squadra', you: 'tu', host: 'capo', pickCase: 'Scegli il caso per la squadra', waitHost: 'Aspetta che {n} scelga il caso.', leave: 'Esci', share: 'Condividi', sharedBy: 'condiviso da {n}', heldBy: 'Indizio di {n}. Chiediglielo!', yours: 'Il tuo indizio', offline: 'Gioco in squadra non disponibile qui.', invite: 'Dai il codice agli amici:', connecting: 'Connessione…', alone: 'Sei solo nella stanza. Invita qualcuno!',
+    room: 'Stanza', team: 'Squadra', you: 'tu', host: 'capo', pickCase: 'Scegli il caso per la squadra', waitHost: 'Aspetta che {n} scelga il caso.', leave: 'Esci', share: 'Condividi', sharedBy: 'condiviso da {n}', clueMoved: 'Un indizio è passato a {n}.', heldBy: 'Indizio di {n}. Chiediglielo!', yours: 'Il tuo indizio', offline: 'Gioco in squadra non disponibile qui.', invite: 'Dai il codice agli amici:', copyLink: 'Copia link invito', copied: 'Link copiato!', connecting: 'Connessione…', alone: 'Sei solo nella stanza. Invita qualcuno!',
     rules: ['Una persona per ⟦riga⟧ e per ⟦colonna⟧.', 'Puoi stare su ⟦sedie⟧, ⟦divani⟧, ⟦letti⟧ e ⟦tappeti⟧. Sugli altri oggetti no.', '⟦Accanto⟧ = subito sopra, sotto, a destra o a sinistra, nella stessa stanza.', '⟦Nord⟧ è su, ⟦sud⟧ è giù, ⟦est⟧ è a destra, ⟦ovest⟧ a sinistra.', "La ⟦vittima⟧ è nell'ultima casella libera. Chi era solo con lei è l'⟦assassino⟧."],
     tips: ['Comincia da chi ha un indizio preciso, come una riga o una stanza.', 'Una persona per riga e per colonna. Segna con ✕ le caselle impossibili.', 'Se una riga ha una sola casella libera, qualcuno deve stare lì.', '«Accanto» vale solo nella stessa stanza. Il muro separa!', "Alla fine la vittima va nell'ultima casella libera."],
     pigeon: 'Tranquilli, ci penso io… cioè, tu.',
     gl: { row: 'riga', col: 'colonna', by: 'accanto a', alone: 'solo · sola', only: "l'unica persona", with: 'la stessa area', dir: 'nord · sud · est · ovest', corner: 'angolo', not: 'non era', victim: 'la vittima', killer: "l'assassino" } },
-  en: { tag: 'Logic murder mysteries', eyebrow: 'Case files · 8 cases', h1a: 'Who ', h1b: 'did it?', lead: 'Read the clues in English. Put every suspect on the map. Find who was alone with the victim.',
+  en: { tag: 'Logic murder mysteries', eyebrow: 'Case files · {n} cases', h1a: 'Who ', h1b: 'did it?', lead: 'Read the clues in English. Put every suspect on the map. Find who was alone with the victim.',
     start: 'Open the first case', cont: 'Continue the investigation', cases: 'The cases', how: 'How to play', yes: 'You can stand on it', no: "You can't stand on it",
     back: 'All cases', caso: 'Case no.', levels: ['', 'Easy', 'Medium', 'Hard', 'Expert'], suspects: 'Suspects', words: 'Words in this case', rooms: 'Rooms', tip: 'Tip',
     mark: '✕ mark', hintX: 'Tap a square to mark it ✕, or to remove a person.', hintPlace: 'Tap a square to place {n}.', longpress: 'Press and hold to mark ✕.',
-    check: 'Check', help: 'Hint', restart: 'Start over', allRight: 'Everyone is in the right place', killerIs: 'The murderer is…', next: 'Next case', again: 'Play again', solved: 'The murderer is {n}!', time: 'Time', hints: 'hints',
+    check: 'Check', help: 'Hint', restart: 'Start over', undo: 'Undo', keys: 'Arrow keys to move, Delete to mark ✕.', allRight: 'Everyone is in the right place', killerIs: 'The murderer is…', next: 'Next case', again: 'Play again', review: 'Review', notebook: 'Your notebook', cluesReview: 'The clues', reviewLead: 'Read the clues and the words of this case again at your own pace.', close: 'Close', solved: 'The murderer is {n}!', time: 'Time', hints: 'hints',
     missing: 'Still to place: ⟦{k}⟧.', clash: 'Two people are in the same ⟦row⟧ or ⟦column⟧.', wrong: 'Close! In the wrong place: ⟦{k}⟧. Read the clues again.', hintMsg: '{n} is in ⟦row {r}⟧, ⟦column {c}⟧.', blocked: "You can't stand here.", nope: 'No! {n} was not in the victim’s ⟦room⟧.',
     more: 'Another tip →', victim: 'VICTIM', lang: 'Language you learn',
     coop: 'Play as a team', coopLead: 'Everyone sees only some clues, in the language they are learning. Read them out, share them and solve the case together.', yourName: 'Your name', create: 'Create a room', join: 'Join', code: 'Code',
-    room: 'Room', team: 'Team', you: 'you', host: 'host', pickCase: 'Choose the case for the team', waitHost: 'Waiting for {n} to choose the case.', leave: 'Leave', share: 'Share', sharedBy: 'shared by {n}', heldBy: '{n} has this clue. Ask them!', yours: 'Your clue', offline: 'Team play is not available here.', invite: 'Give your friends the code:', connecting: 'Connecting…', alone: 'You are alone in the room. Invite someone!',
+    room: 'Room', team: 'Team', you: 'you', host: 'host', pickCase: 'Choose the case for the team', waitHost: 'Waiting for {n} to choose the case.', leave: 'Leave', share: 'Share', sharedBy: 'shared by {n}', clueMoved: 'A clue moved to {n}.', heldBy: '{n} has this clue. Ask them!', yours: 'Your clue', offline: 'Team play is not available here.', invite: 'Give your friends the code:', copyLink: 'Copy invite link', copied: 'Link copied!', connecting: 'Connecting…', alone: 'You are alone in the room. Invite someone!',
     rules: ['One person per ⟦row⟧ and per ⟦column⟧.', 'You can stand on ⟦chairs⟧, ⟦sofas⟧, ⟦beds⟧ and ⟦rugs⟧. Not on other objects.', '⟦Next to⟧ = directly above, below, left or right, in the same room.', '⟦North⟧ is up, ⟦south⟧ is down, ⟦east⟧ is right, ⟦west⟧ is left.', 'The ⟦victim⟧ is on the last free square. Whoever was alone with them is the ⟦murderer⟧.'],
     tips: ['Start with the suspect who has an exact clue, like a row or a room.', 'One person per row and column. Mark impossible squares with ✕.', 'If a row has only one free square, someone must be there.', '“Next to” only counts in the same room. Walls separate!', 'At the end, the victim goes on the last free square.'],
     pigeon: 'Relax, I’ve got this… I mean, you have.',
     gl: { row: 'row', col: 'column', by: 'next to', alone: 'alone', only: 'the only person', with: 'the same room', dir: 'north · south · east · west', corner: 'corner', not: 'was not', victim: 'the victim', killer: 'the murderer' } },
-  de: { tag: 'Logik-Krimis', eyebrow: 'Akten · 8 Fälle', h1a: 'Wer ', h1b: "war's?", lead: 'Lies die Hinweise auf Deutsch. Setz alle Verdächtigen auf den Plan. Finde heraus, wer allein mit dem Opfer war.',
+  de: { tag: 'Logik-Krimis', eyebrow: 'Akten · {n} Fälle', h1a: 'Wer ', h1b: "war's?", lead: 'Lies die Hinweise auf Deutsch. Setz alle Verdächtigen auf den Plan. Finde heraus, wer allein mit dem Opfer war.',
     start: 'Ersten Fall öffnen', cont: 'Weiter ermitteln', cases: 'Die Fälle', how: "So geht's", yes: 'Darauf darf man stehen', no: 'Darauf darf man nicht stehen',
     back: 'Alle Fälle', caso: 'Fall Nr.', levels: ['', 'Leicht', 'Mittel', 'Schwer', 'Profi'], suspects: 'Verdächtige', words: 'Wörter im Fall', rooms: 'Räume', tip: 'Tipp',
     mark: '✕ markieren', hintX: 'Tippe auf ein Feld, um es mit ✕ zu markieren oder eine Person zu entfernen.', hintPlace: 'Tippe auf ein Feld, um {n} hinzustellen.', longpress: 'Lange drücken markiert ✕.',
-    check: 'Prüfen', help: 'Hilfe', restart: 'Neu anfangen', allRight: 'Alle stehen richtig', killerIs: 'Der Mörder ist…', next: 'Nächster Fall', again: 'Nochmal spielen', solved: 'Der Mörder ist {n}!', time: 'Zeit', hints: 'Tipps',
+    check: 'Prüfen', help: 'Hilfe', restart: 'Neu anfangen', undo: 'Rückgängig', keys: 'Pfeiltasten zum Bewegen, Entf zum Markieren ✕.', allRight: 'Alle stehen richtig', killerIs: 'Der Mörder ist…', next: 'Nächster Fall', again: 'Nochmal spielen', review: 'Wiederholen', notebook: 'Dein Notizbuch', cluesReview: 'Die Hinweise', reviewLead: 'Lies die Hinweise und Wörter dieses Falls in Ruhe noch einmal.', close: 'Schließen', solved: 'Der Mörder ist {n}!', time: 'Zeit', hints: 'Tipps',
     missing: 'Noch zu setzen: ⟦{k}⟧.', clash: 'Zwei Personen stehen in derselben ⟦Reihe⟧ oder ⟦Spalte⟧.', wrong: 'Fast! Falsch gesetzt: ⟦{k}⟧. Lies die Hinweise nochmal.', hintMsg: '{n} steht in ⟦Reihe {r}⟧, ⟦Spalte {c}⟧.', blocked: 'Hier kann niemand stehen.', nope: 'Nein! {n} war nicht im ⟦Raum⟧ des Opfers.',
     more: 'Noch ein Tipp →', victim: 'OPFER', lang: 'Sprache, die du lernst',
     coop: 'Im Team spielen', coopLead: 'Jede Person sieht nur einige Hinweise, in der Sprache, die sie lernt. Lest sie vor, teilt sie und löst den Fall gemeinsam.', yourName: 'Dein Name', create: 'Raum erstellen', join: 'Beitreten', code: 'Code',
-    room: 'Raum', team: 'Team', you: 'du', host: 'Leitung', pickCase: 'Wähle den Fall fürs Team', waitHost: 'Warte, bis {n} den Fall wählt.', leave: 'Verlassen', share: 'Teilen', sharedBy: 'geteilt von {n}', heldBy: '{n} hat diesen Hinweis. Frag nach!', yours: 'Dein Hinweis', offline: 'Teamspiel ist hier nicht verfügbar.', invite: 'Gib deinen Freunden den Code:', connecting: 'Verbinde…', alone: 'Du bist allein im Raum. Lade jemanden ein!',
+    room: 'Raum', team: 'Team', you: 'du', host: 'Leitung', pickCase: 'Wähle den Fall fürs Team', waitHost: 'Warte, bis {n} den Fall wählt.', leave: 'Verlassen', share: 'Teilen', sharedBy: 'geteilt von {n}', clueMoved: 'Ein Hinweis ist jetzt bei {n}.', heldBy: '{n} hat diesen Hinweis. Frag nach!', yours: 'Dein Hinweis', offline: 'Teamspiel ist hier nicht verfügbar.', invite: 'Gib deinen Freunden den Code:', copyLink: 'Einladungslink kopieren', copied: 'Link kopiert!', connecting: 'Verbinde…', alone: 'Du bist allein im Raum. Lade jemanden ein!',
     rules: ['Eine Person pro ⟦Reihe⟧ und pro ⟦Spalte⟧.', 'Man darf auf ⟦Stühlen⟧, ⟦Sofas⟧, ⟦Betten⟧ und ⟦Teppichen⟧ stehen. Auf anderen Dingen nicht.', '⟦Neben⟧ = direkt darüber, darunter, links oder rechts, im selben Raum.', '⟦Norden⟧ ist oben, ⟦Süden⟧ unten, ⟦Osten⟧ rechts, ⟦Westen⟧ links.', 'Das ⟦Opfer⟧ steht auf dem letzten freien Feld. Wer allein mit ihm war, ist der ⟦Mörder⟧.'],
     tips: ['Fang bei der Person an, die einen genauen Hinweis hat, zum Beispiel eine Reihe oder einen Raum.', 'Eine Person pro Reihe und Spalte. Markiere unmögliche Felder mit ✕.', 'Hat eine Reihe nur ein freies Feld, muss dort jemand stehen.', '„Neben“ gilt nur im selben Raum. Wände trennen!', 'Zum Schluss kommt das Opfer auf das letzte freie Feld.'],
     pigeon: 'Keine Sorge, ich mach das… also, du.',
     gl: { row: 'die Reihe', col: 'die Spalte', by: 'neben', alone: 'allein', only: 'die einzige Person', with: 'derselbe Raum', dir: 'nördlich · südlich · östlich · westlich', corner: 'die Ecke', not: 'war nicht', victim: 'das Opfer', killer: 'der Mörder' } },
-  fr: { tag: 'Enquêtes logiques', eyebrow: 'Dossiers · 8 affaires', h1a: 'Qui ', h1b: "l'a fait ?", lead: "Lis les indices en français. Place chaque suspect sur le plan. Trouve qui était seul avec la victime.",
+  fr: { tag: 'Enquêtes logiques', eyebrow: 'Dossiers · {n} affaires', h1a: 'Qui ', h1b: "l'a fait ?", lead: "Lis les indices en français. Place chaque suspect sur le plan. Trouve qui était seul avec la victime.",
     start: 'Ouvrir la première affaire', cont: "Continuer l'enquête", cases: 'Les affaires', how: 'Comment jouer', yes: 'On peut monter dessus', no: 'On ne peut pas monter dessus',
     back: 'Toutes les affaires', caso: 'Affaire n°', levels: ['', 'Facile', 'Moyen', 'Difficile', 'Expert'], suspects: 'Suspects', words: "Mots de l'affaire", rooms: 'Pièces', tip: 'Conseil',
     mark: '✕ marquer', hintX: 'Touche une case pour la marquer ✕, ou pour retirer une personne.', hintPlace: 'Touche une case pour placer {n}.', longpress: 'Appui long pour marquer ✕.',
-    check: 'Vérifier', help: 'Indice', restart: 'Recommencer', allRight: 'Tout le monde est à sa place', killerIs: "L'assassin est…", next: 'Affaire suivante', again: 'Rejouer', solved: "L'assassin est {n} !", time: 'Temps', hints: 'indices',
+    check: 'Vérifier', help: 'Indice', restart: 'Recommencer', undo: 'Annuler', keys: 'Flèches pour te déplacer, Suppr pour marquer ✕.', allRight: 'Tout le monde est à sa place', killerIs: "L'assassin est…", next: 'Affaire suivante', again: 'Rejouer', review: 'Réviser', notebook: 'Ton carnet', cluesReview: 'Les indices', reviewLead: 'Relis les indices et les mots de cette affaire à ton rythme.', close: 'Fermer', solved: "L'assassin est {n} !", time: 'Temps', hints: 'indices',
     missing: 'Encore à placer : ⟦{k}⟧.', clash: 'Deux personnes sont sur la même ⟦ligne⟧ ou ⟦colonne⟧.', wrong: 'Presque ! Mal placés : ⟦{k}⟧. Relis les indices.', hintMsg: '{n} est ⟦ligne {r}⟧, ⟦colonne {c}⟧.', blocked: 'Personne ne peut se mettre ici.', nope: "Non ! {n} n'était pas dans la ⟦pièce⟧ de la victime.",
     more: 'Un autre conseil →', victim: 'VICTIME', lang: 'Langue que tu apprends',
     coop: 'Jouer en équipe', coopLead: "Chacun ne voit que certains indices, dans la langue qu'il apprend. Lisez-les à voix haute, partagez-les et résolvez l'affaire ensemble.", yourName: 'Ton prénom', create: 'Créer une salle', join: 'Rejoindre', code: 'Code',
-    room: 'Salle', team: 'Équipe', you: 'toi', host: 'chef', pickCase: "Choisis l'affaire pour l'équipe", waitHost: "On attend que {n} choisisse l'affaire.", leave: 'Quitter', share: 'Partager', sharedBy: 'partagé par {n}', heldBy: '{n} a cet indice. Demande-le !', yours: 'Ton indice', offline: "Le jeu en équipe n'est pas disponible ici.", invite: 'Donne le code à tes amis :', connecting: 'Connexion…', alone: 'Tu es seul dans la salle. Invite quelqu’un !',
+    room: 'Salle', team: 'Équipe', you: 'toi', host: 'chef', pickCase: "Choisis l'affaire pour l'équipe", waitHost: "On attend que {n} choisisse l'affaire.", leave: 'Quitter', share: 'Partager', sharedBy: 'partagé par {n}', clueMoved: 'Un indice est passé à {n}.', heldBy: '{n} a cet indice. Demande-le !', yours: 'Ton indice', offline: "Le jeu en équipe n'est pas disponible ici.", invite: 'Donne le code à tes amis :', copyLink: "Copier le lien d'invitation", copied: 'Lien copié !', connecting: 'Connexion…', alone: 'Tu es seul dans la salle. Invite quelqu’un !',
     rules: ['Une personne par ⟦ligne⟧ et par ⟦colonne⟧.', 'On peut se mettre sur les ⟦chaises⟧, ⟦canapés⟧, ⟦lits⟧ et ⟦tapis⟧. Pas sur les autres objets.', '⟦À côté⟧ = juste au-dessus, en dessous, à gauche ou à droite, dans la même pièce.', 'Le ⟦nord⟧ est en haut, le ⟦sud⟧ en bas, l’⟦est⟧ à droite, l’⟦ouest⟧ à gauche.', "La ⟦victime⟧ est sur la dernière case libre. Celui qui était seul avec elle est l'⟦assassin⟧."],
     tips: ["Commence par le suspect qui a un indice précis, comme une ligne ou une pièce.", 'Une personne par ligne et par colonne. Marque les cases impossibles avec ✕.', "Si une ligne n'a qu'une case libre, quelqu'un doit y être.", '« À côté » ne compte que dans la même pièce. Les murs séparent !', 'À la fin, la victime va sur la dernière case libre.'],
     pigeon: "Pas de panique, je m'en occupe… enfin, toi.",
     gl: { row: 'la ligne', col: 'la colonne', by: 'à côté de', alone: 'seul · seule', only: 'la seule personne', with: 'la même pièce', dir: 'nord · sud · est · ouest', corner: 'le coin', not: "n'était pas", victim: 'la victime', killer: "l'assassin" } },
-  es: { tag: 'Misterios lógicos', eyebrow: 'Expedientes · 8 casos', h1a: '¿Quién ', h1b: 'fue?', lead: 'Lee las pistas en español. Pon a cada sospechoso en el mapa. Descubre quién estaba solo con la víctima.',
+  es: { tag: 'Misterios lógicos', eyebrow: 'Expedientes · {n} casos', h1a: '¿Quién ', h1b: 'fue?', lead: 'Lee las pistas en español. Pon a cada sospechoso en el mapa. Descubre quién estaba solo con la víctima.',
     start: 'Abrir el primer caso', cont: 'Seguir investigando', cases: 'Los casos', how: 'Cómo se juega', yes: 'Te puedes poner encima', no: 'No te puedes poner encima',
     back: 'Todos los casos', caso: 'Caso n.º', levels: ['', 'Fácil', 'Medio', 'Difícil', 'Experto'], suspects: 'Sospechosos', words: 'Palabras del caso', rooms: 'Habitaciones', tip: 'Consejo',
     mark: '✕ marcar', hintX: 'Toca una casilla para marcarla con ✕ o para quitar a una persona.', hintPlace: 'Toca una casilla para poner a {n}.', longpress: 'Mantén pulsado para marcar ✕.',
-    check: 'Comprobar', help: 'Pista', restart: 'Empezar de nuevo', allRight: 'Todos en su sitio', killerIs: 'El asesino es…', next: 'Siguiente caso', again: 'Jugar otra vez', solved: '¡El asesino es {n}!', time: 'Tiempo', hints: 'pistas',
+    check: 'Comprobar', help: 'Pista', restart: 'Empezar de nuevo', undo: 'Deshacer', keys: 'Flechas para moverte, Supr para marcar ✕.', allRight: 'Todos en su sitio', killerIs: 'El asesino es…', next: 'Siguiente caso', again: 'Jugar otra vez', review: 'Repasar', notebook: 'Tu cuaderno', cluesReview: 'Las pistas', reviewLead: 'Vuelve a leer las pistas y las palabras de este caso con calma.', close: 'Cerrar', solved: '¡El asesino es {n}!', time: 'Tiempo', hints: 'pistas',
     missing: 'Faltan por colocar: ⟦{k}⟧.', clash: 'Dos personas están en la misma ⟦fila⟧ o ⟦columna⟧.', wrong: '¡Casi! Mal colocados: ⟦{k}⟧. Vuelve a leer las pistas.', hintMsg: '{n} está en la ⟦fila {r}⟧, ⟦columna {c}⟧.', blocked: 'Aquí no se puede poner nadie.', nope: '¡No! {n} no estaba en la ⟦habitación⟧ de la víctima.',
     more: 'Otro consejo →', victim: 'VÍCTIMA', lang: 'Idioma que aprendes',
     coop: 'Jugar en equipo', coopLead: 'Cada uno ve solo algunas pistas, en el idioma que aprende. Leedlas en voz alta, compartidlas y resolved el caso juntos.', yourName: 'Tu nombre', create: 'Crear una sala', join: 'Entrar', code: 'Código',
-    room: 'Sala', team: 'Equipo', you: 'tú', host: 'jefe', pickCase: 'Elige el caso para el equipo', waitHost: 'Esperando a que {n} elija el caso.', leave: 'Salir', share: 'Compartir', sharedBy: 'compartido por {n}', heldBy: '{n} tiene esta pista. ¡Pregúntale!', yours: 'Tu pista', offline: 'El juego en equipo no está disponible aquí.', invite: 'Dale el código a tus amigos:', connecting: 'Conectando…', alone: 'Estás solo en la sala. ¡Invita a alguien!',
+    room: 'Sala', team: 'Equipo', you: 'tú', host: 'jefe', pickCase: 'Elige el caso para el equipo', waitHost: 'Esperando a que {n} elija el caso.', leave: 'Salir', share: 'Compartir', sharedBy: 'compartido por {n}', clueMoved: 'Una pista ha pasado a {n}.', heldBy: '{n} tiene esta pista. ¡Pregúntale!', yours: 'Tu pista', offline: 'El juego en equipo no está disponible aquí.', invite: 'Dale el código a tus amigos:', copyLink: 'Copiar enlace de invitación', copied: '¡Enlace copiado!', connecting: 'Conectando…', alone: 'Estás solo en la sala. ¡Invita a alguien!',
     rules: ['Una persona por ⟦fila⟧ y por ⟦columna⟧.', 'Te puedes poner en ⟦sillas⟧, ⟦sofás⟧, ⟦camas⟧ y ⟦alfombras⟧. En los demás objetos no.', '⟦Junto a⟧ = justo arriba, abajo, a la izquierda o a la derecha, en la misma habitación.', 'El ⟦norte⟧ está arriba, el ⟦sur⟧ abajo, el ⟦este⟧ a la derecha y el ⟦oeste⟧ a la izquierda.', 'La ⟦víctima⟧ está en la última casilla libre. Quien estaba solo con ella es el ⟦asesino⟧.'],
     tips: ['Empieza por quien tiene una pista exacta, como una fila o una habitación.', 'Una persona por fila y por columna. Marca con ✕ las casillas imposibles.', 'Si una fila tiene una sola casilla libre, alguien tiene que estar ahí.', '«Junto a» solo vale en la misma habitación. ¡Las paredes separan!', 'Al final, la víctima va en la última casilla libre.'],
     pigeon: 'Tranquilos, yo me encargo… bueno, tú.',
@@ -719,7 +757,7 @@ var UI = {
 };
 if (typeof module !== 'undefined') module.exports = { LANGS: LANGS, ROOMS: ROOMS, OBJL: OBJL, ORD: ORD, CLUE: CLUE, CASEL: CASEL, UI: UI };
 </script>
-<script>const CASES=[{"id": "cucina-nonna", "title": "A casa della nonna", "flav": "La torta della nonna è sparita... e anche il signor Rossi.", "flavHu": "Eltűnt a nagymama tortája... és Rossi úr is.", "size": 4, "grid": ["KKSS", "KKSS", "CCSB", "CCBB"], "rooms": {"K": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "S": {"it": "Salotto", "itIn": "in salotto", "hu": "nappali", "huIn": "a nappaliban"}, "C": {"it": "Camera", "itIn": "in camera", "hu": "hálószoba", "huIn": "a hálószobában"}, "B": {"it": "Bagno", "itIn": "in bagno", "hu": "fürdőszoba", "huIn": "a fürdőszobában"}}, "objs": {"0,0": "frigo", "1,1": "sedia", "0,3": "divano", "1,2": "tappeto", "2,0": "letto", "3,1": "scaffale", "2,3": "pianta"}, "people": [["Luca", "m"], ["Sofia", "f"], ["Marco", "m"], ["Rossi", "m"]], "level": 1, "solution": [[3, 0], [2, 2], [1, 1], [0, 3]], "killer": 1, "clues": [{"p": 0, "t": "room", "v": "C"}, {"p": 1, "t": "col", "v": 2}, {"p": 2, "t": "on", "v": "sedia"}]}, {"id": "giardino", "title": "Nel giardino", "flav": "Qualcuno ha calpestato le rose. E poi è successo il peggio.", "flavHu": "Valaki letaposta a rózsákat. Aztán jött a legrosszabb.", "size": 4, "grid": ["GGOO", "GGOO", "PPOT", "PPTT"], "rooms": {"G": {"it": "Giardino", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "O": {"it": "Orto", "itIn": "nell'orto", "hu": "veteményes", "huIn": "a veteményesben"}, "P": {"it": "Portico", "itIn": "sotto il portico", "hu": "tornác", "huIn": "a tornácon"}, "T": {"it": "Serra", "itIn": "nella serra", "hu": "üvegház", "huIn": "az üvegházban"}}, "objs": {"0,0": "albero", "1,1": "cespuglio", "0,3": "cassa", "2,1": "sedia", "3,0": "tavolo", "3,3": "pianta", "2,3": "tappeto"}, "people": [["Giulia", "f"], ["Paolo", "m"], ["Anna", "f"], ["Bianchi", "m"]], "level": 1, "solution": [[2, 3], [0, 1], [3, 2], [1, 0]], "killer": 1, "clues": [{"p": 0, "t": "col", "v": 3}, {"p": 1, "t": "row", "v": 0}, {"p": 2, "t": "by", "v": "pianta"}]}, {"id": "pizzeria", "title": "Alla pizzeria", "flav": "Pizza margherita per tutti, tranne che per il cuoco.", "flavHu": "Margherita pizza mindenkinek, kivéve a szakácsot.", "size": 5, "grid": ["FFKKK", "FFKKK", "SSSKK", "SSSDD", "SSSDD"], "rooms": {"F": {"it": "Forno", "itIn": "al forno", "hu": "kemence", "huIn": "a kemencénél"}, "K": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "étterem", "huIn": "az étteremben"}, "D": {"it": "Dispensa", "itIn": "in dispensa", "hu": "kamra", "huIn": "a kamrában"}}, "objs": {"0,0": "forno", "1,1": "cassa", "0,3": "frigo", "1,4": "tavolo", "2,0": "sedia", "2,1": "tavolo", "3,1": "sedia", "4,2": "tappeto", "3,3": "scaffale", "4,4": "cassa", "2,3": "sedia"}, "people": [["Matteo", "m"], ["Chiara", "f"], ["Davide", "m"], ["Elena", "f"], ["Gino", "m"]], "level": 2, "solution": [[3, 1], [1, 0], [4, 2], [2, 3], [0, 4]], "killer": 3, "clues": [{"p": 0, "t": "on", "v": "sedia"}, {"p": 1, "t": "notroom", "v": "S"}, {"p": 2, "t": "on", "v": "tappeto"}, {"p": 3, "t": "col", "v": 3}]}, {"id": "scuola", "title": "A scuola", "flav": "Suona la campanella. Ma un professore non si alzerà più.", "flavHu": "Megszólal a csengő. De egy tanár már nem kel fel.", "size": 5, "grid": ["AAABB", "AAABB", "CCPBB", "CCPPP", "CCPPP"], "rooms": {"A": {"it": "Aula", "itIn": "in aula", "hu": "osztályterem", "huIn": "az osztályteremben"}, "B": {"it": "Biblioteca", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "C": {"it": "Corridoio", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "P": {"it": "Palestra", "itIn": "in palestra", "hu": "tornaterem", "huIn": "a tornateremben"}}, "objs": {"0,0": "sedia", "0,1": "tavolo", "1,1": "sedia", "1,2": "tavolo", "0,4": "scaffale", "1,3": "sedia", "2,4": "scaffale", "2,0": "pianta", "4,0": "vaso", "3,3": "tappeto", "4,4": "cassa", "4,2": "tappeto"}, "people": [["Federico", "m"], ["Martina", "f"], ["Lorenzo", "m"], ["Alice", "f"], ["Ferri", "m"]], "level": 2, "solution": [[0, 3], [4, 2], [2, 1], [3, 0], [1, 4]], "killer": 0, "clues": [{"p": 0, "t": "col", "v": 3}, {"p": 1, "t": "onlyon", "v": "tappeto"}, {"p": 2, "t": "by", "v": "pianta"}, {"p": 3, "t": "by", "v": "vaso"}]}, {"id": "stazione", "title": "Alla stazione", "flav": "Il treno delle otto è partito in orario. Il capostazione no.", "flavHu": "A nyolcórás vonat időben indult. Az állomásfőnök nem.", "size": 6, "grid": ["BBBTTT", "BBBTTT", "SSBTTT", "SSBBQQ", "SSSBQQ", "SSSBQQ"], "rooms": {"B": {"it": "Binario", "itIn": "sul binario", "hu": "vágány", "huIn": "a vágánynál"}, "T": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "S": {"it": "Sala d'attesa", "itIn": "in sala d'attesa", "hu": "váróterem", "huIn": "a váróteremben"}, "Q": {"it": "Biglietteria", "itIn": "in biglietteria", "hu": "jegypénztár", "huIn": "a jegypénztárban"}}, "objs": {"0,0": "cassa", "1,2": "sedia", "0,4": "tavolo", "1,3": "sedia", "1,5": "frigo", "2,4": "sedia", "2,0": "divano", "3,1": "pianta", "4,0": "divano", "5,2": "vaso", "3,4": "tavolo", "4,5": "sedia", "5,4": "scaffale", "4,3": "cassa", "5,0": "sedia"}, "people": [["Riccardo", "m"], ["Beatrice", "f"], ["Tommaso", "m"], ["Giorgia", "f"], ["Pietro", "m"], ["Moretti", "m"]], "level": 3, "solution": [[1, 1], [2, 4], [4, 2], [5, 3], [0, 5], [3, 0]], "killer": 2, "clues": [{"p": 0, "t": "dir", "d": "n", "v": 1}, {"p": 1, "t": "on", "v": "sedia"}, {"p": 2, "t": "by", "v": "vaso"}, {"p": 3, "t": "dir", "d": "s", "v": 2}, {"p": 4, "t": "by", "v": "frigo"}, {"p": 3, "t": "dir", "d": "e", "v": 2}]}, {"id": "castello", "title": "Nel castello", "flav": "Il fantasma del castello giura di non saperne niente.", "flavHu": "A kastély szelleme esküszik, hogy semmit sem tud.", "size": 6, "grid": ["TTTGGG", "TTTGGG", "CCSSGG", "CCSSSS", "CCSSKK", "CCCSKK"], "rooms": {"T": {"it": "Torre", "itIn": "nella torre", "hu": "torony", "huIn": "a toronyban"}, "G": {"it": "Giardino", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "C": {"it": "Cappella", "itIn": "nella cappella", "hu": "kápolna", "huIn": "a kápolnában"}, "S": {"it": "Salone", "itIn": "nel salone", "hu": "nagyterem", "huIn": "a nagyteremben"}, "K": {"it": "Cantina", "itIn": "in cantina", "hu": "pince", "huIn": "a pincében"}}, "objs": {"0,0": "letto", "0,2": "scaffale", "1,1": "tappeto", "0,4": "albero", "1,5": "cespuglio", "2,4": "masso", "2,0": "sedia", "3,1": "vaso", "5,0": "sedia", "2,3": "tavolo", "3,2": "sedia", "4,3": "tappeto", "3,5": "divano", "4,5": "cassa", "5,4": "cassa"}, "people": [["Vittoria", "f"], ["Edoardo", "m"], ["Camilla", "f"], ["Leonardo", "m"], ["Aurora", "f"], ["Conte Neri", "m"]], "level": 3, "solution": [[4, 2], [1, 4], [2, 1], [5, 0], [3, 5], [0, 3]], "killer": 1, "clues": [{"p": 0, "t": "with", "v": 4}, {"p": 1, "t": "col", "v": 4}, {"p": 2, "t": "dir", "d": "n", "v": 4}, {"p": 3, "t": "onlyon", "v": "sedia"}, {"p": 4, "t": "onlyon", "v": "divano"}, {"p": 3, "t": "with", "v": 2}]}, {"id": "campeggio", "title": "Al campeggio", "flav": "Marshmallow sul fuoco, stelle in cielo, e un mistero in tenda.", "flavHu": "Mályvacukor a tűzön, csillagok az égen, és egy rejtély a sátorban.", "size": 7, "grid": ["LLLBBBB", "LLLBBBB", "LLFFBTT", "PFFFFTT", "PPFFFTT", "PPPRRTT", "PPPRRRR"], "rooms": {"L": {"it": "Lago", "itIn": "al lago", "hu": "tó", "huIn": "a tónál"}, "B": {"it": "Bosco", "itIn": "nel bosco", "hu": "erdő", "huIn": "az erdőben"}, "F": {"it": "Falò", "itIn": "al falò", "hu": "tábortűz", "huIn": "a tábortűznél"}, "T": {"it": "Tenda", "itIn": "in tenda", "hu": "sátor", "huIn": "a sátorban"}, "P": {"it": "Prato", "itIn": "sul prato", "hu": "rét", "huIn": "a réten"}, "R": {"it": "Roulotte", "itIn": "nella roulotte", "hu": "lakókocsi", "huIn": "a lakókocsiban"}}, "objs": {"0,0": "masso", "1,2": "tappeto", "0,4": "albero", "0,6": "albero", "1,5": "cespuglio", "2,4": "albero", "2,2": "sedia", "3,3": "masso", "4,4": "sedia", "2,6": "letto", "3,6": "cassa", "4,5": "tappeto", "3,0": "cespuglio", "5,1": "albero", "6,0": "sedia", "5,3": "tavolo", "6,5": "letto", "5,6": "sedia", "6,3": "divano", "5,5": "letto"}, "people": [["Gabriele", "m"], ["Emma", "f"], ["Nicolò", "m"], ["Greta", "f"], ["Simone", "m"], ["Irene", "f"], ["Zio Bruno", "m"]], "level": 4, "solution": [[3, 5], [2, 6], [4, 4], [5, 0], [1, 2], [6, 3], [0, 1]], "killer": 4, "clues": [{"p": 0, "t": "with", "v": 1}, {"p": 1, "t": "dir", "d": "n", "v": 0}, {"p": 2, "t": "onlyon", "v": "sedia"}, {"p": 3, "t": "room", "v": "P"}, {"p": 4, "t": "onlyon", "v": "tappeto"}, {"p": 5, "t": "by", "v": "tavolo"}]}, {"id": "museo", "title": "Al museo", "flav": "Tra statue e dipinti, solo una cosa non torna: il guardiano.", "flavHu": "Szobrok és festmények között csak egy dolog nem stimmel: az őr.", "size": 7, "grid": ["IIIEEEE", "IIIEEEE", "AAAEEMM", "AAQQQMM", "AAQQQMM", "NNQQQMM", "NNNNNMM"], "rooms": {"I": {"it": "Ingresso", "itIn": "all'ingresso", "hu": "bejárat", "huIn": "a bejáratnál"}, "E": {"it": "Sala egizia", "itIn": "nella sala egizia", "hu": "egyiptomi terem", "huIn": "az egyiptomi teremben"}, "A": {"it": "Sala dei quadri", "itIn": "nella sala dei quadri", "hu": "képterem", "huIn": "a képteremben"}, "Q": {"it": "Cortile", "itIn": "in cortile", "hu": "udvar", "huIn": "az udvaron"}, "M": {"it": "Magazzino", "itIn": "in magazzino", "hu": "raktár", "huIn": "a raktárban"}, "N": {"it": "Negozio", "itIn": "nel negozio", "hu": "ajándékbolt", "huIn": "az ajándékboltban"}}, "objs": {"0,0": "sedia", "0,2": "pianta", "1,1": "tappeto", "0,4": "vaso", "0,6": "vaso", "1,5": "tappeto", "2,4": "vaso", "2,0": "sedia", "3,1": "scaffale", "4,0": "divano", "3,3": "albero", "4,4": "masso", "5,2": "cespuglio", "2,6": "cassa", "3,5": "cassa", "4,6": "sedia", "6,5": "cassa", "5,0": "tavolo", "6,2": "sedia", "6,4": "scaffale", "5,6": "tappeto"}, "people": [["Alessandro", "m"], ["Ginevra", "f"], ["Filippo", "m"], ["Bianca", "f"], ["Mattia", "m"], ["Ludovica", "f"], ["Signor Galli", "m"]], "level": 4, "solution": [[6, 6], [3, 0], [1, 5], [2, 2], [4, 3], [0, 1], [5, 4]], "killer": 4, "clues": [{"p": 0, "t": "notroom", "v": "E"}, {"p": 1, "t": "by", "v": "scaffale"}, {"p": 2, "t": "onlyon", "v": "tappeto"}, {"p": 3, "t": "with", "v": 1}, {"p": 4, "t": "by", "v": "albero"}, {"p": 5, "t": "by", "v": "pianta"}]}];
+<script>const CASES=[{"id": "cucina-nonna", "title": "A casa della nonna", "flav": "La torta della nonna è sparita... e anche il signor Rossi.", "flavHu": "Eltűnt a nagymama tortája... és Rossi úr is.", "size": 4, "grid": ["KKSS", "KKSS", "CCSB", "CCBB"], "rooms": {"K": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "S": {"it": "Salotto", "itIn": "in salotto", "hu": "nappali", "huIn": "a nappaliban"}, "C": {"it": "Camera", "itIn": "in camera", "hu": "hálószoba", "huIn": "a hálószobában"}, "B": {"it": "Bagno", "itIn": "in bagno", "hu": "fürdőszoba", "huIn": "a fürdőszobában"}}, "objs": {"0,0": "frigo", "1,1": "sedia", "0,3": "divano", "1,2": "tappeto", "2,0": "letto", "3,1": "scaffale", "2,3": "pianta"}, "people": [["Luca", "m"], ["Sofia", "f"], ["Marco", "m"], ["Rossi", "m"]], "level": 1, "solution": [[3, 0], [2, 2], [1, 1], [0, 3]], "killer": 1, "clues": [{"p": 0, "t": "corner"}, {"p": 1, "t": "room", "v": "S"}, {"p": 2, "t": "onlyon", "v": "sedia"}, {"p": 1, "t": "col", "v": 2}, {"p": 2, "t": "row", "v": 1}]}, {"id": "giardino", "title": "Nel giardino", "flav": "Qualcuno ha calpestato le rose. E poi è successo il peggio.", "flavHu": "Valaki letaposta a rózsákat. Aztán jött a legrosszabb.", "size": 4, "grid": ["GGOO", "GGOO", "PPOT", "PPTT"], "rooms": {"G": {"it": "Giardino", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "O": {"it": "Orto", "itIn": "nell'orto", "hu": "veteményes", "huIn": "a veteményesben"}, "P": {"it": "Portico", "itIn": "sotto il portico", "hu": "tornác", "huIn": "a tornácon"}, "T": {"it": "Serra", "itIn": "nella serra", "hu": "üvegház", "huIn": "az üvegházban"}}, "objs": {"0,0": "albero", "1,1": "cespuglio", "0,3": "cassa", "2,1": "sedia", "3,0": "tavolo", "3,3": "pianta", "2,3": "tappeto"}, "people": [["Giulia", "f"], ["Paolo", "m"], ["Anna", "f"], ["Bianchi", "m"]], "level": 1, "solution": [[2, 3], [0, 1], [3, 2], [1, 0]], "killer": 1, "clues": [{"p": 0, "t": "row", "v": 2}, {"p": 1, "t": "by", "v": "albero"}, {"p": 2, "t": "room", "v": "T"}, {"p": 1, "t": "col", "v": 1}, {"p": 1, "t": "room", "v": "G"}]}, {"id": "panetteria", "title": "La notte del forno", "flav": "Il pane è bruciato. E il fornaio non risponde più.", "flavHu": "A kenyér odaégett. És a pék nem válaszol.", "size": 4, "grid": ["FFSS", "FFSS", "DDCC", "DDCC"], "rooms": {"F": {"it": "Forno", "itIn": "al forno", "hu": "kemence", "huIn": "a kemencénél"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "eladótér", "huIn": "az eladótérben"}, "D": {"it": "Dispensa", "itIn": "in dispensa", "hu": "kamra", "huIn": "a kamrában"}, "C": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}}, "objs": {"0,0": "forno", "0,3": "tavolo", "1,1": "sedia", "1,2": "cassa", "2,0": "scaffale", "2,3": "tappeto", "3,2": "vaso"}, "people": [["Emma", "f"], ["Nicolò", "m"], ["Greta", "f"], ["Gino", "m"]], "level": 1, "solution": [[0, 2], [3, 0], [1, 3], [2, 1]], "killer": 1, "clues": [{"p": 0, "t": "by", "v": "cassa"}, {"p": 1, "t": "room", "v": "D"}, {"p": 2, "t": "room", "v": "S"}, {"p": 0, "t": "row", "v": 0}, {"p": 1, "t": "corner"}, {"p": 0, "t": "col", "v": 2}]}, {"id": "barca", "title": "Ultima corsa", "flav": "Il mare era calmo. Il capitano, molto meno.", "flavHu": "A tenger nyugodt volt. A kapitány annál kevésbé.", "size": 4, "grid": ["PPSS", "PPSS", "CCBB", "CCBB"], "rooms": {"P": {"it": "Portico", "itIn": "sotto il portico", "hu": "fedélzet", "huIn": "a fedélzeten"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "szalon", "huIn": "a szalonban"}, "C": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "B": {"it": "Bagno", "itIn": "in bagno", "hu": "fürdőszoba", "huIn": "a fürdőszobában"}}, "objs": {"0,1": "sedia", "0,3": "cassa", "1,0": "tavolo", "1,2": "divano", "2,1": "frigo", "3,0": "tappeto", "3,3": "vaso"}, "people": [["Giulia", "f"], ["Paolo", "m"], ["Anna", "f"], ["Bianchi", "m"]], "level": 1, "solution": [[2, 0], [0, 2], [3, 1], [1, 3]], "killer": 1, "clues": [{"p": 0, "t": "by", "v": "frigo"}, {"p": 1, "t": "row", "v": 0}, {"p": 2, "t": "room", "v": "C"}, {"p": 0, "t": "row", "v": 2}, {"p": 2, "t": "row", "v": 3}]}, {"id": "pizzeria", "title": "Alla pizzeria", "flav": "Pizza margherita per tutti, tranne che per il cuoco.", "flavHu": "Margherita pizza mindenkinek, kivéve a szakácsot.", "size": 5, "grid": ["FFKKK", "FFKKK", "SSSKK", "SSSDD", "SSSDD"], "rooms": {"F": {"it": "Forno", "itIn": "al forno", "hu": "kemence", "huIn": "a kemencénél"}, "K": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "étterem", "huIn": "az étteremben"}, "D": {"it": "Dispensa", "itIn": "in dispensa", "hu": "kamra", "huIn": "a kamrában"}}, "objs": {"0,0": "forno", "1,1": "cassa", "0,3": "frigo", "1,4": "tavolo", "2,0": "sedia", "2,1": "tavolo", "3,1": "sedia", "4,2": "tappeto", "3,3": "scaffale", "4,4": "cassa", "2,3": "sedia"}, "people": [["Matteo", "m"], ["Chiara", "f"], ["Davide", "m"], ["Elena", "f"], ["Gino", "m"]], "level": 2, "solution": [[1, 0], [2, 3], [3, 1], [0, 4], [4, 2]], "killer": 2, "clues": [{"p": 0, "t": "dir", "d": "s", "v": 3}, {"p": 1, "t": "with", "v": 3}, {"p": 2, "t": "dir", "d": "s", "v": 3}, {"p": 3, "t": "notroom", "v": "F"}, {"p": 0, "t": "alone"}, {"p": 1, "t": "on", "v": "sedia"}, {"p": 2, "t": "on", "v": "sedia"}, {"p": 3, "t": "col", "v": 4}]}, {"id": "scuola", "title": "A scuola", "flav": "Suona la campanella. Ma un professore non si alzerà più.", "flavHu": "Megszólal a csengő. De egy tanár már nem kel fel.", "size": 5, "grid": ["AAABB", "AAABB", "CCPBB", "CCPPP", "CCPPP"], "rooms": {"A": {"it": "Aula", "itIn": "in aula", "hu": "osztályterem", "huIn": "az osztályteremben"}, "B": {"it": "Biblioteca", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "C": {"it": "Corridoio", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "P": {"it": "Palestra", "itIn": "in palestra", "hu": "tornaterem", "huIn": "a tornateremben"}}, "objs": {"0,0": "sedia", "0,1": "tavolo", "1,1": "sedia", "1,2": "tavolo", "0,4": "scaffale", "1,3": "sedia", "2,4": "scaffale", "2,0": "pianta", "4,0": "vaso", "3,3": "tappeto", "4,4": "cassa", "4,2": "tappeto"}, "people": [["Federico", "m"], ["Martina", "f"], ["Lorenzo", "m"], ["Alice", "f"], ["Ferri", "m"]], "level": 2, "solution": [[0, 3], [4, 2], [2, 1], [3, 0], [1, 4]], "killer": 0, "clues": [{"p": 0, "t": "dir", "d": "e", "v": 3}, {"p": 1, "t": "row", "v": 4}, {"p": 2, "t": "with", "v": 3}, {"p": 3, "t": "dir", "d": "o", "v": 2}, {"p": 0, "t": "row", "v": 0}, {"p": 1, "t": "dir", "d": "e", "v": 3}]}, {"id": "teatro", "title": "Dietro il sipario", "flav": "Lo spettacolo è finito. Il protagonista no.", "flavHu": "A darab véget ért. A főszereplő nem.", "size": 5, "grid": ["SSSSS", "SSSSS", "CCBBB", "CCBBB", "IIAAA"], "rooms": {"S": {"it": "Salone", "itIn": "nel salone", "hu": "nézőtér", "huIn": "a nézőtéren"}, "C": {"it": "Corridoio", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "B": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "I": {"it": "Ingresso", "itIn": "all'ingresso", "hu": "bejárat", "huIn": "a bejáratnál"}, "A": {"it": "Sala", "itIn": "in sala", "hu": "öltöző", "huIn": "az öltözőben"}}, "objs": {"0,1": "sedia", "0,3": "tavolo", "1,0": "scaffale", "1,2": "tappeto", "2,1": "cassa", "2,3": "frigo", "2,4": "divano", "3,0": "vaso", "3,3": "pianta", "4,0": "tappeto", "4,4": "sedia"}, "people": [["Federico", "m"], ["Martina", "f"], ["Lorenzo", "m"], ["Alice", "f"], ["Ferri", "m"]], "level": 2, "solution": [[4, 1], [0, 0], [3, 2], [1, 3], [2, 4]], "killer": 2, "clues": [{"p": 0, "t": "notroom", "v": "S"}, {"p": 1, "t": "notroom", "v": "C"}, {"p": 2, "t": "notroom", "v": "C"}, {"p": 3, "t": "dir", "d": "n", "v": 0}, {"p": 1, "t": "by", "v": "scaffale"}, {"p": 2, "t": "by", "v": "pianta"}, {"p": 3, "t": "by", "v": "tavolo"}, {"p": 3, "t": "dir", "d": "e", "v": 2}, {"p": 3, "t": "notroom", "v": "A"}]}, {"id": "piscina", "title": "Bordo piscina", "flav": "Qualcuno ha spinto il bagnino. Nessuno ha visto niente.", "flavHu": "Valaki meglökte az úszómestert. Senki sem látott semmit.", "size": 5, "grid": ["PPPPB", "PPPPB", "CCBBB", "CCSSI", "CCSSI"], "rooms": {"P": {"it": "Prato", "itIn": "sul prato", "hu": "gyep", "huIn": "a gyepen"}, "B": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "C": {"it": "Bagno", "itIn": "in bagno", "hu": "öltöző", "huIn": "az öltözőben"}, "S": {"it": "Serra", "itIn": "nella serra", "hu": "üvegház", "huIn": "az üvegházban"}, "I": {"it": "Ingresso", "itIn": "all'ingresso", "hu": "bejárat", "huIn": "a bejáratnál"}}, "objs": {"0,2": "sedia", "0,4": "tavolo", "1,1": "tappeto", "1,3": "cassa", "2,0": "divano", "2,2": "vaso", "2,4": "frigo", "3,1": "pianta", "3,3": "tappeto", "4,0": "sedia", "4,4": "cespuglio"}, "people": [["Riccardo", "m"], ["Beatrice", "f"], ["Tommaso", "m"], ["Giorgia", "f"], ["Pietro", "m"]], "level": 2, "solution": [[0, 1], [1, 4], [3, 3], [2, 0], [4, 2]], "killer": 2, "clues": [{"p": 0, "t": "room", "v": "P"}, {"p": 1, "t": "by", "v": "frigo"}, {"p": 2, "t": "dir", "d": "o", "v": 1}, {"p": 3, "t": "on", "v": "divano"}, {"p": 2, "t": "onlyon", "v": "tappeto"}, {"p": 3, "t": "alone"}, {"p": 2, "t": "dir", "d": "s", "v": 0}]}, {"id": "stazione", "title": "Alla stazione", "flav": "Il treno delle otto è partito in orario. Il capostazione no.", "flavHu": "A nyolcórás vonat időben indult. Az állomásfőnök nem.", "size": 6, "grid": ["BBBTTT", "BBBTTT", "SSBTTT", "SSBBQQ", "SSSBQQ", "SSSBQQ"], "rooms": {"B": {"it": "Binario", "itIn": "sul binario", "hu": "vágány", "huIn": "a vágánynál"}, "T": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "S": {"it": "Sala d'attesa", "itIn": "in sala d'attesa", "hu": "váróterem", "huIn": "a váróteremben"}, "Q": {"it": "Biglietteria", "itIn": "in biglietteria", "hu": "jegypénztár", "huIn": "a jegypénztárban"}}, "objs": {"0,0": "cassa", "1,2": "sedia", "0,4": "tavolo", "1,3": "sedia", "1,5": "frigo", "2,4": "sedia", "2,0": "divano", "3,1": "pianta", "4,0": "divano", "5,2": "vaso", "3,4": "tavolo", "4,5": "sedia", "5,4": "scaffale", "4,3": "cassa", "5,0": "sedia"}, "people": [["Riccardo", "m"], ["Beatrice", "f"], ["Tommaso", "m"], ["Giorgia", "f"], ["Pietro", "m"], ["Moretti", "m"]], "level": 3, "solution": [[3, 3], [4, 2], [5, 5], [2, 0], [1, 4], [0, 1]], "killer": 0, "clues": [{"p": 0, "t": "room", "v": "B"}, {"p": 1, "t": "dir", "d": "e", "v": 3}, {"p": 2, "t": "dir", "d": "s", "v": 1}, {"p": 3, "t": "dir", "d": "s", "v": 4}, {"p": 4, "t": "dir", "d": "o", "v": 2}, {"p": 1, "t": "by", "v": "vaso"}, {"p": 1, "t": "dir", "d": "o", "v": 0}]}, {"id": "castello", "title": "Nel castello", "flav": "Il fantasma del castello giura di non saperne niente.", "flavHu": "A kastély szelleme esküszik, hogy semmit sem tud.", "size": 6, "grid": ["TTTGGG", "TTTGGG", "CCSSGG", "CCSSSS", "CCSSKK", "CCCSKK"], "rooms": {"T": {"it": "Torre", "itIn": "nella torre", "hu": "torony", "huIn": "a toronyban"}, "G": {"it": "Giardino", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "C": {"it": "Cappella", "itIn": "nella cappella", "hu": "kápolna", "huIn": "a kápolnában"}, "S": {"it": "Salone", "itIn": "nel salone", "hu": "nagyterem", "huIn": "a nagyteremben"}, "K": {"it": "Cantina", "itIn": "in cantina", "hu": "pince", "huIn": "a pincében"}}, "objs": {"0,0": "letto", "0,2": "scaffale", "1,1": "tappeto", "0,4": "albero", "1,5": "cespuglio", "2,4": "masso", "2,0": "sedia", "3,1": "vaso", "5,0": "sedia", "2,3": "tavolo", "3,2": "sedia", "4,3": "tappeto", "3,5": "divano", "4,5": "cassa", "5,4": "cassa"}, "people": [["Vittoria", "f"], ["Edoardo", "m"], ["Camilla", "f"], ["Leonardo", "m"], ["Aurora", "f"], ["Conte Neri", "m"]], "level": 3, "solution": [[2, 0], [1, 2], [5, 5], [4, 3], [0, 1], [3, 4]], "killer": 3, "clues": [{"p": 0, "t": "dir", "d": "o", "v": 4}, {"p": 1, "t": "dir", "d": "e", "v": 4}, {"p": 2, "t": "dir", "d": "e", "v": 3}, {"p": 3, "t": "room", "v": "S"}, {"p": 4, "t": "notroom", "v": "K"}, {"p": 0, "t": "alone"}, {"p": 1, "t": "by", "v": "scaffale"}, {"p": 2, "t": "by", "v": "cassa"}, {"p": 3, "t": "onlyon", "v": "tappeto"}]}, {"id": "ospedale", "title": "Turno di notte", "flav": "Il dottore non ha finito il giro. Qualcuno lo ha finito per lui.", "flavHu": "Az orvos nem fejezte be a körét. Valaki befejezte helyette.", "size": 6, "grid": ["MMMMCC", "MMMMCC", "BBBBCC", "BBBBII", "DDDDSS", "DDDDSS"], "rooms": {"M": {"it": "Camera", "itIn": "in camera", "hu": "kórterem", "huIn": "a kórteremben"}, "C": {"it": "Corridoio", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "B": {"it": "Bagno", "itIn": "in bagno", "hu": "fürdőszoba", "huIn": "a fürdőszobában"}, "I": {"it": "Ingresso", "itIn": "all'ingresso", "hu": "bejárat", "huIn": "a bejáratnál"}, "D": {"it": "Dispensa", "itIn": "in dispensa", "hu": "raktár", "huIn": "a raktárban"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "váróterem", "huIn": "a váróteremben"}}, "objs": {"0,0": "letto", "0,3": "sedia", "0,5": "tavolo", "1,1": "letto", "1,4": "frigo", "2,0": "scaffale", "2,2": "sedia", "3,0": "pianta", "3,3": "cassa", "3,5": "tappeto", "4,1": "sedia", "4,4": "scaffale", "5,0": "letto", "5,5": "vaso"}, "people": [["Alessandro", "m"], ["Ginevra", "f"], ["Filippo", "m"], ["Bianca", "f"], ["Mattia", "m"], ["Ludovica", "f"]], "level": 3, "solution": [[4, 0], [1, 5], [2, 1], [0, 3], [5, 4], [3, 2]], "killer": 2, "clues": [{"p": 0, "t": "dir", "d": "o", "v": 1}, {"p": 1, "t": "dir", "d": "e", "v": 0}, {"p": 2, "t": "notroom", "v": "D"}, {"p": 3, "t": "notroom", "v": "C"}, {"p": 4, "t": "by", "v": "scaffale"}, {"p": 2, "t": "by", "v": "scaffale"}, {"p": 3, "t": "onlyon", "v": "sedia"}, {"p": 3, "t": "alone"}, {"p": 4, "t": "alone"}]}, {"id": "treno", "title": "Ultima fermata", "flav": "Il treno si è fermato. Il capotreno anche.", "flavHu": "A vonat megállt. A kalauz is.", "size": 6, "grid": ["CCCCBB", "CCCCBB", "GGSSBB", "GGSSBB", "IIIIAA", "IIIIAA"], "rooms": {"C": {"it": "Corridoio", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "B": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "G": {"it": "Bagno", "itIn": "in bagno", "hu": "mosdó", "huIn": "a mosdóban"}, "S": {"it": "Sala", "itIn": "in sala", "hu": "étkező", "huIn": "az étkezőben"}, "I": {"it": "Binario", "itIn": "sul binario", "hu": "vágány", "huIn": "a vágánynál"}, "A": {"it": "Sala d'attesa", "itIn": "in sala d'attesa", "hu": "váróterem", "huIn": "a váróteremben"}}, "objs": {"0,0": "sedia", "0,2": "tavolo", "0,5": "cassa", "1,1": "sedia", "1,4": "scaffale", "2,0": "divano", "2,3": "frigo", "2,5": "vaso", "3,1": "tappeto", "3,4": "sedia", "4,0": "cassa", "4,3": "pianta", "5,2": "divano", "5,5": "scaffale"}, "people": [["Vittoria", "f"], ["Edoardo", "m"], ["Camilla", "f"], ["Leonardo", "m"], ["Aurora", "f"], ["Conte Neri", "m"]], "level": 3, "solution": [[4, 2], [0, 4], [5, 0], [1, 3], [2, 1], [3, 5]], "killer": 1, "clues": [{"p": 0, "t": "row", "v": 4}, {"p": 1, "t": "notroom", "v": "C"}, {"p": 2, "t": "dir", "d": "s", "v": 3}, {"p": 3, "t": "room", "v": "C"}, {"p": 4, "t": "notroom", "v": "B"}, {"p": 0, "t": "by", "v": "pianta"}, {"p": 2, "t": "by", "v": "cassa"}, {"p": 3, "t": "dir", "d": "s", "v": 1}]}, {"id": "campeggio", "title": "Al campeggio", "flav": "Marshmallow sul fuoco, stelle in cielo, e un mistero in tenda.", "flavHu": "Mályvacukor a tűzön, csillagok az égen, és egy rejtély a sátorban.", "size": 7, "grid": ["LLLBBBB", "LLLBBBB", "LLFFBTT", "PFFFFTT", "PPFFFTT", "PPPRRTT", "PPPRRRR"], "rooms": {"L": {"it": "Lago", "itIn": "al lago", "hu": "tó", "huIn": "a tónál"}, "B": {"it": "Bosco", "itIn": "nel bosco", "hu": "erdő", "huIn": "az erdőben"}, "F": {"it": "Falò", "itIn": "al falò", "hu": "tábortűz", "huIn": "a tábortűznél"}, "T": {"it": "Tenda", "itIn": "in tenda", "hu": "sátor", "huIn": "a sátorban"}, "P": {"it": "Prato", "itIn": "sul prato", "hu": "rét", "huIn": "a réten"}, "R": {"it": "Roulotte", "itIn": "nella roulotte", "hu": "lakókocsi", "huIn": "a lakókocsiban"}}, "objs": {"0,0": "masso", "1,2": "tappeto", "0,4": "albero", "0,6": "albero", "1,5": "cespuglio", "2,4": "albero", "2,2": "sedia", "3,3": "masso", "4,4": "sedia", "2,6": "letto", "3,6": "cassa", "4,5": "tappeto", "3,0": "cespuglio", "5,1": "albero", "6,0": "sedia", "5,3": "tavolo", "6,5": "letto", "5,6": "sedia", "6,3": "divano", "5,5": "letto"}, "people": [["Gabriele", "m"], ["Emma", "f"], ["Nicolò", "m"], ["Greta", "f"], ["Simone", "m"], ["Irene", "f"], ["Zio Bruno", "m"]], "level": 4, "solution": [[5, 6], [2, 2], [3, 5], [1, 3], [6, 0], [0, 1], [4, 4]], "killer": 1, "clues": [{"p": 0, "t": "room", "v": "T"}, {"p": 1, "t": "dir", "d": "n", "v": 0}, {"p": 2, "t": "dir", "d": "e", "v": 4}, {"p": 3, "t": "room", "v": "B"}, {"p": 4, "t": "corner"}, {"p": 5, "t": "alone"}, {"p": 0, "t": "on", "v": "sedia"}, {"p": 2, "t": "by", "v": "cassa"}, {"p": 2, "t": "dir", "d": "s", "v": 1}, {"p": 3, "t": "col", "v": 3}, {"p": 5, "t": "by", "v": "masso"}]}, {"id": "museo", "title": "Al museo", "flav": "Tra statue e dipinti, solo una cosa non torna: il guardiano.", "flavHu": "Szobrok és festmények között csak egy dolog nem stimmel: az őr.", "size": 7, "grid": ["IIIEEEE", "IIIEEEE", "AAAEEMM", "AAQQQMM", "AAQQQMM", "NNQQQMM", "NNNNNMM"], "rooms": {"I": {"it": "Ingresso", "itIn": "all'ingresso", "hu": "bejárat", "huIn": "a bejáratnál"}, "E": {"it": "Sala egizia", "itIn": "nella sala egizia", "hu": "egyiptomi terem", "huIn": "az egyiptomi teremben"}, "A": {"it": "Sala dei quadri", "itIn": "nella sala dei quadri", "hu": "képterem", "huIn": "a képteremben"}, "Q": {"it": "Cortile", "itIn": "in cortile", "hu": "udvar", "huIn": "az udvaron"}, "M": {"it": "Magazzino", "itIn": "in magazzino", "hu": "raktár", "huIn": "a raktárban"}, "N": {"it": "Negozio", "itIn": "nel negozio", "hu": "ajándékbolt", "huIn": "az ajándékboltban"}}, "objs": {"0,0": "sedia", "0,2": "pianta", "1,1": "tappeto", "0,4": "vaso", "0,6": "vaso", "1,5": "tappeto", "2,4": "vaso", "2,0": "sedia", "3,1": "scaffale", "4,0": "divano", "3,3": "albero", "4,4": "masso", "5,2": "cespuglio", "2,6": "cassa", "3,5": "cassa", "4,6": "sedia", "6,5": "cassa", "5,0": "tavolo", "6,2": "sedia", "6,4": "scaffale", "5,6": "tappeto"}, "people": [["Alessandro", "m"], ["Ginevra", "f"], ["Filippo", "m"], ["Bianca", "f"], ["Mattia", "m"], ["Ludovica", "f"], ["Signor Galli", "m"]], "level": 4, "solution": [[1, 4], [5, 1], [3, 0], [6, 6], [4, 3], [0, 5], [2, 2]], "killer": 2, "clues": [{"p": 0, "t": "by", "v": "vaso"}, {"p": 1, "t": "row", "v": 5}, {"p": 2, "t": "notroom", "v": "E"}, {"p": 3, "t": "room", "v": "M"}, {"p": 4, "t": "dir", "d": "n", "v": 1}, {"p": 5, "t": "dir", "d": "e", "v": 4}, {"p": 0, "t": "dir", "d": "o", "v": 5}, {"p": 1, "t": "by", "v": "tavolo"}, {"p": 2, "t": "by", "v": "scaffale"}, {"p": 3, "t": "alone"}, {"p": 4, "t": "alone"}]}, {"id": "spiaggia", "title": "L'ultimo tuffo", "flav": "Il bagnino ha fischiato una volta di troppo.", "flavHu": "Az úszómester egyszer túl sokat füttyentett.", "size": 7, "grid": ["LLLLPPP", "LLLLPPP", "BBBBPPP", "BBBBCCC", "BBBBCCC", "SSSSTTT", "SSSSTTT"], "rooms": {"L": {"it": "Lago", "itIn": "al lago", "hu": "tó", "huIn": "a tónál"}, "P": {"it": "Prato", "itIn": "sul prato", "hu": "homokos part", "huIn": "a homokos parton"}, "B": {"it": "Bar", "itIn": "al bar", "hu": "büfé", "huIn": "a büfében"}, "C": {"it": "Bagno", "itIn": "in bagno", "hu": "öltöző", "huIn": "az öltözőben"}, "S": {"it": "Bosco", "itIn": "nel bosco", "hu": "liget", "huIn": "a ligetben"}, "T": {"it": "Tenda", "itIn": "in tenda", "hu": "strandkabin", "huIn": "a strandkabinban"}}, "objs": {"0,0": "tappeto", "0,4": "albero", "1,2": "cespuglio", "1,6": "masso", "2,1": "sedia", "2,3": "tavolo", "2,6": "cassa", "3,1": "tappeto", "3,4": "sedia", "3,6": "vaso", "4,2": "pianta", "5,0": "tappeto", "5,3": "albero", "5,6": "masso", "6,2": "sedia", "6,4": "cespuglio"}, "people": [["Gabriele", "m"], ["Emma", "f"], ["Nicolò", "m"], ["Greta", "f"], ["Simone", "m"], ["Irene", "f"], ["Zio Bruno", "m"]], "level": 4, "solution": [[3, 2], [5, 0], [1, 1], [4, 5], [6, 3], [2, 4], [0, 6]], "killer": 5, "clues": [{"p": 0, "t": "dir", "d": "n", "v": 4}, {"p": 1, "t": "col", "v": 0}, {"p": 2, "t": "notroom", "v": "T"}, {"p": 3, "t": "row", "v": 4}, {"p": 4, "t": "dir", "d": "e", "v": 2}, {"p": 5, "t": "row", "v": 2}, {"p": 1, "t": "onlyon", "v": "tappeto"}, {"p": 2, "t": "by", "v": "cespuglio"}, {"p": 3, "t": "col", "v": 5}, {"p": 3, "t": "alone"}, {"p": 4, "t": "by", "v": "albero"}]}, {"id": "villa", "title": "La festa in villa", "flav": "La musica è finita. Il padrone di casa non ha salutato nessuno.", "flavHu": "A zene elhallgatott. A házigazda senkit sem üdvözölt.", "size": 7, "grid": ["SSSSGGG", "AAAAAGG", "KKKKGGG", "KKKKBBG", "CCCCBBG", "CCCCLLG", "CCCCLLG"], "rooms": {"S": {"it": "Salone", "itIn": "nel salone", "hu": "díszterem", "huIn": "a díszteremben"}, "A": {"it": "Sala", "itIn": "in sala", "hu": "ebédlő", "huIn": "az ebédlőben"}, "G": {"it": "Giardino", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "K": {"it": "Cucina", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "B": {"it": "Biblioteca", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "C": {"it": "Cantina", "itIn": "in cantina", "hu": "pince", "huIn": "a pincében"}, "L": {"it": "Bagno", "itIn": "in bagno", "hu": "fürdőszoba", "huIn": "a fürdőszobában"}}, "objs": {"0,1": "sedia", "0,3": "tavolo", "0,5": "scaffale", "1,2": "albero", "1,5": "cespuglio", "2,0": "cassa", "2,2": "forno", "2,6": "vaso", "3,1": "tavolo", "3,4": "scaffale", "4,0": "tappeto", "4,2": "divano", "4,5": "pianta", "5,0": "cassa", "5,2": "sedia", "5,5": "masso", "6,1": "tappeto", "6,4": "vaso", "6,6": "scaffale"}, "people": [["Edoardo", "m"], ["Camilla", "f"], ["Leonardo", "m"], ["Aurora", "f"], ["Alessandro", "m"], ["Ginevra", "f"], ["Conte Neri", "m"]], "level": 4, "solution": [[1, 1], [3, 2], [6, 5], [5, 3], [0, 6], [2, 4], [4, 0]], "killer": 3, "clues": [{"p": 0, "t": "notroom", "v": "K"}, {"p": 1, "t": "dir", "d": "o", "v": 3}, {"p": 2, "t": "alone"}, {"p": 3, "t": "dir", "d": "o", "v": 2}, {"p": 4, "t": "dir", "d": "n", "v": 5}, {"p": 5, "t": "room", "v": "G"}, {"p": 0, "t": "by", "v": "albero"}, {"p": 1, "t": "by", "v": "forno"}, {"p": 2, "t": "dir", "d": "e", "v": 5}, {"p": 4, "t": "by", "v": "scaffale"}]}];
 const LOOKS={
 Luca:[1,'short','d',['headphones'],'teal','smile'],Sofia:[0,'long','r',['earrings'],'pink','smirk'],Marco:[3,'curly','k',['glasses'],'orange','flat'],Rossi:[1,'bald','g',['mustache'],'blue','x'],
 Giulia:[2,'bun','b',['glasses'],'green','smile'],Paolo:[4,'buzz','k',['cap'],'yellow','smirk'],Anna:[0,'bob','y',['freckles'],'orange','smile'],Bianchi:[1,'short','w',['beard'],'teal','x'],
@@ -824,7 +862,8 @@ const NET=makeNet();
 
 /* ---------- state ---------- */
 const S={view:'hub', cs:null, idx:0, place:{}, marks:new Set(), tool:0, t0:0, elapsed:0, hints:0, phase:'play', msg:null,
-         huAll:store.get('huAll',false), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false};
+         huAll:store.get('huAll',false), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
+         hist:[], focus:null};
 let timerId=null;
 const isPhone=()=>{ try{ return matchMedia('(max-width:700px)').matches; }catch(e){ return false; } };
 let PH=isPhone();
@@ -835,7 +874,7 @@ function startCase(i){
   const cs=CASES[i]; S.view='case'; S.cs=cs; S.idx=i;
   const saved=store.get('prog:'+cs.id,null);
   S.place=saved?saved.place:{}; S.marks=new Set(saved?saved.marks:[]); S.hints=saved?saved.hints:0;
-  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false;
+  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false; S.hist=[]; S.focus=null;
   startTimer(); try{ if(!S.coop) location.hash=cs.id; }catch(e){}
   render(); window.scrollTo(0,0);
 }
@@ -851,7 +890,7 @@ function goHub(){ saveProg(); clearInterval(timerId); if(S.coop) leaveRoom(); S.
 const CODE_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ';
 function newCode(){ let s=''; for(let i=0;i<4;i++) s+=CODE_ABC[Math.floor(Math.random()*CODE_ABC.length)]; return s; }
 function myId(){ let id=store.get('pid',null); if(!id){ id='p'+Math.random().toString(36).slice(2,10); store.set('pid',id); } return id; }
-function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],phase:'lobby',t0:0,tEnd:0,hints:0}; }
+function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],owners:[],phase:'lobby',t0:0,tEnd:0,hints:0,lam:0,pc:{},mc:{}}; }
 function joinRoom(code,name){
   if(!NET) return;
   code=code.toUpperCase().replace(/[^A-Z]/g,'').slice(0,4); if(code.length!==4) return;
@@ -863,7 +902,8 @@ function joinRoom(code,name){
     onReady(){ if(!S.coop) return; S.coop.ready=true; S.coop.link.send({t:'hello',from:me.id}); render(); },
     onError(){ if(!S.coop) return; S.coop.error=true; render(); },
     onPeers(list){ if(!S.coop) return; const seen={}; const ps=list.filter(p=>p&&p.id&&!seen[p.id]&&(seen[p.id]=1)).sort((a,b)=>(a.joined-b.joined)||(a.id<b.id?-1:1));
-      const sig=ps.map(p=>p.id+'|'+p.name+'|'+p.lang).join(','); if(sig===S.coop.sig) return; S.coop.sig=sig; S.coop.peers=ps; render(); },
+      const sig=ps.map(p=>p.id+'|'+p.name+'|'+p.lang).join(','); if(sig===S.coop.sig) return; S.coop.sig=sig; S.coop.peers=ps; render();
+      if(isHost()) setTimeout(ensureOwners,0); },
     onMsg(m){ if(!S.coop||!m) return;
       if(m.t==='hello'){ if(S.coop.st.v>0) S.coop.link.send({t:'state',st:S.coop.st}); }
       else if(m.t==='state') mergeSt(m.st);
@@ -873,15 +913,65 @@ function joinRoom(code,name){
   try{ history.replaceState(null,'',location.pathname+location.search+'#r-'+code); }catch(e){}
 }
 function leaveRoom(){ if(S.coop&&S.coop.link) S.coop.link.leave(); S.coop=null; }
-function mergeSt(st){
-  const cur=S.coop.st; if(!st||typeof st.v!=='number') return;
-  if(st.v>cur.v || (st.v===cur.v && st.by>cur.by)){
+const newerStamp=(a,b)=>!b||(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1]));
+function mergeSt(inc){
+  const cur=S.coop.st; if(!inc||typeof inc.v!=='number') return;
+  const scalarNewer=inc.v>cur.v||(inc.v===cur.v&&inc.by>cur.by);
+  // A different case is a full reset, not a merge.
+  if(inc.caseId!==cur.caseId && inc.caseId && (!cur.caseId||inc.v>=cur.v)){
     const before=new Set(cur.shared||[]);
-    S.coop.st=st; applySt();
-    (st.shared||[]).forEach(i=>{ if(!before.has(i)&&S.cs&&st.by!==S.coop.me.id){ const sh=S.coop.peers.find(p=>p.id===st.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+    S.coop.st=JSON.parse(JSON.stringify(inc)); applySt();
+    (inc.shared||[]).forEach(i=>{ if(!before.has(i)&&S.cs){ const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+    return;
   }
+  const beforeShared=new Set(cur.shared||[]);
+  const st=JSON.parse(JSON.stringify(cur));
+  st.lam=Math.max(cur.lam||0,inc.lam||0);
+  // placements: last writer per person wins
+  const pc={...(cur.pc||{})}, incPc=inc.pc||{}, place={...(cur.place||{})};
+  for(const i of new Set([...Object.keys(pc),...Object.keys(incPc)])){
+    if(!incPc[i]||!newerStamp(incPc[i],pc[i])) continue;
+    pc[i]=incPc[i];
+    if(inc.place&&inc.place[i]) place[i]=inc.place[i]; else delete place[i];
+  }
+  st.pc=pc; st.place=place;
+  // ✕ notes: last writer per cell wins
+  const mc={...(cur.mc||{})}, incMc=inc.mc||{}, marks=new Set(cur.marks||[]);
+  for(const k of new Set([...Object.keys(mc),...Object.keys(incMc)])){
+    if(!incMc[k]||!newerStamp(incMc[k],mc[k])) continue;
+    mc[k]=incMc[k];
+    if((inc.marks||[]).includes(k)) marks.add(k); else marks.delete(k);
+  }
+  st.mc=mc; st.marks=[...marks];
+  // sharing is permanent: union both sides
+  st.shared=[...new Set([...(cur.shared||[]),...(inc.shared||[])])];
+  if(scalarNewer){
+    st.phase=inc.phase; st.hints=inc.hints; st.t0=inc.t0; st.tEnd=inc.tEnd;
+    if(inc.owners&&inc.owners.length) st.owners=inc.owners;
+    st.v=inc.v; st.by=inc.by;
+  }
+  S.coop.st=st; applySt();
+  st.shared.forEach(i=>{ if(!beforeShared.has(i)&&inc.by!==S.coop.me.id&&S.cs){
+    const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
 }
-function commit(mut){ const c=S.coop; const st=JSON.parse(JSON.stringify(c.st)); mut(st); st.v=c.st.v+1; st.by=c.me.id; c.st=st; c.link.send({t:'state',st}); applySt(); }
+function commit(mut){
+  const c=S.coop, old=c.st, st=JSON.parse(JSON.stringify(old));
+  mut(st);
+  const L=(old.lam||0)+1, by=c.me.id;
+  st.lam=L;
+  // stamp only what this move actually changed, so parallel moves can merge
+  const op=(old.place||{}), np=(st.place||{}), pc={...(old.pc||{})};
+  for(const i of new Set([...Object.keys(op),...Object.keys(np)])){
+    const a=op[i], b=np[i];
+    if((!a)!==(!b)||(a&&b&&(a[0]!==b[0]||a[1]!==b[1]))) pc[i]=[L,by];
+  }
+  const om=new Set(old.marks||[]), nm=new Set(st.marks||[]), mc={...(old.mc||{})};
+  for(const k of new Set([...om,...nm])) if(om.has(k)!==nm.has(k)) mc[k]=[L,by];
+  st.pc=pc; st.mc=mc;
+  if(st.caseId!==old.caseId){ st.pc={}; st.mc={}; }
+  st.v=old.v+1; st.by=by;
+  c.st=st; c.link.send({t:'state',st}); applySt();
+}
 function applySt(){
   const st=S.coop.st;
   if(st.caseId){ const i=CASES.findIndex(c=>c.id===st.caseId); if(i<0) return;
@@ -893,15 +983,52 @@ function applySt(){
 }
 const players=()=>S.coop?S.coop.peers:[];
 const isHost=()=>S.coop&&players()[0]&&players()[0].id===S.coop.me.id;
-function holderOf(i){ const ps=players(); return ps.length?ps[i%ps.length]:null; }
-function canSee(i){ if(!S.coop) return true; const cs=S.cs; if(i===cs.people.length-1) return true; const h=holderOf(i); return (h&&h.id===S.coop.me.id)||S.coop.st.shared.includes(i); }
-function chooseCase(i){ commit(st=>{ st.caseId=CASES[i].id; st.place={}; st.marks=[]; st.shared=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); }
+function holderOf(i){
+  const ps=players(), owners=S.coop&&S.coop.st.owners;
+  if(!owners||!owners[i]) return null;
+  return ps.find(p=>p.id===owners[i])||null;
+}
+function assignOwners(n){ const ps=players(), out=[]; for(let i=0;i<n;i++) out.push(ps.length?ps[i%ps.length].id:null); return out; }
+// Keep every suspect's clue with a present player, even after somebody joins or leaves.
+function ensureOwners(){
+  const c=S.coop; if(!c||!isHost()||!c.st.caseId||!S.cs) return;
+  const ps=players(); if(!ps.length) return;
+  const P=S.cs.people.length-1;
+  const owners=(c.st.owners||[]).slice(0,P);
+  while(owners.length<P) owners.push(null);
+  const ids=new Set(ps.map(p=>p.id));
+  let changed=false;
+  const count=()=>{ const m={}; for(const o of owners) if(o) m[o]=(m[o]||0)+1; return m; };
+  for(let i=0;i<P;i++) if(!owners[i]||!ids.has(owners[i])){ owners[i]=null; changed=true; }
+  for(let i=0;i<P;i++) if(!owners[i]){
+    const m=count(); let best=ps[0];
+    for(const p of ps) if((m[p.id]||0)<(m[best.id]||0)) best=p;
+    owners[i]=best.id; changed=true;
+  }
+  // a player who joins mid-case should still have something to read
+  for(const p of ps){
+    if(count()[p.id]) continue;
+    const donors=ps.filter(q=>q.id!==p.id&&(count()[q.id]||0)>1).sort((a,b)=>count()[b.id]-count()[a.id]);
+    if(!donors.length) break;
+    const d=donors[0];
+    let idx=-1;
+    for(let i=0;i<P;i++) if(owners[i]===d.id&&!c.st.shared.includes(i)){ idx=i; break; }
+    if(idx<0) for(let i=P-1;i>=0;i--) if(owners[i]===d.id){ idx=i; break; }
+    if(idx>=0){ owners[idx]=p.id; changed=true; toast(fill(T('clueMoved'),{n:p.name})); }
+  }
+  if(changed) commit(st=>{ st.owners=owners; });
+}
+function canSee(i){ if(!S.coop) return true; const cs=S.cs; if(i===cs.people.length-1) return true;
+  if(S.coop.st.shared.includes(i)) return true; const h=holderOf(i); return !h||h.id===S.coop.me.id; }
+function chooseCase(i){ commit(st=>{ st.caseId=CASES[i].id; st.place={}; st.marks=[]; st.shared=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0;
+  st.owners=assignOwners(CASES[i].people.length-1); }); }
 function shareClue(i){ commit(st=>{ if(!st.shared.includes(i)) st.shared.push(i); }); }
 
 /* ---------- moves (solo or co-op) ---------- */
 function setBoard(place,marks,extra){
   if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; if(extra) extra(st); });
-  else { S.place=place; S.marks=marks; saveProg(); render(); }
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); if(S.hist.length>200) S.hist.shift();
+    S.place=place; S.marks=marks; saveProg(); render(); }
 }
 function onCell(r,c,longpress){
   const cs=S.cs; if(S.phase!=='play') return;
@@ -947,7 +1074,12 @@ function hint(){
   const nm=cs.people[target][0];
   S.msg={it:fill(T('hintMsg'),{n:nm,r:r+1,c:c+1}),hu:`Kis segítség: ${nm} a ${r+1}. sorban, ${c+1}. oszlopban van.`,kind:'good'};
   if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; st.hints=(st.hints||0)+1; });
-  else { S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+}
+function undo(){
+  if(S.coop) return;
+  const h=S.hist.pop(); if(!h) return;
+  S.place=h.place; S.marks=new Set(h.marks); S.hints=h.hints; S.msg=null; saveProg(); render();
 }
 function accuse(i){
   const cs=S.cs;
@@ -962,7 +1094,7 @@ function accuse(i){
 }
 function resetCase(){
   if(S.coop){ commit(st=>{ st.place={}; st.marks=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); return; }
-  S.place={}; S.marks=new Set(); S.hints=0; S.elapsed=0; S.t0=Date.now(); S.phase='play'; S.msg=null; S.tool=0; store.set('prog:'+S.cs.id,null); render();
+  S.place={}; S.marks=new Set(); S.hints=0; S.elapsed=0; S.t0=Date.now(); S.phase='play'; S.msg=null; S.tool=0; S.hist=[]; store.set('prog:'+S.cs.id,null); render();
 }
 function nextCase(){ const n=(S.idx+1)%CASES.length; if(S.coop){ if(isHost()) chooseCase(n); } else startCase(n); }
 
@@ -1000,7 +1132,7 @@ function renderHub(app){
   coll.append(h('div',{class:'bubble'},T('pigeon')));
   app.append(h('section',{class:'hero'},
     h('div',{},
-      h('span',{class:'typ'},T('eyebrow')),
+      h('span',{class:'typ'},fill(T('eyebrow'),{n:CASES.length})),
       h('h2',{},T('h1a'),h('span',{class:'hl'},T('h1b'))),
       h('p',{},T('lead')),
       h('div',{style:'margin-top:16px'},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
@@ -1022,6 +1154,12 @@ function renderHub(app){
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('cases')),S.huAll?h('span',{class:'hu'},'Az ügyek'):null));
   app.append(caseGrid(i=>startCase(i)));
+  const solvedCases=CASES.filter(c=>S.solved[c.id]);
+  if(solvedCases.length){
+    app.append(h('div',{class:'section-h'},h('h2',{},T('notebook')),h('span',{class:'hu'},'A taccuinód')));
+    app.append(h('div',{class:'reviews'},...solvedCases.map(cs=>h('button',{class:'reviewchip',onclick:()=>showReview(cs)},
+      h('b',{},caseTitle(cs)),h('small',{},T('time')+' '+fmt(S.solved[cs.id].time)+(S.solved[cs.id].hints?` · ${T('hints')} ${S.solved[cs.id].hints}`:''))))));
+  }
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('how')),S.huAll?h('span',{class:'hu'},'Szabályok'):null));
   const icons=[A.object('sedia'),A.object('tappeto'),A.object('vaso'),A.pigeon(),A.portrait(LOOKS['Rossi'],{crop:'head',bg:'pink'})];
@@ -1054,12 +1192,20 @@ function caseGrid(onPick){
 function playerChip(p,k){ const me=S.coop&&p.id===S.coop.me.id;
   return h('span',{class:'player'},h('span',{class:'av',style:`background:${PCOL[k%PCOL.length]}`},(p.name||'?')[0].toUpperCase()),
     h('span',{},p.name,me?' ('+T('you')+')':'',k===0?' · '+T('host'):''),h('small',{},(LANGS[p.lang]||LANGS.it).name)); }
+async function shareInvite(){
+  if(!S.coop) return;
+  const url=location.href.split('#')[0]+'#r-'+S.coop.code;
+  try{ await navigator.clipboard.writeText(url); toast(T('copied')); return; }catch(e){}
+  if(navigator.share){ try{ await navigator.share({title:'Giallo a Quadretti',text:T('invite'),url}); return; }catch(e){} }
+  toast(url);
+}
 function renderLobby(app){
   app.append(topbar());
   app.append(h('button',{class:'back',onclick:goHub},'← '+T('leave')));
   const c=S.coop, ps=players(), host=ps[0];
   app.append(h('div',{class:'lobby'},
-    h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),h('span',{class:'bigcode'},c.code)),
+    h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),
+      h('div',{class:'coderow'},h('span',{class:'bigcode'},c.code),h('button',{class:'btn ghost small',onclick:shareInvite},'🔗 '+T('copyLink')))),
     h('div',{},h('h2',{style:'font-size:1.5rem;margin-bottom:10px'},T('team')),h('div',{class:'players'},...ps.map(playerChip)),
       !c.ready?h('p',{class:'typ'},c.error?T('offline'):T('connecting')):ps.length<2?h('p',{style:'color:var(--muted)'},T('alone')):null),
     h('div',{},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
@@ -1112,10 +1258,20 @@ function boardEl(cs){
     const occ=Object.keys(S.place).find(i=>S.place[i][0]===r&&S.place[i][1]===c);
     const blocked=o&&!OBJ[o].occ, wt=r===0||cs.grid[r-1][c]!==k, wl=c===0||cs.grid[r][c-1]!==k;
     const desc=`R${r+1} C${c+1}, ${roomName(cs,k)}`+(o?`, ${plain(OBJL[LANG][o][0])}`:'')+(occ!=null?`, ${cs.people[occ][0]}`:'')+(S.marks.has(key)?', ✕':'');
+    const focused=S.focus&&S.focus[0]===r&&S.focus[1]===c, tabb=focused?0:(S.focus?-1:(r===0&&c===0?0:-1));
     const cell=h('button',{class:'cell'+(wt?' wt':'')+(wl?' wl':'')+(blocked?' blk':'')+(occ!=null&&bad.has(String(occ))?' bad':''),style:st.join(';'),'aria-label':desc,
-      onpointerdown:()=>{ lpFired=false; clearTimeout(lpTimer); lpTimer=setTimeout(()=>{ lpFired=true; try{navigator.vibrate&&navigator.vibrate(15)}catch(e){} onCell(r,c,true); },450); },
+      'data-r':r,'data-c':c,tabindex:tabb,
+      onfocus:()=>{ S.focus=[r,c]; },
+      onkeydown:e=>{
+        const K=e.key;
+        const dr=K==='ArrowUp'?-1:K==='ArrowDown'?1:0, dc=K==='ArrowLeft'?-1:K==='ArrowRight'?1:0;
+        if(dr||dc){ e.preventDefault(); const rr=r+dr, cc=c+dc;
+          if(rr>=0&&rr<N&&cc>=0&&cc<N){ S.focus=[rr,cc]; const next=document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`); if(next){ cell.parentElement.querySelectorAll('.cell').forEach(el=>el.tabIndex=-1); next.tabIndex=0; next.focus(); } }
+        } else if(K==='Delete'||K==='Backspace'){ e.preventDefault(); S.focus=[r,c]; onCell(r,c,true); }
+      },
+      onpointerdown:()=>{ S.focus=[r,c]; lpFired=false; clearTimeout(lpTimer); lpTimer=setTimeout(()=>{ lpFired=true; try{navigator.vibrate&&navigator.vibrate(15)}catch(e){} onCell(r,c,true); },450); },
       onpointerup:()=>clearTimeout(lpTimer), onpointerleave:()=>clearTimeout(lpTimer), oncontextmenu:e=>e.preventDefault(),
-      onclick:()=>{ if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
+      onclick:()=>{ S.focus=[r,c]; if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
     if(o) cell.append(svgEl(A.object(o),'ob'));
     if(occ!=null) cell.append(svgEl(A.portrait(lookOf(cs.people[occ][0],+occ),{crop:'head',bg:BGS[occ%BGS.length]}),'pc'));
     else if(S.marks.has(key)) cell.append(h('span',{class:'xm'},'✕'));
@@ -1130,7 +1286,9 @@ function legend(cs){ const ri=roomIndex(cs); return h('div',{class:'legend'},...
 function phaseBlock(cs){
   const wrap=h('div');
   if(S.phase==='play'){
-    wrap.append(h('div',{class:'actions'},h('button',{class:'btn',onclick:check},T('check')),h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
+    wrap.append(h('div',{class:'actions'},h('button',{class:'btn',onclick:check},T('check')),
+      S.coop?null:h('button',{class:'btn ghost small',onclick:undo,disabled:!S.hist.length},T('undo')),
+      h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
   } else if(S.phase==='accuse'){
     wrap.append(h('div',{class:'slip'},h('p',{class:'typ',style:'margin:0;color:var(--ok)'},'✓ '+T('allRight')),
       h('h3',{},T('killerIs'),' ',sayBtn(T('killerIs'),'')),h('div',{class:'line'}),S.huAll?h('p',{class:'hu',style:'margin-bottom:8px'},'Ki a gyilkos?'):null,
@@ -1173,6 +1331,7 @@ function renderCase(app){
     cs.people.forEach(([nm],i)=>tools.append(h('button',{class:'tool'+(S.place[i]?' done':''),'aria-pressed':String(S.tool===i),onclick:()=>{S.tool=i;render()}},head(cs,i),nm.split(' ').slice(-1)[0])));
     clip.append(tools);
     clip.append(h('p',{class:'toolhint'}, S.tool==='x'?T('hintX'):fill(T('hintPlace'),{n:cs.people[S.tool][0]})+' '+T('longpress')));
+    clip.append(h('p',{class:'toolhint kbd'},T('keys')));
   }
   clip.append(boardEl(cs), legend(cs), phaseBlock(cs));
   app.append(h('div',{class:'layout'},left,h('div',{class:'boardcol'},clip)));
@@ -1216,13 +1375,58 @@ function showWin(time){
       S.huAll?h('p',{class:'hu'},`A gyilkos: ${k}!`):null,
       h('div',{class:'actions',style:'justify-content:center'},
         (!S.coop||isHost())?h('button',{class:'btn',onclick:()=>{m.remove();nextCase()}},T('next')):null,
+        h('button',{class:'btn ghost',onclick:()=>{m.remove();showReview(cs)}},'📖 '+T('review')),
         h('button',{class:'btn ghost',onclick:()=>{m.remove();if(!S.coop)goHub();}},S.coop?'OK':T('back')))));
   m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
   document.body.append(m);
 }
 
+/* ---------- case review (language notebook) ---------- */
+function reviewPerson(cs,i){
+  const nm=cs.people[i][0], isV=i===cs.people.length-1;
+  const byP=cs.clues.filter(c=>c.p===i);
+  const lines=isV?[{it:victimStr(cs),hu:'Az áldozat. Egyedül volt a gyilkossal.'}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  return h('div',{class:'revperson'+(isV?' victim':'')},
+    head(cs,i),
+    h('div',{class:'revbody'},h('b',{},nm),
+      ...lines.map(l=>h('div',{class:'revclue'},
+        h('p',{class:'clue'},marked(l.it),sayBtn(nm+'. '+l.it,nm)),
+        S.huAll?h('p',{class:'hu'},marked(l.hu)):null))));
+}
+function showReview(cs){
+  const old=document.querySelector('.modal'); if(old) old.remove();
+  if(!cs) return;
+  const sv=S.solved[cs.id], k=cs.people[cs.killer][0];
+  const box=h('div',{class:'box reviewbox'},
+    h('button',{class:'xclose',onclick:()=>m.remove(),'aria-label':T('close')},'✕'),
+    h('div',{class:'revhead'},
+      h('div',{},
+        h('span',{class:'typ'},`${T('caso')} ${String(CASES.indexOf(cs)+1).padStart(2,'0')} · ${cs.size}×${cs.size}`),
+        h('h3',{},caseTitle(cs))),
+      h('button',{class:'pill hu-toggle','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);showReview(cs)}},'HU ',S.huAll?'✓':'–')),
+    h('p',{class:'revsolved'},fill(T('solved'),{n:k})+(sv?` · ${T('time')} ${fmt(sv.time)}`:'')),
+    h('p',{class:'reviewlead'},T('reviewLead')),
+    h('h4',{},T('cluesReview')),
+    h('div',{class:'revlist'},...cs.people.map((_,i)=>reviewPerson(cs,i))),
+    h('h4',{},T('words')),
+    glossary(cs),
+    h('div',{class:'actions',style:'justify-content:flex-end'},h('button',{class:'btn',onclick:()=>m.remove()},T('close'))));
+  const m=h('div',{class:'modal review',role:'dialog','aria-modal':'true'},box);
+  m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
+  m.tabIndex=-1;
+  m.addEventListener('keydown',e=>{ if(e.key==='Escape') m.remove(); });
+  document.body.append(m);
+  box.scrollTop=0;
+  m.focus();
+}
+
 function render(){ const app=document.getElementById('app'); app.innerHTML=''; app.classList.remove('ph'); document.documentElement.lang=LANG;
-  if(S.view==='lobby'&&S.coop) renderLobby(app); else if(S.view==='case'&&S.cs) renderCase(app); else renderHub(app); }
+  if(S.view==='lobby'&&S.coop) renderLobby(app); else if(S.view==='case'&&S.cs) renderCase(app); else renderHub(app);
+  if(S.view==='case'&&S.cs&&S.focus&&S.phase==='play'&&!document.querySelector('.modal')){
+    const el=document.querySelector(`.cell[data-r="${S.focus[0]}"][data-c="${S.focus[1]}"]`);
+    if(el&&document.activeElement!==el) el.focus({preventScroll:true});
+  }
+}
 function boot(){ let id=''; try{id=(location.hash||'').slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0) startCase(i); else render(); }
 window.addEventListener('hashchange',()=>{ if(S.coop) return; let id='';try{id=location.hash.slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0&&(!S.cs||S.cs.id!==id)) startCase(i); else if(i<0&&S.view!=='hub'&&!/^r-/.test(id)) goHub();});
 window.addEventListener('pagehide',()=>{ saveProg(); if(S.coop) leaveRoom(); });

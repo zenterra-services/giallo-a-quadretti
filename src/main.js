@@ -92,7 +92,8 @@ const NET=makeNet();
 
 /* ---------- state ---------- */
 const S={view:'hub', cs:null, idx:0, place:{}, marks:new Set(), tool:0, t0:0, elapsed:0, hints:0, phase:'play', msg:null,
-         huAll:store.get('huAll',false), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false};
+         huAll:store.get('huAll',false), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
+         hist:[], focus:null};
 let timerId=null;
 const isPhone=()=>{ try{ return matchMedia('(max-width:700px)').matches; }catch(e){ return false; } };
 let PH=isPhone();
@@ -103,7 +104,7 @@ function startCase(i){
   const cs=CASES[i]; S.view='case'; S.cs=cs; S.idx=i;
   const saved=store.get('prog:'+cs.id,null);
   S.place=saved?saved.place:{}; S.marks=new Set(saved?saved.marks:[]); S.hints=saved?saved.hints:0;
-  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false;
+  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false; S.hist=[]; S.focus=null;
   startTimer(); try{ if(!S.coop) location.hash=cs.id; }catch(e){}
   render(); window.scrollTo(0,0);
 }
@@ -119,7 +120,7 @@ function goHub(){ saveProg(); clearInterval(timerId); if(S.coop) leaveRoom(); S.
 const CODE_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ';
 function newCode(){ let s=''; for(let i=0;i<4;i++) s+=CODE_ABC[Math.floor(Math.random()*CODE_ABC.length)]; return s; }
 function myId(){ let id=store.get('pid',null); if(!id){ id='p'+Math.random().toString(36).slice(2,10); store.set('pid',id); } return id; }
-function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],phase:'lobby',t0:0,tEnd:0,hints:0}; }
+function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],owners:[],phase:'lobby',t0:0,tEnd:0,hints:0,lam:0,pc:{},mc:{}}; }
 function joinRoom(code,name){
   if(!NET) return;
   code=code.toUpperCase().replace(/[^A-Z]/g,'').slice(0,4); if(code.length!==4) return;
@@ -131,7 +132,8 @@ function joinRoom(code,name){
     onReady(){ if(!S.coop) return; S.coop.ready=true; S.coop.link.send({t:'hello',from:me.id}); render(); },
     onError(){ if(!S.coop) return; S.coop.error=true; render(); },
     onPeers(list){ if(!S.coop) return; const seen={}; const ps=list.filter(p=>p&&p.id&&!seen[p.id]&&(seen[p.id]=1)).sort((a,b)=>(a.joined-b.joined)||(a.id<b.id?-1:1));
-      const sig=ps.map(p=>p.id+'|'+p.name+'|'+p.lang).join(','); if(sig===S.coop.sig) return; S.coop.sig=sig; S.coop.peers=ps; render(); },
+      const sig=ps.map(p=>p.id+'|'+p.name+'|'+p.lang).join(','); if(sig===S.coop.sig) return; S.coop.sig=sig; S.coop.peers=ps; render();
+      if(isHost()) setTimeout(ensureOwners,0); },
     onMsg(m){ if(!S.coop||!m) return;
       if(m.t==='hello'){ if(S.coop.st.v>0) S.coop.link.send({t:'state',st:S.coop.st}); }
       else if(m.t==='state') mergeSt(m.st);
@@ -141,15 +143,65 @@ function joinRoom(code,name){
   try{ history.replaceState(null,'',location.pathname+location.search+'#r-'+code); }catch(e){}
 }
 function leaveRoom(){ if(S.coop&&S.coop.link) S.coop.link.leave(); S.coop=null; }
-function mergeSt(st){
-  const cur=S.coop.st; if(!st||typeof st.v!=='number') return;
-  if(st.v>cur.v || (st.v===cur.v && st.by>cur.by)){
+const newerStamp=(a,b)=>!b||(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1]));
+function mergeSt(inc){
+  const cur=S.coop.st; if(!inc||typeof inc.v!=='number') return;
+  const scalarNewer=inc.v>cur.v||(inc.v===cur.v&&inc.by>cur.by);
+  // A different case is a full reset, not a merge.
+  if(inc.caseId!==cur.caseId && inc.caseId && (!cur.caseId||inc.v>=cur.v)){
     const before=new Set(cur.shared||[]);
-    S.coop.st=st; applySt();
-    (st.shared||[]).forEach(i=>{ if(!before.has(i)&&S.cs&&st.by!==S.coop.me.id){ const sh=S.coop.peers.find(p=>p.id===st.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+    S.coop.st=JSON.parse(JSON.stringify(inc)); applySt();
+    (inc.shared||[]).forEach(i=>{ if(!before.has(i)&&S.cs){ const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+    return;
   }
+  const beforeShared=new Set(cur.shared||[]);
+  const st=JSON.parse(JSON.stringify(cur));
+  st.lam=Math.max(cur.lam||0,inc.lam||0);
+  // placements: last writer per person wins
+  const pc={...(cur.pc||{})}, incPc=inc.pc||{}, place={...(cur.place||{})};
+  for(const i of new Set([...Object.keys(pc),...Object.keys(incPc)])){
+    if(!incPc[i]||!newerStamp(incPc[i],pc[i])) continue;
+    pc[i]=incPc[i];
+    if(inc.place&&inc.place[i]) place[i]=inc.place[i]; else delete place[i];
+  }
+  st.pc=pc; st.place=place;
+  // ✕ notes: last writer per cell wins
+  const mc={...(cur.mc||{})}, incMc=inc.mc||{}, marks=new Set(cur.marks||[]);
+  for(const k of new Set([...Object.keys(mc),...Object.keys(incMc)])){
+    if(!incMc[k]||!newerStamp(incMc[k],mc[k])) continue;
+    mc[k]=incMc[k];
+    if((inc.marks||[]).includes(k)) marks.add(k); else marks.delete(k);
+  }
+  st.mc=mc; st.marks=[...marks];
+  // sharing is permanent: union both sides
+  st.shared=[...new Set([...(cur.shared||[]),...(inc.shared||[])])];
+  if(scalarNewer){
+    st.phase=inc.phase; st.hints=inc.hints; st.t0=inc.t0; st.tEnd=inc.tEnd;
+    if(inc.owners&&inc.owners.length) st.owners=inc.owners;
+    st.v=inc.v; st.by=inc.by;
+  }
+  S.coop.st=st; applySt();
+  st.shared.forEach(i=>{ if(!beforeShared.has(i)&&inc.by!==S.coop.me.id&&S.cs){
+    const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
 }
-function commit(mut){ const c=S.coop; const st=JSON.parse(JSON.stringify(c.st)); mut(st); st.v=c.st.v+1; st.by=c.me.id; c.st=st; c.link.send({t:'state',st}); applySt(); }
+function commit(mut){
+  const c=S.coop, old=c.st, st=JSON.parse(JSON.stringify(old));
+  mut(st);
+  const L=(old.lam||0)+1, by=c.me.id;
+  st.lam=L;
+  // stamp only what this move actually changed, so parallel moves can merge
+  const op=(old.place||{}), np=(st.place||{}), pc={...(old.pc||{})};
+  for(const i of new Set([...Object.keys(op),...Object.keys(np)])){
+    const a=op[i], b=np[i];
+    if((!a)!==(!b)||(a&&b&&(a[0]!==b[0]||a[1]!==b[1]))) pc[i]=[L,by];
+  }
+  const om=new Set(old.marks||[]), nm=new Set(st.marks||[]), mc={...(old.mc||{})};
+  for(const k of new Set([...om,...nm])) if(om.has(k)!==nm.has(k)) mc[k]=[L,by];
+  st.pc=pc; st.mc=mc;
+  if(st.caseId!==old.caseId){ st.pc={}; st.mc={}; }
+  st.v=old.v+1; st.by=by;
+  c.st=st; c.link.send({t:'state',st}); applySt();
+}
 function applySt(){
   const st=S.coop.st;
   if(st.caseId){ const i=CASES.findIndex(c=>c.id===st.caseId); if(i<0) return;
@@ -161,15 +213,52 @@ function applySt(){
 }
 const players=()=>S.coop?S.coop.peers:[];
 const isHost=()=>S.coop&&players()[0]&&players()[0].id===S.coop.me.id;
-function holderOf(i){ const ps=players(); return ps.length?ps[i%ps.length]:null; }
-function canSee(i){ if(!S.coop) return true; const cs=S.cs; if(i===cs.people.length-1) return true; const h=holderOf(i); return (h&&h.id===S.coop.me.id)||S.coop.st.shared.includes(i); }
-function chooseCase(i){ commit(st=>{ st.caseId=CASES[i].id; st.place={}; st.marks=[]; st.shared=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); }
+function holderOf(i){
+  const ps=players(), owners=S.coop&&S.coop.st.owners;
+  if(!owners||!owners[i]) return null;
+  return ps.find(p=>p.id===owners[i])||null;
+}
+function assignOwners(n){ const ps=players(), out=[]; for(let i=0;i<n;i++) out.push(ps.length?ps[i%ps.length].id:null); return out; }
+// Keep every suspect's clue with a present player, even after somebody joins or leaves.
+function ensureOwners(){
+  const c=S.coop; if(!c||!isHost()||!c.st.caseId||!S.cs) return;
+  const ps=players(); if(!ps.length) return;
+  const P=S.cs.people.length-1;
+  const owners=(c.st.owners||[]).slice(0,P);
+  while(owners.length<P) owners.push(null);
+  const ids=new Set(ps.map(p=>p.id));
+  let changed=false;
+  const count=()=>{ const m={}; for(const o of owners) if(o) m[o]=(m[o]||0)+1; return m; };
+  for(let i=0;i<P;i++) if(!owners[i]||!ids.has(owners[i])){ owners[i]=null; changed=true; }
+  for(let i=0;i<P;i++) if(!owners[i]){
+    const m=count(); let best=ps[0];
+    for(const p of ps) if((m[p.id]||0)<(m[best.id]||0)) best=p;
+    owners[i]=best.id; changed=true;
+  }
+  // a player who joins mid-case should still have something to read
+  for(const p of ps){
+    if(count()[p.id]) continue;
+    const donors=ps.filter(q=>q.id!==p.id&&(count()[q.id]||0)>1).sort((a,b)=>count()[b.id]-count()[a.id]);
+    if(!donors.length) break;
+    const d=donors[0];
+    let idx=-1;
+    for(let i=0;i<P;i++) if(owners[i]===d.id&&!c.st.shared.includes(i)){ idx=i; break; }
+    if(idx<0) for(let i=P-1;i>=0;i--) if(owners[i]===d.id){ idx=i; break; }
+    if(idx>=0){ owners[idx]=p.id; changed=true; toast(fill(T('clueMoved'),{n:p.name})); }
+  }
+  if(changed) commit(st=>{ st.owners=owners; });
+}
+function canSee(i){ if(!S.coop) return true; const cs=S.cs; if(i===cs.people.length-1) return true;
+  if(S.coop.st.shared.includes(i)) return true; const h=holderOf(i); return !h||h.id===S.coop.me.id; }
+function chooseCase(i){ commit(st=>{ st.caseId=CASES[i].id; st.place={}; st.marks=[]; st.shared=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0;
+  st.owners=assignOwners(CASES[i].people.length-1); }); }
 function shareClue(i){ commit(st=>{ if(!st.shared.includes(i)) st.shared.push(i); }); }
 
 /* ---------- moves (solo or co-op) ---------- */
 function setBoard(place,marks,extra){
   if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; if(extra) extra(st); });
-  else { S.place=place; S.marks=marks; saveProg(); render(); }
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); if(S.hist.length>200) S.hist.shift();
+    S.place=place; S.marks=marks; saveProg(); render(); }
 }
 function onCell(r,c,longpress){
   const cs=S.cs; if(S.phase!=='play') return;
@@ -215,7 +304,12 @@ function hint(){
   const nm=cs.people[target][0];
   S.msg={it:fill(T('hintMsg'),{n:nm,r:r+1,c:c+1}),hu:`Kis segítség: ${nm} a ${r+1}. sorban, ${c+1}. oszlopban van.`,kind:'good'};
   if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; st.hints=(st.hints||0)+1; });
-  else { S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+}
+function undo(){
+  if(S.coop) return;
+  const h=S.hist.pop(); if(!h) return;
+  S.place=h.place; S.marks=new Set(h.marks); S.hints=h.hints; S.msg=null; saveProg(); render();
 }
 function accuse(i){
   const cs=S.cs;
@@ -230,7 +324,7 @@ function accuse(i){
 }
 function resetCase(){
   if(S.coop){ commit(st=>{ st.place={}; st.marks=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); return; }
-  S.place={}; S.marks=new Set(); S.hints=0; S.elapsed=0; S.t0=Date.now(); S.phase='play'; S.msg=null; S.tool=0; store.set('prog:'+S.cs.id,null); render();
+  S.place={}; S.marks=new Set(); S.hints=0; S.elapsed=0; S.t0=Date.now(); S.phase='play'; S.msg=null; S.tool=0; S.hist=[]; store.set('prog:'+S.cs.id,null); render();
 }
 function nextCase(){ const n=(S.idx+1)%CASES.length; if(S.coop){ if(isHost()) chooseCase(n); } else startCase(n); }
 
@@ -268,7 +362,7 @@ function renderHub(app){
   coll.append(h('div',{class:'bubble'},T('pigeon')));
   app.append(h('section',{class:'hero'},
     h('div',{},
-      h('span',{class:'typ'},T('eyebrow')),
+      h('span',{class:'typ'},fill(T('eyebrow'),{n:CASES.length})),
       h('h2',{},T('h1a'),h('span',{class:'hl'},T('h1b'))),
       h('p',{},T('lead')),
       h('div',{style:'margin-top:16px'},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
@@ -290,6 +384,12 @@ function renderHub(app){
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('cases')),S.huAll?h('span',{class:'hu'},'Az ügyek'):null));
   app.append(caseGrid(i=>startCase(i)));
+  const solvedCases=CASES.filter(c=>S.solved[c.id]);
+  if(solvedCases.length){
+    app.append(h('div',{class:'section-h'},h('h2',{},T('notebook')),h('span',{class:'hu'},'A taccuinód')));
+    app.append(h('div',{class:'reviews'},...solvedCases.map(cs=>h('button',{class:'reviewchip',onclick:()=>showReview(cs)},
+      h('b',{},caseTitle(cs)),h('small',{},T('time')+' '+fmt(S.solved[cs.id].time)+(S.solved[cs.id].hints?` · ${T('hints')} ${S.solved[cs.id].hints}`:''))))));
+  }
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('how')),S.huAll?h('span',{class:'hu'},'Szabályok'):null));
   const icons=[A.object('sedia'),A.object('tappeto'),A.object('vaso'),A.pigeon(),A.portrait(LOOKS['Rossi'],{crop:'head',bg:'pink'})];
@@ -322,12 +422,20 @@ function caseGrid(onPick){
 function playerChip(p,k){ const me=S.coop&&p.id===S.coop.me.id;
   return h('span',{class:'player'},h('span',{class:'av',style:`background:${PCOL[k%PCOL.length]}`},(p.name||'?')[0].toUpperCase()),
     h('span',{},p.name,me?' ('+T('you')+')':'',k===0?' · '+T('host'):''),h('small',{},(LANGS[p.lang]||LANGS.it).name)); }
+async function shareInvite(){
+  if(!S.coop) return;
+  const url=location.href.split('#')[0]+'#r-'+S.coop.code;
+  try{ await navigator.clipboard.writeText(url); toast(T('copied')); return; }catch(e){}
+  if(navigator.share){ try{ await navigator.share({title:'Giallo a Quadretti',text:T('invite'),url}); return; }catch(e){} }
+  toast(url);
+}
 function renderLobby(app){
   app.append(topbar());
   app.append(h('button',{class:'back',onclick:goHub},'← '+T('leave')));
   const c=S.coop, ps=players(), host=ps[0];
   app.append(h('div',{class:'lobby'},
-    h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),h('span',{class:'bigcode'},c.code)),
+    h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),
+      h('div',{class:'coderow'},h('span',{class:'bigcode'},c.code),h('button',{class:'btn ghost small',onclick:shareInvite},'🔗 '+T('copyLink')))),
     h('div',{},h('h2',{style:'font-size:1.5rem;margin-bottom:10px'},T('team')),h('div',{class:'players'},...ps.map(playerChip)),
       !c.ready?h('p',{class:'typ'},c.error?T('offline'):T('connecting')):ps.length<2?h('p',{style:'color:var(--muted)'},T('alone')):null),
     h('div',{},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
@@ -380,10 +488,20 @@ function boardEl(cs){
     const occ=Object.keys(S.place).find(i=>S.place[i][0]===r&&S.place[i][1]===c);
     const blocked=o&&!OBJ[o].occ, wt=r===0||cs.grid[r-1][c]!==k, wl=c===0||cs.grid[r][c-1]!==k;
     const desc=`R${r+1} C${c+1}, ${roomName(cs,k)}`+(o?`, ${plain(OBJL[LANG][o][0])}`:'')+(occ!=null?`, ${cs.people[occ][0]}`:'')+(S.marks.has(key)?', ✕':'');
+    const focused=S.focus&&S.focus[0]===r&&S.focus[1]===c, tabb=focused?0:(S.focus?-1:(r===0&&c===0?0:-1));
     const cell=h('button',{class:'cell'+(wt?' wt':'')+(wl?' wl':'')+(blocked?' blk':'')+(occ!=null&&bad.has(String(occ))?' bad':''),style:st.join(';'),'aria-label':desc,
-      onpointerdown:()=>{ lpFired=false; clearTimeout(lpTimer); lpTimer=setTimeout(()=>{ lpFired=true; try{navigator.vibrate&&navigator.vibrate(15)}catch(e){} onCell(r,c,true); },450); },
+      'data-r':r,'data-c':c,tabindex:tabb,
+      onfocus:()=>{ S.focus=[r,c]; },
+      onkeydown:e=>{
+        const K=e.key;
+        const dr=K==='ArrowUp'?-1:K==='ArrowDown'?1:0, dc=K==='ArrowLeft'?-1:K==='ArrowRight'?1:0;
+        if(dr||dc){ e.preventDefault(); const rr=r+dr, cc=c+dc;
+          if(rr>=0&&rr<N&&cc>=0&&cc<N){ S.focus=[rr,cc]; const next=document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`); if(next){ cell.parentElement.querySelectorAll('.cell').forEach(el=>el.tabIndex=-1); next.tabIndex=0; next.focus(); } }
+        } else if(K==='Delete'||K==='Backspace'){ e.preventDefault(); S.focus=[r,c]; onCell(r,c,true); }
+      },
+      onpointerdown:()=>{ S.focus=[r,c]; lpFired=false; clearTimeout(lpTimer); lpTimer=setTimeout(()=>{ lpFired=true; try{navigator.vibrate&&navigator.vibrate(15)}catch(e){} onCell(r,c,true); },450); },
       onpointerup:()=>clearTimeout(lpTimer), onpointerleave:()=>clearTimeout(lpTimer), oncontextmenu:e=>e.preventDefault(),
-      onclick:()=>{ if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
+      onclick:()=>{ S.focus=[r,c]; if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
     if(o) cell.append(svgEl(A.object(o),'ob'));
     if(occ!=null) cell.append(svgEl(A.portrait(lookOf(cs.people[occ][0],+occ),{crop:'head',bg:BGS[occ%BGS.length]}),'pc'));
     else if(S.marks.has(key)) cell.append(h('span',{class:'xm'},'✕'));
@@ -398,7 +516,9 @@ function legend(cs){ const ri=roomIndex(cs); return h('div',{class:'legend'},...
 function phaseBlock(cs){
   const wrap=h('div');
   if(S.phase==='play'){
-    wrap.append(h('div',{class:'actions'},h('button',{class:'btn',onclick:check},T('check')),h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
+    wrap.append(h('div',{class:'actions'},h('button',{class:'btn',onclick:check},T('check')),
+      S.coop?null:h('button',{class:'btn ghost small',onclick:undo,disabled:!S.hist.length},T('undo')),
+      h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
   } else if(S.phase==='accuse'){
     wrap.append(h('div',{class:'slip'},h('p',{class:'typ',style:'margin:0;color:var(--ok)'},'✓ '+T('allRight')),
       h('h3',{},T('killerIs'),' ',sayBtn(T('killerIs'),'')),h('div',{class:'line'}),S.huAll?h('p',{class:'hu',style:'margin-bottom:8px'},'Ki a gyilkos?'):null,
@@ -441,6 +561,7 @@ function renderCase(app){
     cs.people.forEach(([nm],i)=>tools.append(h('button',{class:'tool'+(S.place[i]?' done':''),'aria-pressed':String(S.tool===i),onclick:()=>{S.tool=i;render()}},head(cs,i),nm.split(' ').slice(-1)[0])));
     clip.append(tools);
     clip.append(h('p',{class:'toolhint'}, S.tool==='x'?T('hintX'):fill(T('hintPlace'),{n:cs.people[S.tool][0]})+' '+T('longpress')));
+    clip.append(h('p',{class:'toolhint kbd'},T('keys')));
   }
   clip.append(boardEl(cs), legend(cs), phaseBlock(cs));
   app.append(h('div',{class:'layout'},left,h('div',{class:'boardcol'},clip)));
@@ -484,13 +605,58 @@ function showWin(time){
       S.huAll?h('p',{class:'hu'},`A gyilkos: ${k}!`):null,
       h('div',{class:'actions',style:'justify-content:center'},
         (!S.coop||isHost())?h('button',{class:'btn',onclick:()=>{m.remove();nextCase()}},T('next')):null,
+        h('button',{class:'btn ghost',onclick:()=>{m.remove();showReview(cs)}},'📖 '+T('review')),
         h('button',{class:'btn ghost',onclick:()=>{m.remove();if(!S.coop)goHub();}},S.coop?'OK':T('back')))));
   m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
   document.body.append(m);
 }
 
+/* ---------- case review (language notebook) ---------- */
+function reviewPerson(cs,i){
+  const nm=cs.people[i][0], isV=i===cs.people.length-1;
+  const byP=cs.clues.filter(c=>c.p===i);
+  const lines=isV?[{it:victimStr(cs),hu:'Az áldozat. Egyedül volt a gyilkossal.'}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  return h('div',{class:'revperson'+(isV?' victim':'')},
+    head(cs,i),
+    h('div',{class:'revbody'},h('b',{},nm),
+      ...lines.map(l=>h('div',{class:'revclue'},
+        h('p',{class:'clue'},marked(l.it),sayBtn(nm+'. '+l.it,nm)),
+        S.huAll?h('p',{class:'hu'},marked(l.hu)):null))));
+}
+function showReview(cs){
+  const old=document.querySelector('.modal'); if(old) old.remove();
+  if(!cs) return;
+  const sv=S.solved[cs.id], k=cs.people[cs.killer][0];
+  const box=h('div',{class:'box reviewbox'},
+    h('button',{class:'xclose',onclick:()=>m.remove(),'aria-label':T('close')},'✕'),
+    h('div',{class:'revhead'},
+      h('div',{},
+        h('span',{class:'typ'},`${T('caso')} ${String(CASES.indexOf(cs)+1).padStart(2,'0')} · ${cs.size}×${cs.size}`),
+        h('h3',{},caseTitle(cs))),
+      h('button',{class:'pill hu-toggle','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);showReview(cs)}},'HU ',S.huAll?'✓':'–')),
+    h('p',{class:'revsolved'},fill(T('solved'),{n:k})+(sv?` · ${T('time')} ${fmt(sv.time)}`:'')),
+    h('p',{class:'reviewlead'},T('reviewLead')),
+    h('h4',{},T('cluesReview')),
+    h('div',{class:'revlist'},...cs.people.map((_,i)=>reviewPerson(cs,i))),
+    h('h4',{},T('words')),
+    glossary(cs),
+    h('div',{class:'actions',style:'justify-content:flex-end'},h('button',{class:'btn',onclick:()=>m.remove()},T('close'))));
+  const m=h('div',{class:'modal review',role:'dialog','aria-modal':'true'},box);
+  m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
+  m.tabIndex=-1;
+  m.addEventListener('keydown',e=>{ if(e.key==='Escape') m.remove(); });
+  document.body.append(m);
+  box.scrollTop=0;
+  m.focus();
+}
+
 function render(){ const app=document.getElementById('app'); app.innerHTML=''; app.classList.remove('ph'); document.documentElement.lang=LANG;
-  if(S.view==='lobby'&&S.coop) renderLobby(app); else if(S.view==='case'&&S.cs) renderCase(app); else renderHub(app); }
+  if(S.view==='lobby'&&S.coop) renderLobby(app); else if(S.view==='case'&&S.cs) renderCase(app); else renderHub(app);
+  if(S.view==='case'&&S.cs&&S.focus&&S.phase==='play'&&!document.querySelector('.modal')){
+    const el=document.querySelector(`.cell[data-r="${S.focus[0]}"][data-c="${S.focus[1]}"]`);
+    if(el&&document.activeElement!==el) el.focus({preventScroll:true});
+  }
+}
 function boot(){ let id=''; try{id=(location.hash||'').slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0) startCase(i); else render(); }
 window.addEventListener('hashchange',()=>{ if(S.coop) return; let id='';try{id=location.hash.slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0&&(!S.cs||S.cs.id!==id)) startCase(i); else if(i<0&&S.view!=='hub'&&!/^r-/.test(id)) goHub();});
 window.addEventListener('pagehide',()=>{ saveProg(); if(S.coop) leaveRoom(); });

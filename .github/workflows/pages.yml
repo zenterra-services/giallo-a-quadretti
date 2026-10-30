@@ -18,6 +18,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate cases and translations
+        run: node tools/verify.mjs
+      - name: Check the built site is up to date
+        run: python3 build.py --check
       - uses: actions/configure-pages@v5
         with:
           enablement: true

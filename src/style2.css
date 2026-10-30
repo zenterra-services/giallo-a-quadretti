@@ -135,6 +135,9 @@ mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 
 .tool.done{opacity:.5}
 .tool.xmark{padding:2px 12px;font-family:var(--type)}
 .toolhint{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.toolhint.kbd{font-size:.74rem;margin-top:-6px;opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--shadow)}
+.modal:focus{outline:none}
 .boardwrap{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:4px}
 .colnums,.rownums{display:grid;font:700 .78rem var(--type);color:var(--muted);text-align:center}
 .rownums{align-items:center;padding-right:3px}
@@ -172,8 +175,9 @@ mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 
 
 .modal{position:fixed;inset:0;background:rgba(15,15,22,.6);display:grid;place-items:center;padding:20px;z-index:20}
 .modal .box{background:var(--card);border:3px solid var(--ink);border-radius:18px;max-width:420px;width:100%;padding:22px;text-align:center;box-sizing:border-box;box-shadow:8px 8px 0 var(--pink)}
-.modal .who{width:140px;margin:0 auto -6px}
-.modal .stp{width:230px;margin:0 auto 8px}
+.modal .who{width:140px;margin:0 auto -6px;display:block}
+.modal .stp{width:230px;margin:0 auto 8px;display:block}
+.modal .who svg,.modal .stp svg,.case .stampwrap svg{width:100%;height:auto}
 .modal h3{font-size:1.6rem}
 .modal p{margin:.4em 0}
 @media (prefers-reduced-motion:no-preference){
