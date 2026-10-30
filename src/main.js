@@ -6,6 +6,14 @@ const fill=(s,v)=>String(s).replace(/\{(\w)\}/g,(m,k)=>v[k]!=null?v[k]:m);
 function lookOf(name,i){ return LOOKS[name] || (typeof FALLBACK_LOOK!=='undefined'?FALLBACK_LOOK:[i%6,'short','d',[],'blue','smile']); }
 const shortName=nm=> (typeof SHORT_NAMES!=='undefined'&&SHORT_NAMES[nm])||nm.split(' ').slice(-1)[0];
 
+/* Site root from the pack path, so style links work at /giallo/, /rejto/ and previews. */
+const ROOT_PATH=(()=>{ let p=location.pathname; if(PACK.path&&p.endsWith(PACK.path)) p=p.slice(0,-PACK.path.length); if(!p.endsWith('/')) p+='/'; return p; })();
+const NET_PARAM=(()=>{ try{ return new URLSearchParams(location.search).get('net'); }catch(e){ return null; } })();
+const chooserHref=ROOT_PATH+'?choose=1'+(NET_PARAM?'&net='+encodeURIComponent(NET_PARAM):'');
+const styleHref=s=>ROOT_PATH+((s&&s.path)||'');
+const globalStore={get(k,d){try{const v=localStorage.getItem('gq:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+                   set(k,v){try{localStorage.setItem('gq:'+k,JSON.stringify(v))}catch(e){}}};
+
 /* Keep progress, settings and rooms separate when several style packs share an origin. */
 const STORE_NS=PACK.id==='giallo'?'':PACK.id+':';
 const NET_NS=PACK.id==='giallo'?'':PACK.id+'-';
@@ -112,12 +120,12 @@ function goHub(){ saveProg(); clearInterval(timerId); if(S.coop) leaveRoom(); S.
 /* ---------- co-op ---------- */
 const CODE_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ';
 function newCode(){ let s=''; for(let i=0;i<4;i++) s+=CODE_ABC[Math.floor(Math.random()*CODE_ABC.length)]; return s; }
-function myId(){ let id=store.get('pid',null); if(!id){ id='p'+Math.random().toString(36).slice(2,10); store.set('pid',id); } return id; }
+function myId(){ let id=globalStore.get('pid',null); if(!id){ id='p'+Math.random().toString(36).slice(2,10); globalStore.set('pid',id); } return id; }
 function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],owners:[],phase:'lobby',t0:0,tEnd:0,hints:0,lam:0,pc:{},mc:{}}; }
 function joinRoom(code,name){
   if(!NET) return;
   code=code.toUpperCase().replace(/[^A-Z]/g,'').slice(0,4); if(code.length!==4) return;
-  name=(name||'').trim().slice(0,16)||'Detective'; store.set('name',name);
+  name=(name||'').trim().slice(0,16)||'Detective'; globalStore.set('name',name);
   const me={id:myId()+'-'+Math.random().toString(36).slice(2,5),name,lang:LANG,joined:Date.now()};
   S.coop={code,me,peers:[me],st:emptySt(),ready:false,link:null};
   S.view='lobby'; render();
@@ -341,6 +349,7 @@ function topbar(){
       h('span',{class:'mark','aria-hidden':'true'},...[0,1,2,3,4,5,6,7,8].map(i=>h('i',{class:i===5?'v':''}))),
       h('span',{}, h('h1',{},PACK.name), h('small',{},T('tag')+' · '+LANGS[LANG].learn))),
     h('div',{class:'spacer'}),
+    h('a',{class:'pill style-link',href:chooserHref},'🎨 ',T('styles')),
     h('button',{class:'pill','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);render()}},'HU ', S.huAll?'✓':'–'));
 }
 
@@ -365,14 +374,29 @@ function renderHub(app){
 
   if(NET){
     let pre=''; try{ const m=(location.hash||'').match(/^#r-([A-Z]{4})$/); if(m) pre=m[1]; }catch(e){}
-    const nm=h('input',{id:'coop-name',type:'text',maxlength:'16',autocomplete:'nickname',value:store.get('name','')});
+    const nm=h('input',{id:'coop-name',type:'text',maxlength:'16',autocomplete:'nickname',value:globalStore.get('name','')});
     const cd=h('input',{id:'coop-code',class:'code',type:'text',maxlength:'4',autocapitalize:'characters',autocomplete:'off',placeholder:'ABCD',value:pre});
+    const styleSel=h('select',{id:'coop-style',class:'style-select'},...STYLES.map(s=>h('option',{value:s.id,selected:s.id===PACK.id},s.name)));
+    const createRoom=()=>{
+      const name=nm.value.trim(); globalStore.set('name',name);
+      const sid=styleSel.value;
+      if(sid!==PACK.id){
+        const target=STYLES.find(s=>s.id===sid);
+        if(target){
+          let href=styleHref(target)+'?create=1&name='+encodeURIComponent(name);
+          if(NET_PARAM) href+='&net='+encodeURIComponent(NET_PARAM);
+          location.href=href; return;
+        }
+      }
+      joinRoom(newCode(),name);
+    };
     app.append(h('div',{class:'section-h'},h('h2',{},T('coop'))));
     app.append(h('div',{class:'coopbox'},
       h('div',{},h('h3',{},T('coop')),h('p',{},T('coopLead')),S.huAll?h('p',{class:'hu'},'Mindenki csak néhány nyomot lát, a saját tanult nyelvén. Olvassátok fel, osszátok meg, és oldjátok meg együtt!'):null),
       h('div',{},
         h('div',{class:'field'},h('label',{for:'coop-name'},T('yourName')),nm),
-        h('button',{class:'btn',style:'width:100%;margin-bottom:12px',onclick:()=>joinRoom(newCode(),nm.value)},T('create')),
+        h('div',{class:'field'},h('label',{for:'coop-style'},T('roomStyle')),styleSel),
+        h('button',{class:'btn',style:'width:100%;margin-bottom:12px',onclick:createRoom},T('create')),
         h('div',{class:'row2'},h('div',{class:'field'},h('label',{for:'coop-code'},T('code')),cd),h('button',{class:'btn ghost',onclick:()=>joinRoom(cd.value,nm.value)},T('join'))))));
   }
 
@@ -394,8 +418,10 @@ function renderHub(app){
   app.append(h('div',{class:'objs'},
     h('div',{class:'objbox yes'},h('h4',{},'✓ '+T('yes')),h('div',{class:'ogrid'},...occ.map(oi))),
     h('div',{class:'objbox no'},h('h4',{},'✕ '+T('no')),h('div',{class:'ogrid'},...blk.map(oi)))));
+  const otherStyle=(STYLES||[]).find(s=>s.id!==PACK.id);
   app.append(h('footer',{},PACK.name+' · '+Object.values(LANGS).map(l=>l.name).join(' · '),
-    PACK.sibling?h('a',{class:'sibling',href:PACK.sibling.href},' · '+PACK.sibling.label):null));
+    h('a',{class:'sibling',href:chooserHref},' · '+T('styles')),
+    otherStyle?h('a',{class:'sibling',href:styleHref(otherStyle)},' · '+otherStyle.short):null));
 }
 function caseGrid(onPick){
   const grid=h('div',{class:'cases'});
@@ -431,7 +457,8 @@ function renderLobby(app){
   const c=S.coop, ps=players(), host=ps[0];
   app.append(h('div',{class:'lobby'},
     h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),
-      h('div',{class:'coderow'},h('span',{class:'bigcode'},c.code),h('button',{class:'btn ghost small',onclick:shareInvite},'🔗 '+T('copyLink')))),
+      h('div',{class:'coderow'},h('span',{class:'bigcode'},c.code),h('button',{class:'btn ghost small',onclick:shareInvite},'🔗 '+T('copyLink'))),
+      h('p',{class:'typ',style:'margin:12px 0 0'},T('roomStyle')+': '+((STYLES.find(s=>s.id===PACK.id)||{}).name||PACK.name))),
     h('div',{},h('h2',{style:'font-size:1.5rem;margin-bottom:10px'},T('team')),h('div',{class:'players'},...ps.map(playerChip)),
       !c.ready?h('p',{class:'typ'},c.error?T('offline'):T('connecting')):ps.length<2?h('p',{style:'color:var(--muted)'},T('alone')):null),
     h('div',{},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
@@ -657,3 +684,12 @@ function boot(){ let id=''; try{id=(location.hash||'').slice(1)}catch(e){} const
 window.addEventListener('hashchange',()=>{ if(S.coop) return; let id='';try{id=location.hash.slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0&&(!S.cs||S.cs.id!==id)) startCase(i); else if(i<0&&S.view!=='hub'&&!/^r-/.test(id)) goHub();});
 window.addEventListener('pagehide',()=>{ saveProg(); if(S.coop) leaveRoom(); });
 boot();
+/* A host chose another style for a new room: create it here, then clean the query. */
+(function(){
+  let q=null; try{ q=new URLSearchParams(location.search); }catch(e){ return; }
+  if(q.get('create')==='1' && NET && !S.coop){
+    const name=(q.get('name')||globalStore.get('name','')||'').trim().slice(0,16);
+    joinRoom(newCode(),name);
+    try{ if(S.coop) history.replaceState(null,'',location.pathname+(NET_PARAM?'?net='+encodeURIComponent(NET_PARAM):'')+'#r-'+S.coop.code); }catch(e){}
+  }
+})();

@@ -25,8 +25,10 @@ jobs:
         run: node tools/verify.mjs --pack giallo
       - name: Validate the rejto pack
         run: node tools/verify.mjs --pack rejto
+      - name: Check the style chooser is up to date
+        run: python3 build.py --chooser --out site --check
       - name: Check the giallo build is up to date
-        run: python3 build.py --pack giallo --check
+        run: python3 build.py --pack giallo --out site/giallo --check
       - name: Check the rejto build is up to date
         run: python3 build.py --pack rejto --out site/rejto --check
       - uses: actions/configure-pages@v5

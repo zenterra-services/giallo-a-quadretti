@@ -82,15 +82,73 @@ def load_pack(pack_id):
     return pack
 
 
+def load_styles():
+    path = os.path.join(ROOT, 'src', 'styles.json')
+    if not os.path.exists(path):
+        raise SystemExit('src/styles.json is missing')
+    with open(path, encoding='utf-8-sig') as f:
+        styles = json.load(f)
+    if not isinstance(styles, list) or not styles:
+        raise SystemExit('src/styles.json must be a non-empty list')
+    seen = set()
+    for s in styles:
+        for key in ('id', 'path', 'name', 'short'):
+            if not s.get(key):
+                raise SystemExit('src/styles.json entry is missing "%s"' % key)
+        if s['id'] in seen:
+            raise SystemExit('src/styles.json has duplicate id "%s"' % s['id'])
+        seen.add(s['id'])
+        if os.path.isabs(s['path']) or '..' in s['path'].split('/'):
+            raise SystemExit('style path must be relative: "%s"' % s['path'])
+        if not s['path'].endswith('/'):
+            raise SystemExit('style path must end with a slash: "%s"' % s['path'])
+        manifest_path = os.path.join(ROOT, 'src', 'packs', s['id'], 'pack.json')
+        if not os.path.exists(manifest_path):
+            raise SystemExit('style "%s" has no pack at %s' % (s['id'], manifest_path))
+        with open(manifest_path, encoding='utf-8-sig') as f:
+            manifest = json.load(f)
+        if manifest.get('id') != s['id']:
+            raise SystemExit('style "%s" points at pack id "%s"' % (s['id'], manifest.get('id')))
+        if manifest.get('path') != s['path']:
+            raise SystemExit('style "%s" path "%s" != pack path "%s"' % (s['id'], s['path'], manifest.get('path')))
+    return styles
+
+
+def build_chooser():
+    styles = load_styles()
+    cards = []
+    for s in styles:
+        tagline = s.get('tagline') or {}
+        cards.append(
+            '<a class="style-card" href="' + html.escape(s['path'], quote=True) + '" data-style="' +
+            html.escape(s['id'], quote=True) + '" style="--accent:' + html.escape(s.get('themeColor', '#FFE14D'), quote=True) + '">'
+            '<span class="short">' + html.escape(s['short']) + '</span>'
+            '<h2>' + html.escape(s['name']) + '</h2>'
+            '<p>' + html.escape(tagline.get('en', '')) + '</p>'
+            '<p class="hu">' + html.escape(tagline.get('hu', '')) + '</p>'
+            '<span class="go">Play →</span></a>'
+        )
+    page = read('src/chooser.html')
+    styles_json = json.dumps(styles, ensure_ascii=False)
+    cards_html = '\n'.join(cards)
+    assert '</script' not in styles_json and '</script' not in cards_html, 'chooser data contains </script>'
+    page = page.replace('{{CARDS}}', cards_html)
+    page = page.replace('{{STYLES}}', styles_json)
+    icon = read('src', 'chooser', 'icon.svg').strip()
+    return page, icon
+
+
 def build(pack_id):
     pack = load_pack(pack_id)
     meta = pack['manifest']
+    styles = load_styles()
 
     css = read('src/style2.css').replace('<style>', '').replace('</style>', '') + read('src/extra.css') + pack['theme_css']
     i18n = read('src/i18n.js')
     main = read('src/main.js')
     data = ('const PACK=' + json.dumps(meta, ensure_ascii=False) + ';\n'
-            'const CASES=' + json.dumps(pack['cases'], ensure_ascii=False) + ';')
+            'const CASES=' + json.dumps(pack['cases'], ensure_ascii=False) + ';\n'
+            'const STYLES=' + json.dumps(styles, ensure_ascii=False) + ';')
     scripts = [pack['art'], i18n, pack['theme_js'], pack['vocab'], pack['hu'], pack['looks'],
                pack['casel'], pack['ui'], data, main]
     for s in scripts:
@@ -128,17 +186,26 @@ def build(pack_id):
 
 
 def main(argv):
+    chooser = '--chooser' in argv
     pack_id = arg_value(argv, '--pack', DEFAULT_PACK)
     out_raw = arg_value(argv, '--out', 'site')
     out = out_raw if os.path.isabs(out_raw) else out_raw.strip('/\\')
-    site, artifact, icon = build(pack_id)
+    if chooser:
+        site, icon = build_chooser()
+        artifact = ''
+        label = 'chooser'
+        run_hint = 'python build.py --chooser' + (' --out ' + out if out != 'site' else '')
+    else:
+        site, artifact, icon = build(pack_id)
+        label = 'pack: ' + pack_id
+        run_hint = 'python build.py --pack ' + pack_id + (' --out ' + out if out != 'site' else '')
     out_dir = out if os.path.isabs(out) else os.path.join(ROOT, out)
     is_site = os.path.abspath(out_dir) == os.path.join(ROOT, 'site')
     default_cfg = ('/* Supabase project for team play. The anon key is public by design. */\n'
                    'window.GQ_CONFIG = { supabaseUrl: "", supabaseKey: "" };\n')
     src_cfg = os.path.join(ROOT, 'site', 'config.js')
     expected_files = [('index.html', site), ('icon.svg', icon)]
-    if not is_site:
+    if not is_site and not chooser:
         expected_files.append(('config.js', read('site', 'config.js') if os.path.exists(src_cfg) else default_cfg))
 
     if '--check' in argv:
@@ -146,26 +213,28 @@ def main(argv):
         for name, expected in expected_files:
             path = os.path.join(out_dir, name)
             if not os.path.exists(path):
-                problems.append(os.path.join(out, name) + ' is missing; run python build.py --pack ' + pack_id)
+                problems.append(os.path.join(out, name) + ' is missing; run ' + run_hint)
             else:
                 with open(path, encoding='utf-8', newline='') as f:
                     if f.read().replace('\r\n', '\n') != expected:
-                        problems.append(os.path.join(out, name) + ' is stale; run python build.py --pack ' + pack_id)
+                        problems.append(os.path.join(out, name) + ' is stale; run ' + run_hint)
         if problems:
             print('\n'.join(problems), file=sys.stderr)
             return 1
-        print(out + '/ is up to date (pack: ' + pack_id + ')')
+        print(out + '/ is up to date (' + label + ')')
         return 0
 
     write(out, 'index.html', text=site)
     write(out, 'icon.svg', text=icon)
-    if is_site:
-        write('dist-claude.html', text=artifact)
-        if not os.path.exists(os.path.join(out_dir, 'config.js')):
-            write(out, 'config.js', text=default_cfg)
-    else:
-        write(out, 'config.js', text=read('site', 'config.js') if os.path.exists(src_cfg) else default_cfg)
-    print('%d bytes -> %s/index.html (pack: %s)' % (len(site), out, pack_id))
+    if not chooser:
+        if pack_id == DEFAULT_PACK:
+            write('dist-claude.html', text=artifact)
+        if is_site:
+            if not os.path.exists(os.path.join(out_dir, 'config.js')):
+                write(out, 'config.js', text=default_cfg)
+        else:
+            write(out, 'config.js', text=read('site', 'config.js') if os.path.exists(src_cfg) else default_cfg)
+    print('%d bytes -> %s/index.html (%s)' % (len(site), out, label))
     return 0
 
 

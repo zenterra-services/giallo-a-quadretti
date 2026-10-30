@@ -9,6 +9,8 @@
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .field label{font:700 .75rem var(--type);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .field input{font:600 1.05rem var(--body);padding:10px 12px;border:2.5px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);min-height:44px;box-sizing:border-box;width:100%}
+.field select{font:600 1.05rem var(--body);padding:10px 12px;border:2.5px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);min-height:44px;box-sizing:border-box;width:100%}
+.top .style-link{text-decoration:none}
 .field input.code{font:700 1.3rem var(--type);letter-spacing:.3em;text-transform:uppercase}
 .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
 .row2 .field{flex:1;min-width:120px;margin:0}

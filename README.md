@@ -9,7 +9,17 @@ Logic murder mysteries for learning languages. Place every suspect on the floor 
 
 Play: https://zenterra-services.github.io/giallo-a-quadretti/
 
-**Rejtő edition:** https://zenterra-services.github.io/giallo-a-quadretti/rejto/ — four fan cases in Rejtő Jenő’s world, with Hungarian titles and helper copy on by default.
+- **Giallo a Quadretti** — https://zenterra-services.github.io/giallo-a-quadretti/giallo/ (16 cases)
+- **Rejtő a Quadretti** — https://zenterra-services.github.io/giallo-a-quadretti/rejto/ (4 fan cases, Hungarian titles and helper copy on by default)
+
+## Choosing a style
+
+The root page is a **style chooser**. Pick Giallo or Rejtő; the choice is saved as your default site style, and the **Style** link in the game brings the chooser back.
+
+- **Whole site:** the chooser saves your default; opening the root again takes you to that pack.
+- **Current room:** when you create a co-op room, the host picks a **room style** in the create form. The room keeps that style for everyone; the invite link points at the matching style. Creating a room in another style does **not** change your site default.
+- A room’s style is fixed when it is created. To change it, create a new room in the desired style and share the new code.
+- Different styles are different case libraries and casts, so one room cannot mix content from two styles. Per-player visual skins would be a separate theme layer, not this content-pack system.
 
 ## Team play setup (Supabase)
 
@@ -41,24 +51,26 @@ The engine, clue grammar and shared UI live in `src/main.js`, `src/i18n.js`, `sr
 
 ## Layout
 
-- `site/` is what GitHub Pages serves (`index.html` is generated).
+- `site/` is what GitHub Pages serves: `index.html` is the style chooser; packs are at `site/giallo/` and `site/rejto/`.
+- `src/styles.json` lists the available styles and their paths.
 - `src/packs/<id>/` holds the style-specific sources.
 - `src/main.js`, `src/i18n.js`, `src/style2.css`, `src/extra.css` are shared.
 - `tools/verify.mjs` validates a pack: clue truth, unique solutions, translations, vocabulary, cast and art coverage, UI strings.
-- `build.py` assembles one pack into `site/index.html` and `dist-claude.html`.
+- `build.py` builds a pack or the root chooser.
 
 ## Development
 
 ```sh
-python build.py --pack giallo                 # rebuild site/ and dist-claude.html
-python build.py --pack giallo --check         # fail if the built site/ is stale
-python build.py --pack rejto --out preview/rejto
-node tools/verify.mjs --pack rejto            # validate a pack
-python src/packs/rejto/gen.py                 # regenerate that pack's cases.json
+python build.py --chooser --out site              # root style chooser
+python build.py --pack giallo --out site/giallo   # giallo at /giallo/
+python build.py --pack rejto  --out site/rejto    # rejto at /rejto/
+python build.py --pack giallo --out site/giallo --check
+node tools/verify.mjs --pack giallo               # validate a pack
+python src/packs/giallo/gen.py                    # regenerate that pack's cases.json
 ```
 
 The generator starts from a valid solution, then greedily drops clues while the puzzle keeps exactly one solution. Each map has an explicit seed, so reordering or adding maps does not change existing cases.
 
-Testing co-op without Supabase: serve `site/` locally and open two tabs with `?net=local` (or run `python -m http.server -d site 8765`).
+Testing co-op without Supabase: serve `site/` locally and open two tabs with `?net=local` — e.g. `python -m http.server -d site 8765`, then `http://127.0.0.1:8765/giallo/?net=local`.
 
-Build-time pack selection is intentional: one style per deployment keeps the page small and the cases coherent. Runtime switching is not part of the engine.
+Style is selected at runtime by routing to the chosen pack; the packs stay separate builds, so cases, vocabulary and art remain coherent.

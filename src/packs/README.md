@@ -12,7 +12,7 @@ Each pack is a folder under `src/packs/<id>/`. The default pack is `giallo`.
 
 ```
 src/packs/<id>/
-  pack.json      manifest: id, name, description, defaultLang, fonts, themeColor, lang
+  pack.json      manifest: id, path, name, description, defaultLang, fonts, themeColor, lang
   art.js         SVG renderer for this style
   looks.js       cast appearance data (LOOKS)
   vocab.js       semantic objects and rooms + per-language labels
@@ -28,6 +28,16 @@ src/packs/<id>/
 
 Only `art.js`, `vocab.js`, `looks.js`, `casel.js`, `cases.json`, `theme.css`, `theme.js`, `hu.js` and `icon.svg` are required.
 `ui.js` is optional.
+
+## Runtime style selection
+
+`src/styles.json` is the site’s style registry:
+
+```json
+[{ "id": "giallo", "path": "giallo/", "name": "…", "short": "Giallo", "themeColor": "#FFE14D", "tagline": { "en": "…", "hu": "…" } }]
+```
+
+The `path` in `pack.json` must match the registry. `build.py` injects `STYLES` into every pack. The root chooser saves `gq:style`; the root auto-redirects to that pack. Co-op rooms carry the style of the page they were created on, and the invite link is style-specific—so a room can use Rejtő while a player’s site default stays Giallo.
 
 ## Asset contract
 
@@ -102,12 +112,13 @@ Any key overrides the shared UI string for that language. The style-defining key
 ## Build and validate
 
 ```sh
-python build.py --pack giallo --out site          # default pack, deploy target
-python build.py --pack rejto --out preview/rejto   # a second style, separate folder
+python build.py --pack giallo --out site/giallo
+python build.py --pack rejto  --out site/rejto
+python build.py --chooser --out site
 node tools/verify.mjs --pack rejto
 ```
 
-`build.py --check` verifies the built output is current for the selected pack.
+`build.py --check` verifies the built output is current for the selected pack or chooser.
 
 ## Adding a new style
 
@@ -116,9 +127,8 @@ node tools/verify.mjs --pack rejto
 3. Build `art.js` and `looks.js` for that vocabulary.
 4. Author cases and run `gen.py`; add `casel.js`, `hu.js`, `ui.js`.
 5. Add `theme.css` tokens (copy giallo's as a starting point) and `theme.js`.
-6. Run `node tools/verify.mjs --pack <id>`; it checks solution uniqueness, clue truth, translations, art coverage and cast coverage.
-7. Build to `preview/<id>`, play it, then choose which pack `site/` deploys.
+6. Add the pack to `src/styles.json` with a unique `path` (one folder under `site/`), and set the same `path` in `pack.json`.
+7. Run `node tools/verify.mjs --pack <id>`; it checks solution uniqueness, clue truth, translations, art coverage and cast coverage.
+8. Build to `site/<id>/`, add the chooser card, and play it.
 
-Build-time selection is deliberate: one style per deployment keeps the page small and the cases coherent. Runtime theme switching is not part of the engine.
-
-Progress, settings and co-op rooms are namespaced by pack id. `giallo` keeps the original `gq:*` / `gq-ROOM` keys for backward compatibility; every other pack uses `gq:<id>:*` and `gq-<id>-ROOM`, so several styles can live on one origin without sharing saves.
+Progress and co-op rooms are namespaced by pack id. `giallo` keeps the original `gq:*` / `gq-ROOM` keys for backward compatibility; every other pack uses `gq:<id>:*` and `gq-<id>-ROOM`. Site style, player name and player id are global (`gq:style`, `gq:name`, `gq:pid`), so they carry across styles.
