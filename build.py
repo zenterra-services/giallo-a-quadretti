@@ -152,12 +152,18 @@ def main(argv):
 
     write(out, 'index.html', text=site)
     write(out, 'icon.svg', text=icon)
-    if os.path.abspath(out_dir) == os.path.join(ROOT, 'site'):
+    is_site = os.path.abspath(out_dir) == os.path.join(ROOT, 'site')
+    if is_site:
         write('dist-claude.html', text=artifact)
-        cfg = os.path.join(out_dir, 'config.js')
-        if not os.path.exists(cfg):
-            write('site/config.js', text='/* Supabase project for team play. The anon key is public by design. */\n'
-                  'window.GQ_CONFIG = { supabaseUrl: "", supabaseKey: "" };\n')
+    cfg = os.path.join(out_dir, 'config.js')
+    if not os.path.exists(cfg):
+        src_cfg = os.path.join(ROOT, 'site', 'config.js')
+        if os.path.exists(src_cfg):
+            text = read('site', 'config.js')
+        else:
+            text = ('/* Supabase project for team play. The anon key is public by design. */\n'
+                    'window.GQ_CONFIG = { supabaseUrl: "", supabaseKey: "" };\n')
+        write(out, 'config.js', text=text)
     print('%d bytes -> %s/index.html (pack: %s)' % (len(site), out, pack_id))
     return 0
 

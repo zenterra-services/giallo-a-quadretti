@@ -818,6 +818,7 @@ const huArt=w=>/^[aeiouáéíóöőúüű]/i.test(w)?'az':'a';
 const plain=s=>String(s).replace(/[⟦⟧]/g,'');
 const fill=(s,v)=>String(s).replace(/\{(\w)\}/g,(m,k)=>v[k]!=null?v[k]:m);
 function lookOf(name,i){ return LOOKS[name] || (typeof FALLBACK_LOOK!=='undefined'?FALLBACK_LOOK:[i%6,'short','d',[],'blue','smile']); }
+const shortName=nm=> (typeof SHORT_NAMES!=='undefined'&&SHORT_NAMES[nm])||nm.split(' ').slice(-1)[0];
 
 /* Keep progress, settings and rooms separate when several style packs share an origin. */
 const STORE_NS=PACK.id==='giallo'?'':PACK.id+':';
@@ -835,8 +836,8 @@ if(canSpeak){ try{speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged=(
 function say(text){ if(!canSpeak) return; try{ speechSynthesis.cancel(); const code=LANGS[LANG].voice; const u=new SpeechSynthesisUtterance(plain(text)); u.lang=code; const v=voiceFor(code); if(v) u.voice=v; u.rate=.85; speechSynthesis.speak(u);}catch(e){} }
 
 /* ---------- text ---------- */
-const caseTitle=cs=> LANG==='it'?cs.title:CASEL[cs.id][LANG][0];
-const caseFlav=cs=> LANG==='it'?cs.flav:CASEL[cs.id][LANG][1];
+const caseTitle=cs=> (S.huAll&&cs.titleHu)?cs.titleHu:(LANG==='it'?cs.title:CASEL[cs.id][LANG][0]);
+const caseFlav=cs=> (S.huAll&&cs.titleHu&&cs.flavHu)?cs.flavHu:(LANG==='it'?cs.flav:CASEL[cs.id][LANG][1]);
 const roomName=(cs,k)=> ROOMS[cs.rooms[k].it][LANG][0];
 function clueStr(cs,cl,lang){
   lang=lang||LANG; const N=cs.size, g=cs.people[cl.p][1], who=i=>cs.people[i][0], a={};
@@ -898,7 +899,7 @@ const NET=makeNet();
 
 /* ---------- state ---------- */
 const S={view:'hub', cs:null, idx:0, place:{}, marks:new Set(), tool:0, t0:0, elapsed:0, hints:0, phase:'play', msg:null,
-         huAll:store.get('huAll',false), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
+         huAll:store.get('huAll',!!PACK.huHelperDefault), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
          hist:[], focus:null};
 let timerId=null;
 const isPhone=()=>{ try{ return matchMedia('(max-width:700px)').matches; }catch(e){ return false; } };
@@ -1160,10 +1161,11 @@ function topbar(){
 /* ---------- hub ---------- */
 function renderHub(app){
   app.append(topbar());
-  const pick=[['Martina',1],['Matteo',2],['Beatrice',3],['Gabriele',4],['Vittoria',0]];
+  const heroNames=Object.keys(LOOKS).slice(0,5);
+  const pick=heroNames.map((n,k)=>[n,[1,2,3,4,0][k]]);
   const pos=[['4%','2%',-8],['36%','0%',5],['66%','6%',-4],['18%','36%',7],['50%','32%',-6]];
   const coll=h('div',{class:'collage','aria-hidden':'true'});
-  pick.forEach(([n,b],k)=>{ const [l,t,r]=pos[k]; coll.append(svgEl(A.portrait(LOOKS[n],{bg:BGS[b]}),'st',`left:${l};top:${t};transform:rotate(${r}deg);animation-delay:${k*70}ms`)); });
+  pick.forEach(([n,b],k)=>{ const [l,t,r]=pos[k]; coll.append(svgEl(A.portrait(lookOf(n,k),{bg:BGS[b]}),'st',`left:${l};top:${t};transform:rotate(${r}deg);animation-delay:${k*70}ms`)); });
   coll.append(svgEl(A.pigeon({lens:1}),'pg'));
   coll.append(h('div',{class:'bubble'},T('pigeon')));
   app.append(h('section',{class:'hero'},
@@ -1198,7 +1200,8 @@ function renderHub(app){
   }
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('how')),S.huAll?h('span',{class:'hu'},'Szabályok'):null));
-  const icons=[A.object('sedia'),A.object('tappeto'),A.object('vaso'),A.pigeon(),A.portrait(LOOKS['Rossi'],{crop:'head',bg:'pink'})];
+  const objKeys=Object.keys(OBJ), sitKeys=objKeys.filter(k=>OBJ[k].occ), blockKeys=objKeys.filter(k=>!OBJ[k].occ);
+  const icons=[A.object(sitKeys[0]||objKeys[0]),A.object(sitKeys[1]||sitKeys[0]||objKeys[0]),A.object(blockKeys[0]||objKeys[0]),A.pigeon(),A.portrait(lookOf(Object.keys(LOOKS)[0],0),{crop:'head',bg:'pink'})];
   app.append(h('div',{class:'rules'},...T('rules').map((it,k)=>h('div',{class:'rule'},svgEl(icons[k],'ri'),h('p',{},marked(it),' ',sayBtn(it,'')),S.huAll?h('p',{class:'hu'},HU_RULES[k]):null))));
   const occ=Object.keys(OBJ).filter(k=>OBJ[k].occ), blk=Object.keys(OBJ).filter(k=>!OBJ[k].occ);
   const oi=k=>h('div',{class:'oi'},svgEl(A.object(k,plain(OBJL[LANG][k][0])),'ic'),plain(OBJL[LANG][k][0]),S.huAll?h('small',{},OBJ[k].hu):null);
@@ -1216,10 +1219,10 @@ function caseGrid(onPick){
       h('span',{class:'tape',style:`background-color:${['rgba(255,225,77,.7)','rgba(255,72,176,.5)','rgba(50,85,164,.35)','rgba(0,169,92,.4)'][i%4]}`}),
       h('span',{class:'typ'},`${T('caso')} ${String(i+1).padStart(2,'0')} · ${cs.size}×${cs.size}`),
       h('h3',{},caseTitle(cs)), h('span',{class:'flav'},caseFlav(cs)),
-      S.huAll? h('span',{class:'hu'},cs.flavHu):null, heads,
+      S.huAll&&!cs.titleHu? h('span',{class:'hu'},cs.flavHu):null, heads,
       h('span',{class:'meta'}, h('span',{class:'lvl','aria-label':T('levels')[cs.level]},...[1,2,3,4].map(k=>h('b',{class:k<=cs.level?'on':''}))), h('span',{class:'typ'},T('levels')[cs.level]),
         sv&&!S.coop? h('span',{class:'best'},`✓ ${fmt(sv.time)}`):null),
-      sv&&!S.coop? svgEl(A.stamp('RISOLTO','red'),'stampwrap'):null));
+      sv&&!S.coop? svgEl(A.stamp(PACK.solvedStamp||'RISOLTO','red'),'stampwrap'):null));
   });
   return grid;
 }
@@ -1343,7 +1346,7 @@ function caseHead(cs){
       h('span',{class:'typ'},`${T('caso')} ${String(S.idx+1).padStart(2,'0')} · ${T('levels')[cs.level]} · ${cs.size}×${cs.size}`),
       h('h2',{},caseTitle(cs),' ',sayBtn(caseTitle(cs),'')),
       h('p',{class:'flav'},caseFlav(cs),' ',sayBtn(caseFlav(cs),'')),
-      S.huAll?h('p',{class:'hu'},cs.flavHu):null),
+      S.huAll&&!cs.titleHu?h('p',{class:'hu'},cs.flavHu):null),
     h('div',{class:'timer',id:'timer'},fmt(curElapsed())));
 }
 function tipBox(){ const k=S.tip%5, tp=T('tips')[k];
@@ -1364,7 +1367,7 @@ function renderCase(app){
   if(S.phase==='play'){
     const tools=h('div',{class:'tools',role:'toolbar'});
     tools.append(h('button',{class:'tool xmark','aria-pressed':String(S.tool==='x'),onclick:()=>{S.tool='x';render()}},T('mark')));
-    cs.people.forEach(([nm],i)=>tools.append(h('button',{class:'tool'+(S.place[i]?' done':''),'aria-pressed':String(S.tool===i),onclick:()=>{S.tool=i;render()}},head(cs,i),nm.split(' ').slice(-1)[0])));
+    cs.people.forEach(([nm],i)=>tools.append(h('button',{class:'tool'+(S.place[i]?' done':''),'aria-pressed':String(S.tool===i),onclick:()=>{S.tool=i;render()}},head(cs,i),shortName(nm))));
     clip.append(tools);
     clip.append(h('p',{class:'toolhint'}, S.tool==='x'?T('hintX'):fill(T('hintPlace'),{n:cs.people[S.tool][0]})+' '+T('longpress')));
     clip.append(h('p',{class:'toolhint kbd'},T('keys')));
@@ -1405,7 +1408,7 @@ function showWin(time){
   const m=h('div',{class:'modal',role:'dialog','aria-modal':'true'},
     h('div',{class:'box'},
       svgEl(A.portrait(lookOf(k,cs.killer),{bg:'red',label:k}),'who'),
-      svgEl(A.stamp('COLPEVOLE','red'),'stp'),
+      svgEl(A.stamp(PACK.stampText||'COLPEVOLE','red'),'stp'),
       h('h3',{},fill(T('solved'),{n:k})),
       h('p',{class:'typ'},`${T('time')} ${fmt(time)}`+(S.hints?` · ${T('hints')} ${S.hints}`:'')),
       S.huAll?h('p',{class:'hu'},`A gyilkos: ${k}!`):null,

@@ -1,0 +1,13 @@
+{
+  "id": "rejto",
+  "name": "Rejtő a Quadretti",
+  "description": "Rejtő Jenő világában játszódó logikai rejtélyek: öt nyelven, magyar segédlettel.",
+  "lang": "en",
+  "defaultLang": "en",
+  "huHelperDefault": true,
+  "themeColor": "#D9A441",
+  "solvedStamp": "MEGOLDVA",
+  "stampText": "BŰNÖS",
+  "fonts": "https://fonts.googleapis.com/css2?family=Bevan&family=Bitter:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Caveat:wght@400;700&display=swap",
+  "version": 1
+}

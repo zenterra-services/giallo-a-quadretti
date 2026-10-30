@@ -21,12 +21,18 @@ Co-op state merges per-person, so two detectives can place different suspects at
 
 ## Style packs
 
-The game is an engine plus a **style pack**. A pack owns everything a specific graphic/story style needs: SVG art, cast, vocabulary, cases, theme, icon and case generator. The current pack is `giallo` — an Italian riso-printed detective zine.
+The game is an engine plus a **style pack**. A pack owns everything a specific graphic/story style needs: SVG art, cast, vocabulary, cases, theme, icon and case generator.
+
+Current packs:
+
+- **`giallo`** — 16 Italian riso-printed detective cases.
+- **`rejto`** — 4 Rejtő Jenő fan cases (Grand Hotel, Foreign Legion fort, lost cruiser, fourteen-carat car), English clues with the Hungarian helper on by default. See [src/packs/rejto/README.md](src/packs/rejto/README.md) for the source/rights note.
 
 ```
-src/packs/giallo/
+src/packs/<id>/
   pack.json  art.js  looks.js  vocab.js  casel.js  ui.js
   theme.js   theme.css  hu.js  cases.json  gen.py  icon.svg
+  README.md
 ```
 
 The engine, clue grammar and shared UI live in `src/main.js`, `src/i18n.js`, `src/style2.css` and `src/extra.css`. A new style is a new folder; see [src/packs/README.md](src/packs/README.md) for the full contract and how to add one.
@@ -44,9 +50,9 @@ The engine, clue grammar and shared UI live in `src/main.js`, `src/i18n.js`, `sr
 ```sh
 python build.py --pack giallo                 # rebuild site/ and dist-claude.html
 python build.py --pack giallo --check         # fail if the built site/ is stale
-python build.py --pack neon --out preview/neon
-node tools/verify.mjs --pack giallo           # validate the pack
-python src/packs/giallo/gen.py                # regenerate that pack's cases.json
+python build.py --pack rejto --out preview/rejto
+node tools/verify.mjs --pack rejto            # validate a pack
+python src/packs/rejto/gen.py                 # regenerate that pack's cases.json
 ```
 
 The generator starts from a valid solution, then greedily drops clues while the puzzle keeps exactly one solution. Each map has an explicit seed, so reordering or adding maps does not change existing cases.

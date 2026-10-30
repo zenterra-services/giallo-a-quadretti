@@ -293,6 +293,8 @@ for (const cs of CASES) {
   else if (!same(sols[0], cs.solution)) fail(id, 'stored solution differs from the unique solution');
 
   if (!cs.title || !cs.flav || !cs.flavHu) fail(id, 'missing it title/flav/flavHu');
+  if (cs.titleHu != null && (typeof cs.titleHu !== 'string' || !cs.titleHu.trim())) fail(id, 'titleHu must be a non-empty string');
+  if (cs.titleHu && !cs.flavHu) fail(id, 'titleHu needs flavHu');
   for (const l of LANGS_LEARN.filter(l => l !== 'it')) {
     const e = CASEL[id] && CASEL[id][l];
     if (!e || !e[0] || !e[1]) fail(id, `missing ${l} title/flavour`);
