@@ -91,7 +91,7 @@ mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 
 .tip .more{border:none;background:none;font:700 .75rem var(--type);color:var(--blue);text-transform:uppercase;letter-spacing:.06em;padding:4px 0 0}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:26px;align-items:start}
 @media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.boardcol{order:-1}}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px;align-items:start}
 .card{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px 12px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 10px;min-width:0;box-shadow:3px 3px 0 var(--shadow)}
 .card .pic{grid-row:span 3;width:64px;margin-top:-18px}
 .card .nm{display:flex;align-items:center;gap:6px;min-width:0}

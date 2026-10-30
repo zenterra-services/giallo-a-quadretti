@@ -43,11 +43,11 @@
   <p class="lead">Each style has its own cases, artwork and voice. Your choice becomes your default style; you can change it any time from the <strong>Style</strong> link in the game.</p>
   <p class="lead hu">Minden stílus saját esetekkel, grafikával és hangulattal jön. A választásod lesz az alapértelmezett stílusod; a játékban a <strong>Stílus</strong> linkkel bármikor válthatod.</p>
   <div class="cards"><a class="style-card" href="giallo/" data-style="giallo" style="--accent:#FFE14D"><span class="short">Giallo</span><h2>Giallo a Quadretti</h2><p>Italian riso-printed detective zine · 16 cases</p><p class="hu">Olasz rizó-nyomatos detektívfüzet · 16 eset</p><span class="go">Play →</span></a>
-<a class="style-card" href="rejto/" data-style="rejto" style="--accent:#D9A441"><span class="short">Rejtő</span><h2>Rejtő a Quadretti</h2><p>Rejtő Jenő’s 1930s world · 4 fan cases</p><p class="hu">Rejtő Jenő világa · 4 rajongói eset</p><span class="go">Play →</span></a></div>
+<a class="style-card" href="rejto/" data-style="rejto" style="--accent:#D9A441"><span class="short">Rejtő</span><h2>Rejtő a Quadretti</h2><p>Rejtő Jenő’s 1930s world · 5 fan cases</p><p class="hu">Rejtő Jenő világa · 5 rajongói eset</p><span class="go">Play →</span></a></div>
   <p class="foot">Same engine, different worlds. Co-op rooms keep the style they were created in.</p>
 </main>
 <script>
-  const STYLES = [{"id": "giallo", "path": "giallo/", "name": "Giallo a Quadretti", "short": "Giallo", "tagline": {"en": "Italian riso-printed detective zine · 16 cases", "hu": "Olasz rizó-nyomatos detektívfüzet · 16 eset"}, "themeColor": "#FFE14D"}, {"id": "rejto", "path": "rejto/", "name": "Rejtő a Quadretti", "short": "Rejtő", "tagline": {"en": "Rejtő Jenő’s 1930s world · 4 fan cases", "hu": "Rejtő Jenő világa · 4 rajongói eset"}, "themeColor": "#D9A441"}];
+  const STYLES = [{"id": "giallo", "path": "giallo/", "name": "Giallo a Quadretti", "short": "Giallo", "tagline": {"en": "Italian riso-printed detective zine · 16 cases", "hu": "Olasz rizó-nyomatos detektívfüzet · 16 eset"}, "themeColor": "#FFE14D"}, {"id": "rejto", "path": "rejto/", "name": "Rejtő a Quadretti", "short": "Rejtő", "tagline": {"en": "Rejtő Jenő’s 1930s world · 5 fan cases", "hu": "Rejtő Jenő világa · 5 rajongói eset"}, "themeColor": "#D9A441"}];
   const params = new URLSearchParams(location.search);
   let saved = null;
   try { saved = localStorage.getItem('gq:style'); } catch (e) {}

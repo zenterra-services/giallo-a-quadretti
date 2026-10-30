@@ -19,6 +19,12 @@ var CASEL = {
     fr: ['Le croiseur perdu', "Le croiseur a disparu. Le capitaine affirme qu'il s'est simplement perdu."],
     es: ['El crucero perdido', 'El crucero ha desaparecido. El capitán insiste en que solo se ha perdido.']
   },
+  'harom-testor': {
+    en: ['The Three Musketeers in Africa', 'In the African fort, everyone is a friend of the three musketeers. Someone is no longer a friend.'],
+    de: ['Die drei Musketiere in Afrika', 'Im afrikanischen Fort sind alle Freunde der drei Musketiere. Jemand ist es nicht mehr.'],
+    fr: ['Les trois mousquetaires en Afrique', "Dans le fort africain, tout le monde est ami des trois mousquetaires. Quelqu'un ne l'est plus."],
+    es: ['Los tres mosqueteros en África', 'En el fuerte africano, todos son amigos de los tres mosqueteros. Alguien ya no lo es.']
+  },
   'karatos-auto': {
     en: ['The Fourteen-Carat Car', 'The car is back. Its owner is not.'],
     de: ['Das vierzehnkarätige Auto', 'Das Auto ist wieder da. Sein Besitzer nicht.'],

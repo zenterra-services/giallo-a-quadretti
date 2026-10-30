@@ -10,7 +10,7 @@ Logic murder mysteries for learning languages. Place every suspect on the floor 
 Play: https://zenterra-services.github.io/giallo-a-quadretti/
 
 - **Giallo a Quadretti** — https://zenterra-services.github.io/giallo-a-quadretti/giallo/ (16 cases)
-- **Rejtő a Quadretti** — https://zenterra-services.github.io/giallo-a-quadretti/rejto/ (4 fan cases, Hungarian titles and helper copy on by default)
+- **Rejtő a Quadretti** — https://zenterra-services.github.io/giallo-a-quadretti/rejto/ (5 fan cases, Hungarian titles and helper copy on by default)
 
 ## Choosing a style
 
@@ -38,7 +38,7 @@ The game is an engine plus a **style pack**. A pack owns everything a specific g
 Current packs:
 
 - **`giallo`** — 16 Italian riso-printed detective cases.
-- **`rejto`** — 4 Rejtő Jenő fan cases (Grand Hotel, Foreign Legion fort, lost cruiser, fourteen-carat car), English clues with the Hungarian helper on by default. See [src/packs/rejto/README.md](src/packs/rejto/README.md) for the source/rights note.
+- **`rejto`** — 5 Rejtő Jenő fan cases (Grand Hotel, Foreign Legion fort, Three Musketeers in Africa, lost cruiser, fourteen-carat car), English clues with the Hungarian helper on by default. See [src/packs/rejto/README.md](src/packs/rejto/README.md) for the source/rights note.
 
 ```
 src/packs/<id>/

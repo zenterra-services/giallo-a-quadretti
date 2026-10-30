@@ -54,6 +54,18 @@ M('legio','La legione invisibile','A láthatatlan légió',
   {'0,1':'letto','1,1':'sedia','0,4':'cassa','2,0':'tavolo','2,3':'scaffale','3,4':'masso','4,0':'cespuglio','3,1':'vaso','2,2':'frigo','2,1':'forno','4,3':'pianta'},
   [('Csülök','m'),('Senki Alfonz','m'),('Glória','f'),('Vanek úr','m'),('Böffentő','m')],2,2014)
 
+M('harom-testor','I tre moschettieri in Africa','A három testőr Afrikában',
+  'Nel fortino africano tutti sono amici dei tre moschettieri. Qualcuno non è più un amico.',
+  'Az afrikai erődben mindenki a három testőr barátja. Valaki már nem az.',5,
+  ['BBBRR','BBBRR','KKKRR','KKKOO','TTTTO'],
+  {'B':dict(it='Barracks',itIn='nel baraccamento',hu='barakk',huIn='a barakkban'),
+   'R':dict(it='Guardroom',itIn='nel corpo di guardia',hu='őrszoba',huIn='az őrszobában'),
+   'K':dict(it='Cucina',itIn='in cucina',hu='konyha',huIn='a konyhában'),
+   'O':dict(it='Cortile',itIn='in cortile',hu='udvar',huIn='az udvarban'),
+   'T':dict(it='Magazzino',itIn='in magazzino',hu='raktár',huIn='a raktárban')},
+  {'0,1':'letto','1,1':'sedia','0,4':'cassa','2,0':'tavolo','2,3':'scaffale','3,4':'masso','4,0':'cespuglio','3,1':'vaso','2,2':'frigo','2,1':'forno','4,3':'pianta'},
+  [('Privát Elek','m'),('Mr. Hobbs','m'),('Sir Egmont','m'),('Holdvilág Charley','m'),('Nagy Brezely','m')],2,2053)
+
 M('cirkalo','L\'incrociatore perduto','Az elveszett cirkáló',
   'L\'incrociatore è sparito. Il capitano sostiene che si è solo perso.',
   'A cirkáló eltűnt. A kapitány szerint csak eltévedt.',6,

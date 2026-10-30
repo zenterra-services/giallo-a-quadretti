@@ -1,10 +1,16 @@
 # Rejtő a Quadretti — fan pack
 
-Four original logic mysteries set in Rejtő Jenő’s world: a sealed Grand Hotel, a Foreign Legion fort, a lost cruiser and a fourteen-carat car.
+Five original logic mysteries set in Rejtő Jenő’s world: a sealed Grand Hotel, a Foreign Legion fort, a musketeer outpost in Africa, a lost cruiser and a fourteen-carat car.
 
 - Rejtő Jenő (1905–1943) died in 1943; under the EU life+70 rule his original works are in the public domain from 1 January 2014. This pack uses his titles and characters as a fan homage, with **new puzzles and new text**.
 - The art is **original SVG** in a 1930s pulp/comic register. It is *Korcsmáros-inspired only*: no panels, poses, faces or page layouts from Korcsmáros Pál’s comics are copied. His artwork remains protected.
 - The pack defaults to English clues with the **Hungarian helper switched on**. Case titles and flavours switch to the Hungarian originals (`titleHu` / `flavHu`) when the HU helper is active.
-- The four cases are not adaptations of the novels’ plots; they are small closed-circle mysteries that reuse the setting and the cast.
+- The five cases are not adaptations of the novels’ plots; they are small closed-circle mysteries that reuse the setting and the cast.
+
+## Cast and likeness
+
+The core cast is **Piszkos Fred, Fülig Jimmy, Vanek úr, Csülök, Senki Alfonz, Glória, Török Szultán, Böffentő**, joined by **Privát Elek, Mr. Hobbs, Sir Egmont, Holdvilág Charley, Nagy Brezely and Fortély Róka**. Portraits use body types (tall, thin, fat, huge) and period props (captain’s coat, sailor cap, top hat, cane, bottle, cigar, fez, fur) so the silhouettes read at card size.
+
+Reference character sheets shared for this project were used **only as a character bible**. No panel, pose, face or drawing from them is traced or shipped; every portrait is generated from the pack’s own SVG primitives.
 
 If this is ever published beyond a private fan project, get a legal review of the character/title use and of any local translation rights.

@@ -88,25 +88,49 @@
         case 'pipe': s += '<g stroke="' + K + '" stroke-width="2.2" fill="none"><path d="M74 82 q16 0 16 8 q0 7 -9 7"/><path d="M87 96 h8 v8 h-8 z" fill="' + INK.orange + '"/></g>'; break;
         case 'tie': s += '<g stroke="' + K + '" stroke-width="1.8" stroke-linejoin="round"><path d="M56 102 h8 v5 h-8 z" fill="' + K + '"/><path d="M56 107 L60 113 L64 107 L62 128 L58 128 Z" fill="' + INK.red + '"/></g>'; break;
         case 'scarf': s += '<g stroke="' + K + '" stroke-width="2" stroke-linejoin="round"><path d="M38 98 Q60 108 82 98 L86 108 Q60 118 34 108 Z" fill="' + INK.red + '"/><path d="M46 108 L41 124 L50 121 L53 110 Z" fill="' + INK.red + '"/></g>'; break;
+        case 'tophat': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M38 40 V16 H82 V40 Z" fill="' + K + '"/><path d="M26 40 H94 V46 H26 Z" fill="' + K + '"/><path d="M38 34 H82 V40 H38 Z" fill="' + INK.red + '" stroke="none"/></g>'; break;
+        case 'sailorcap': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M31 48 Q31 26 60 26 Q89 26 89 48 Z" fill="' + INK.paper + '"/><path d="M29 46 H91 V53 H29 Z" fill="' + INK.blue + '"/></g>'; break;
+        case 'cane': s += '<g stroke="' + K + '" stroke-width="3" fill="none"><path d="M104 96 v52"/><path d="M104 96 q10 -2 10 6 q0 5 -7 5"/></g>'; break;
+        case 'cigar': s += '<path d="M72 82 h12" stroke="' + INK.orange + '" stroke-width="5" stroke-linecap="round"/><path d="M84 82 q6 -8 12 -6" fill="none" stroke="' + K + '" stroke-width="1.8" opacity=".6"/>'; break;
+        case 'bottle': s += '<g stroke="' + K + '" stroke-width="2"><rect x="93" y="112" width="10" height="26" rx="3" fill="' + INK.green + '"/><rect x="96" y="106" width="4" height="8" fill="' + INK.green + '"/><rect x="95" y="120" width="6" height="8" fill="' + INK.paper + '"/></g>'; break;
+        case 'globe': s += '<g stroke="' + K + '" stroke-width="2"><circle cx="100" cy="92" r="11" fill="' + INK.blue + '"/><path d="M91 88 q9 4 18 0 M91 96 q9 -4 18 0 M96 84 q-2 8 0 16" fill="none"/></g>'; break;
+        case 'striped': case 'apron': case 'fur': break;
       }
     });
     return s;
   }
-  /* spec: [skinIdx, hairStyle, hairColorKey, [acc], shirtInk, expr] */
+  /* spec: [skinIdx, hairStyle, hairColorKey, [acc], shirtInk, expr, bodyType] */
   function portrait(spec, opts) {
     opts = opts || {};
     var skin = SKIN[spec[0] % SKIN.length], hs = spec[1], hc = HAIR[spec[2]] || HAIR.k,
-      acc = spec[3] || [], shirt = INK[spec[4]] || INK.blue, expr = spec[5] || 'smile';
-    var pid = id('ht'), cid = id('cl');
+      acc = spec[3] || [], shirt = INK[spec[4]] || INK.blue, expr = spec[5] || 'smile',
+      body = spec[6] || 'normal';
+    var BW = ({ normal: 46, thin: 36, tall: 36, fat: 56, huge: 58, small: 40 })[body] || 46;
+    var SH = ({ normal: 26, thin: 20, tall: 22, fat: 32, huge: 40, small: 24 })[body] || 26;
+    var TY = ({ normal: 100, thin: 100, tall: 96, fat: 100, huge: 98, small: 104 })[body] || 100;
+    var L = 60 - BW, R = 60 + BW, SL = 60 - SH, SR = 60 + SH;
+    var torso = 'M' + L + ' 142 C' + L + ' ' + (TY + 12) + ' ' + SL + ' ' + TY + ' 60 ' + TY +
+      ' C' + SR + ' ' + TY + ' ' + R + ' ' + (TY + 12) + ' ' + R + ' 142 Z';
+    var pid = id('ht'), cid = id('cl'), sid = id('st');
     var sk2 = shade(skin, 0.8), lid = id('lt');
     var rightHalf = '<clipPath id="' + lid + '"><rect x="61" y="0" width="70" height="160"/></clipPath>';
+    var stripeDef = acc.indexOf('striped') >= 0
+      ? '<pattern id="' + sid + '" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="5" fill="' + shirt + '"/><rect y="5" width="10" height="5" fill="' + shade(shirt, .62) + '"/></pattern>'
+      : '';
+    var bodyOverlay = '';
+    if (acc.indexOf('striped') >= 0) bodyOverlay += '<path d="' + torso + '" fill="url(#' + sid + ')"/>';
+    if (acc.indexOf('apron') >= 0) bodyOverlay += '<path d="M' + (60 - BW * .45) + ' ' + (TY + 18) + ' L' + (60 + BW * .45) + ' ' + (TY + 18) +
+      ' L' + (60 + BW * .4) + ' 142 L' + (60 - BW * .4) + ' 142 Z" fill="' + INK.paper + '" stroke="' + K + '" stroke-width="2.2"/>';
+    if (acc.indexOf('fur') >= 0) bodyOverlay += '<path d="M' + SL + ' ' + (TY + 2) + ' Q60 ' + (TY - 8) + ' ' + SR + ' ' + (TY + 2) +
+      ' Q60 ' + (TY + 20) + ' ' + SL + ' ' + (TY + 2) + ' Z" fill="' + INK.orange + '" stroke="' + K + '" stroke-width="2.4"/>';
     var figure =
-      '<g>' + hairBack(hs, hc) + '<g clip-path="url(#' + lid + ')" opacity=".22">' + hairBack(hs, '#000').replace(/fill="#000"/g, 'fill="#000"') + '</g>' + accBack(acc) +
-      '<path d="M14 142 C14 112 34 100 60 100 C86 100 106 112 106 142 Z" fill="' + shirt + '"/>' +
-      '<path d="M14 142 C14 112 34 100 60 100 C86 100 106 112 106 142 Z" fill="url(#' + pid + ')"/>' +
-      '<path d="M60 100 C82 100 106 112 106 142 L60 142 Z" fill="#000" fill-opacity=".16"/>' +
-      '<path d="M50 100 L60 114 L70 100" fill="none" stroke="' + K + '" stroke-width="2.4" stroke-linejoin="round"/>' +
-      '<rect x="51" y="86" width="18" height="16" fill="' + sk2 + '"/>' +
+      '<g>' + hairBack(hs, hc) + '<g clip-path="url(#' + lid + ')" opacity=".22">' + hairBack(hs, '#000') + '</g>' + accBack(acc) +
+      '<path d="' + torso + '" fill="' + shirt + '"/>' +
+      '<path d="' + torso + '" fill="url(#' + pid + ')"/>' +
+      '<path d="M60 ' + TY + ' C' + SR + ' ' + TY + ' ' + R + ' ' + (TY + 12) + ' ' + R + ' 142 L60 142 Z" fill="#000" fill-opacity=".16"/>' +
+      bodyOverlay +
+      '<path d="M50 ' + TY + ' L60 ' + (TY + 14) + ' L70 ' + TY + '" fill="none" stroke="' + K + '" stroke-width="2.4" stroke-linejoin="round"/>' +
+      '<rect x="51" y="86" width="18" height="' + (TY - 84) + '" fill="' + sk2 + '"/>' +
       '<ellipse cx="60" cy="64" rx="27" ry="30" fill="' + skin + '"/>' +
       '<path d="M74 38 C92 52 90 84 66 93 C80 80 84 58 74 38 Z" fill="' + sk2 + '" fill-opacity=".75"/>' +
       '<ellipse cx="60" cy="95" rx="12" ry="3" fill="' + sk2 + '"/>' +
@@ -116,8 +140,8 @@
       '<path d="M40 40 q8 -8 18 -9" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>' +
       accFront(acc, hc, skin) + '</g>';
     var keyline = '<g fill="none" stroke="' + K + '" stroke-width="3" stroke-linejoin="round">' +
-      '<path d="M14 142 C14 112 34 100 60 100 C86 100 106 112 106 142"/><ellipse cx="60" cy="64" rx="27" ry="30"/></g>';
-    var defs = '<defs>' + dots(pid, '#000', 6, 0.14) +
+      '<path d="' + torso + '"/><ellipse cx="60" cy="64" rx="27" ry="30"/></g>';
+    var defs = '<defs>' + dots(pid, '#000', 6, 0.14) + stripeDef +
       '<clipPath id="' + cid + '"><circle cx="60" cy="66" r="44"/></clipPath>' + rightHalf + '</defs>';
     if (opts.crop === 'head') {
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 16 100 104" role="img" aria-label="' + (opts.label || '') + '">' + defs +
@@ -127,9 +151,10 @@
         '<g clip-path="url(#' + cid + ')">' + figure + keyline + '</g></svg>';
     }
     // die-cut sticker: offset riso layer, thick white cut line, figure
-    var silhouette = hairBack(hs, '#000') + '<path d="M14 142 C14 112 34 100 60 100 C86 100 106 112 106 142 Z"/><ellipse cx="60" cy="64" rx="27" ry="30"/>' + hairFront(hs, '#000') + accFront(acc.filter(function (a) { return ['chef','cap','beanie','tiara','fedora','captain','kepi','fez','bowler'].indexOf(a) >= 0; }), '#000', '#000');
+    var silhouette = hairBack(hs, '#000') + '<path d="' + torso + '"/><ellipse cx="60" cy="64" rx="27" ry="30"/>' + hairFront(hs, '#000') +
+      accFront(acc.filter(function (a) { return ['chef','cap','beanie','tiara','fedora','captain','kepi','fez','bowler','tophat','sailorcap'].indexOf(a) >= 0; }), '#000', '#000');
     var sil = silhouette.replace(/fill="[^"]*"/g, '').replace(/fill-opacity="[^"]*"/g, '');
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 154" role="img" aria-label="' + (opts.label || '') + '">' + defs +
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 146 154" role="img" aria-label="' + (opts.label || '') + '">' + defs +
       '<g transform="translate(5 4)" fill="' + (INK[opts.bg] || INK.yellow) + '" stroke="' + (INK[opts.bg] || INK.yellow) + '" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
       '<g transform="translate(1.5 3.5)" fill="#C3C7D2" stroke="#C3C7D2" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
       '<g fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
