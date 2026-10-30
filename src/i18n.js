@@ -7,69 +7,6 @@ var LANGS = {
   es: { name: 'Español', voice: 'es-ES', learn: 'aprende español' }
 };
 
-/* room name → [name, in-phrase] per language */
-var ROOMS = {
-  'Cucina': { it: ['Cucina', 'in ⟦cucina⟧'], en: ['Kitchen', 'in the ⟦kitchen⟧'], de: ['Küche', 'in der ⟦Küche⟧'], fr: ['Cuisine', 'dans la ⟦cuisine⟧'], es: ['Cocina', 'en la ⟦cocina⟧'] },
-  'Salotto': { it: ['Salotto', 'in ⟦salotto⟧'], en: ['Living room', 'in the ⟦living room⟧'], de: ['Wohnzimmer', 'im ⟦Wohnzimmer⟧'], fr: ['Salon', 'dans le ⟦salon⟧'], es: ['Salón', 'en el ⟦salón⟧'] },
-  'Camera': { it: ['Camera', 'in ⟦camera⟧'], en: ['Bedroom', 'in the ⟦bedroom⟧'], de: ['Schlafzimmer', 'im ⟦Schlafzimmer⟧'], fr: ['Chambre', 'dans la ⟦chambre⟧'], es: ['Dormitorio', 'en el ⟦dormitorio⟧'] },
-  'Bagno': { it: ['Bagno', 'in ⟦bagno⟧'], en: ['Bathroom', 'in the ⟦bathroom⟧'], de: ['Bad', 'im ⟦Bad⟧'], fr: ['Salle de bain', 'dans la ⟦salle de bain⟧'], es: ['Baño', 'en el ⟦baño⟧'] },
-  'Giardino': { it: ['Giardino', 'in ⟦giardino⟧'], en: ['Garden', 'in the ⟦garden⟧'], de: ['Garten', 'im ⟦Garten⟧'], fr: ['Jardin', 'dans le ⟦jardin⟧'], es: ['Jardín', 'en el ⟦jardín⟧'] },
-  'Orto': { it: ['Orto', "nell'⟦orto⟧"], en: ['Vegetable patch', 'in the ⟦vegetable patch⟧'], de: ['Gemüsegarten', 'im ⟦Gemüsegarten⟧'], fr: ['Potager', 'dans le ⟦potager⟧'], es: ['Huerto', 'en el ⟦huerto⟧'] },
-  'Portico': { it: ['Portico', 'sotto il ⟦portico⟧'], en: ['Porch', 'on the ⟦porch⟧'], de: ['Veranda', 'auf der ⟦Veranda⟧'], fr: ['Porche', 'sous le ⟦porche⟧'], es: ['Porche', 'en el ⟦porche⟧'] },
-  'Serra': { it: ['Serra', 'nella ⟦serra⟧'], en: ['Greenhouse', 'in the ⟦greenhouse⟧'], de: ['Gewächshaus', 'im ⟦Gewächshaus⟧'], fr: ['Serre', 'dans la ⟦serre⟧'], es: ['Invernadero', 'en el ⟦invernadero⟧'] },
-  'Forno': { it: ['Forno', 'al ⟦forno⟧'], en: ['Oven corner', 'by the ⟦oven⟧'], de: ['Ofenecke', 'am ⟦Ofen⟧'], fr: ['Coin du four', 'près du ⟦four⟧'], es: ['Rincón del horno', 'junto al ⟦horno⟧'] },
-  'Sala': { it: ['Sala', 'in ⟦sala⟧'], en: ['Dining room', 'in the ⟦dining room⟧'], de: ['Gastraum', 'im ⟦Gastraum⟧'], fr: ['Salle', 'dans la ⟦salle⟧'], es: ['Comedor', 'en el ⟦comedor⟧'] },
-  'Dispensa': { it: ['Dispensa', 'in ⟦dispensa⟧'], en: ['Pantry', 'in the ⟦pantry⟧'], de: ['Vorratskammer', 'in der ⟦Vorratskammer⟧'], fr: ['Garde-manger', 'dans le ⟦garde-manger⟧'], es: ['Despensa', 'en la ⟦despensa⟧'] },
-  'Aula': { it: ['Aula', 'in ⟦aula⟧'], en: ['Classroom', 'in the ⟦classroom⟧'], de: ['Klassenzimmer', 'im ⟦Klassenzimmer⟧'], fr: ['Salle de classe', 'dans la ⟦salle de classe⟧'], es: ['Aula', 'en el ⟦aula⟧'] },
-  'Biblioteca': { it: ['Biblioteca', 'in ⟦biblioteca⟧'], en: ['Library', 'in the ⟦library⟧'], de: ['Bibliothek', 'in der ⟦Bibliothek⟧'], fr: ['Bibliothèque', 'dans la ⟦bibliothèque⟧'], es: ['Biblioteca', 'en la ⟦biblioteca⟧'] },
-  'Corridoio': { it: ['Corridoio', 'nel ⟦corridoio⟧'], en: ['Corridor', 'in the ⟦corridor⟧'], de: ['Flur', 'im ⟦Flur⟧'], fr: ['Couloir', 'dans le ⟦couloir⟧'], es: ['Pasillo', 'en el ⟦pasillo⟧'] },
-  'Palestra': { it: ['Palestra', 'in ⟦palestra⟧'], en: ['Gym', 'in the ⟦gym⟧'], de: ['Turnhalle', 'in der ⟦Turnhalle⟧'], fr: ['Gymnase', 'dans le ⟦gymnase⟧'], es: ['Gimnasio', 'en el ⟦gimnasio⟧'] },
-  'Binario': { it: ['Binario', 'sul ⟦binario⟧'], en: ['Platform', 'on the ⟦platform⟧'], de: ['Bahnsteig', 'am ⟦Bahnsteig⟧'], fr: ['Quai', 'sur le ⟦quai⟧'], es: ['Andén', 'en el ⟦andén⟧'] },
-  'Bar': { it: ['Bar', 'al ⟦bar⟧'], en: ['Café', 'in the ⟦café⟧'], de: ['Café', 'im ⟦Café⟧'], fr: ['Café', 'au ⟦café⟧'], es: ['Cafetería', 'en la ⟦cafetería⟧'] },
-  "Sala d'attesa": { it: ["Sala d'attesa", "in ⟦sala d'attesa⟧"], en: ['Waiting room', 'in the ⟦waiting room⟧'], de: ['Wartesaal', 'im ⟦Wartesaal⟧'], fr: ["Salle d'attente", "dans la ⟦salle d'attente⟧"], es: ['Sala de espera', 'en la ⟦sala de espera⟧'] },
-  'Biglietteria': { it: ['Biglietteria', 'in ⟦biglietteria⟧'], en: ['Ticket office', 'at the ⟦ticket office⟧'], de: ['Fahrkartenschalter', 'am ⟦Fahrkartenschalter⟧'], fr: ['Guichet', 'au ⟦guichet⟧'], es: ['Taquilla', 'en la ⟦taquilla⟧'] },
-  'Torre': { it: ['Torre', 'nella ⟦torre⟧'], en: ['Tower', 'in the ⟦tower⟧'], de: ['Turm', 'im ⟦Turm⟧'], fr: ['Tour', 'dans la ⟦tour⟧'], es: ['Torre', 'en la ⟦torre⟧'] },
-  'Cappella': { it: ['Cappella', 'nella ⟦cappella⟧'], en: ['Chapel', 'in the ⟦chapel⟧'], de: ['Kapelle', 'in der ⟦Kapelle⟧'], fr: ['Chapelle', 'dans la ⟦chapelle⟧'], es: ['Capilla', 'en la ⟦capilla⟧'] },
-  'Salone': { it: ['Salone', 'nel ⟦salone⟧'], en: ['Great hall', 'in the ⟦great hall⟧'], de: ['Rittersaal', 'im ⟦Rittersaal⟧'], fr: ['Grande salle', 'dans la ⟦grande salle⟧'], es: ['Gran salón', 'en el ⟦gran salón⟧'] },
-  'Cantina': { it: ['Cantina', 'in ⟦cantina⟧'], en: ['Cellar', 'in the ⟦cellar⟧'], de: ['Keller', 'im ⟦Keller⟧'], fr: ['Cave', 'dans la ⟦cave⟧'], es: ['Bodega', 'en la ⟦bodega⟧'] },
-  'Lago': { it: ['Lago', 'al ⟦lago⟧'], en: ['Lake', 'at the ⟦lake⟧'], de: ['See', 'am ⟦See⟧'], fr: ['Lac', 'au ⟦lac⟧'], es: ['Lago', 'en el ⟦lago⟧'] },
-  'Bosco': { it: ['Bosco', 'nel ⟦bosco⟧'], en: ['Woods', 'in the ⟦woods⟧'], de: ['Wald', 'im ⟦Wald⟧'], fr: ['Bois', 'dans le ⟦bois⟧'], es: ['Bosque', 'en el ⟦bosque⟧'] },
-  'Falò': { it: ['Falò', 'al ⟦falò⟧'], en: ['Campfire', 'at the ⟦campfire⟧'], de: ['Lagerfeuer', 'am ⟦Lagerfeuer⟧'], fr: ['Feu de camp', 'près du ⟦feu de camp⟧'], es: ['Hoguera', 'junto a la ⟦hoguera⟧'] },
-  'Tenda': { it: ['Tenda', 'in ⟦tenda⟧'], en: ['Tent', 'in the ⟦tent⟧'], de: ['Zelt', 'im ⟦Zelt⟧'], fr: ['Tente', 'dans la ⟦tente⟧'], es: ['Tienda de campaña', 'en la ⟦tienda de campaña⟧'] },
-  'Prato': { it: ['Prato', 'sul ⟦prato⟧'], en: ['Meadow', 'in the ⟦meadow⟧'], de: ['Wiese', 'auf der ⟦Wiese⟧'], fr: ['Pré', 'dans le ⟦pré⟧'], es: ['Prado', 'en el ⟦prado⟧'] },
-  'Roulotte': { it: ['Roulotte', 'nella ⟦roulotte⟧'], en: ['Caravan', 'in the ⟦caravan⟧'], de: ['Wohnwagen', 'im ⟦Wohnwagen⟧'], fr: ['Caravane', 'dans la ⟦caravane⟧'], es: ['Caravana', 'en la ⟦caravana⟧'] },
-  'Ingresso': { it: ['Ingresso', "all'⟦ingresso⟧"], en: ['Entrance', 'at the ⟦entrance⟧'], de: ['Eingang', 'am ⟦Eingang⟧'], fr: ['Entrée', "à l'⟦entrée⟧"], es: ['Entrada', 'en la ⟦entrada⟧'] },
-  'Sala egizia': { it: ['Sala egizia', 'nella ⟦sala egizia⟧'], en: ['Egyptian room', 'in the ⟦Egyptian room⟧'], de: ['Ägyptischer Saal', 'im ⟦Ägyptischen Saal⟧'], fr: ['Salle égyptienne', 'dans la ⟦salle égyptienne⟧'], es: ['Sala egipcia', 'en la ⟦sala egipcia⟧'] },
-  'Sala dei quadri': { it: ['Sala dei quadri', 'nella ⟦sala dei quadri⟧'], en: ['Painting gallery', 'in the ⟦painting gallery⟧'], de: ['Gemäldesaal', 'im ⟦Gemäldesaal⟧'], fr: ['Galerie de peinture', 'dans la ⟦galerie de peinture⟧'], es: ['Sala de pinturas', 'en la ⟦sala de pinturas⟧'] },
-  'Cortile': { it: ['Cortile', 'in ⟦cortile⟧'], en: ['Courtyard', 'in the ⟦courtyard⟧'], de: ['Innenhof', 'im ⟦Innenhof⟧'], fr: ['Cour', 'dans la ⟦cour⟧'], es: ['Patio', 'en el ⟦patio⟧'] },
-  'Magazzino': { it: ['Magazzino', 'in ⟦magazzino⟧'], en: ['Storeroom', 'in the ⟦storeroom⟧'], de: ['Lager', 'im ⟦Lager⟧'], fr: ['Réserve', 'dans la ⟦réserve⟧'], es: ['Almacén', 'en el ⟦almacén⟧'] },
-  'Negozio': { it: ['Negozio', 'nel ⟦negozio⟧'], en: ['Gift shop', 'in the ⟦gift shop⟧'], de: ['Museumsladen', 'im ⟦Museumsladen⟧'], fr: ['Boutique', 'dans la ⟦boutique⟧'], es: ['Tienda', 'en la ⟦tienda⟧'] }
-};
-
-/* objects: n = word with article (glossary), on/by = phrase used in clues */
-var OBJL = {
-  it: { sedia: ['la sedia', 'su una ⟦sedia⟧'], divano: ['il divano', 'su un ⟦divano⟧'], tappeto: ['il tappeto', 'su un ⟦tappeto⟧'], letto: ['il letto', 'su un ⟦letto⟧'],
-        tavolo: ['il tavolo', '⟦accanto⟧ a un ⟦tavolo⟧'], scaffale: ['lo scaffale', '⟦accanto⟧ a uno ⟦scaffale⟧'], albero: ["l'albero", '⟦accanto⟧ a un ⟦albero⟧'], cespuglio: ['il cespuglio', '⟦accanto⟧ a un ⟦cespuglio⟧'],
-        cassa: ['la cassa', '⟦accanto⟧ a una ⟦cassa⟧'], vaso: ['il vaso', '⟦accanto⟧ a un ⟦vaso⟧'], pianta: ['la pianta', '⟦accanto⟧ a una ⟦pianta⟧'], masso: ['il masso', '⟦accanto⟧ a un ⟦masso⟧'],
-        frigo: ['il frigorifero', '⟦accanto⟧ a un ⟦frigorifero⟧'], forno: ['il forno', '⟦accanto⟧ a un ⟦forno⟧'] },
-  en: { sedia: ['the chair', 'on a ⟦chair⟧'], divano: ['the sofa', 'on a ⟦sofa⟧'], tappeto: ['the rug', 'on a ⟦rug⟧'], letto: ['the bed', 'on a ⟦bed⟧'],
-        tavolo: ['the table', '⟦next to⟧ a ⟦table⟧'], scaffale: ['the bookshelf', '⟦next to⟧ a ⟦bookshelf⟧'], albero: ['the tree', '⟦next to⟧ a ⟦tree⟧'], cespuglio: ['the bush', '⟦next to⟧ a ⟦bush⟧'],
-        cassa: ['the crate', '⟦next to⟧ a ⟦crate⟧'], vaso: ['the vase', '⟦next to⟧ a ⟦vase⟧'], pianta: ['the plant', '⟦next to⟧ a ⟦plant⟧'], masso: ['the boulder', '⟦next to⟧ a ⟦boulder⟧'],
-        frigo: ['the fridge', '⟦next to⟧ a ⟦fridge⟧'], forno: ['the oven', '⟦next to⟧ an ⟦oven⟧'] },
-  de: { sedia: ['der Stuhl', 'auf einem ⟦Stuhl⟧'], divano: ['das Sofa', 'auf einem ⟦Sofa⟧'], tappeto: ['der Teppich', 'auf einem ⟦Teppich⟧'], letto: ['das Bett', 'auf einem ⟦Bett⟧'],
-        tavolo: ['der Tisch', '⟦neben⟧ einem ⟦Tisch⟧'], scaffale: ['das Regal', '⟦neben⟧ einem ⟦Regal⟧'], albero: ['der Baum', '⟦neben⟧ einem ⟦Baum⟧'], cespuglio: ['der Busch', '⟦neben⟧ einem ⟦Busch⟧'],
-        cassa: ['die Kiste', '⟦neben⟧ einer ⟦Kiste⟧'], vaso: ['die Vase', '⟦neben⟧ einer ⟦Vase⟧'], pianta: ['die Pflanze', '⟦neben⟧ einer ⟦Pflanze⟧'], masso: ['der Felsbrocken', '⟦neben⟧ einem ⟦Felsbrocken⟧'],
-        frigo: ['der Kühlschrank', '⟦neben⟧ einem ⟦Kühlschrank⟧'], forno: ['der Ofen', '⟦neben⟧ einem ⟦Ofen⟧'] },
-  fr: { sedia: ['la chaise', 'sur une ⟦chaise⟧'], divano: ['le canapé', 'sur un ⟦canapé⟧'], tappeto: ['le tapis', 'sur un ⟦tapis⟧'], letto: ['le lit', 'sur un ⟦lit⟧'],
-        tavolo: ['la table', "⟦à côté⟧ d'une ⟦table⟧"], scaffale: ["l'étagère", "⟦à côté⟧ d'une ⟦étagère⟧"], albero: ["l'arbre", "⟦à côté⟧ d'un ⟦arbre⟧"], cespuglio: ['le buisson', "⟦à côté⟧ d'un ⟦buisson⟧"],
-        cassa: ['la caisse', "⟦à côté⟧ d'une ⟦caisse⟧"], vaso: ['le vase', "⟦à côté⟧ d'un ⟦vase⟧"], pianta: ['la plante', "⟦à côté⟧ d'une ⟦plante⟧"], masso: ['le rocher', "⟦à côté⟧ d'un ⟦rocher⟧"],
-        frigo: ['le frigo', "⟦à côté⟧ d'un ⟦frigo⟧"], forno: ['le four', "⟦à côté⟧ d'un ⟦four⟧"] },
-  es: { sedia: ['la silla', 'en una ⟦silla⟧'], divano: ['el sofá', 'en un ⟦sofá⟧'], tappeto: ['la alfombra', 'sobre una ⟦alfombra⟧'], letto: ['la cama', 'en una ⟦cama⟧'],
-        tavolo: ['la mesa', '⟦junto a⟧ una ⟦mesa⟧'], scaffale: ['la estantería', '⟦junto a⟧ una ⟦estantería⟧'], albero: ['el árbol', '⟦junto a⟧ un ⟦árbol⟧'], cespuglio: ['el arbusto', '⟦junto a⟧ un ⟦arbusto⟧'],
-        cassa: ['la caja', '⟦junto a⟧ una ⟦caja⟧'], vaso: ['el jarrón', '⟦junto a⟧ un ⟦jarrón⟧'], pianta: ['la planta', '⟦junto a⟧ una ⟦planta⟧'], masso: ['la roca', '⟦junto a⟧ una ⟦roca⟧'],
-        frigo: ['la nevera', '⟦junto a⟧ una ⟦nevera⟧'], forno: ['el horno', '⟦junto a⟧ un ⟦horno⟧'] }
-};
-var SIT = { sedia: 1, divano: 1 };
 var ORD = {
   it: { f: ['prima', 'seconda', 'terza', 'quarta', 'quinta', 'sesta', 'settima'], last: 'ultima' },
   en: { f: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'], last: 'last' },
@@ -160,26 +97,6 @@ var CLUE = {
     } }
 };
 
-/* case titles and one-liners */
-var CASEL = {
-  'cucina-nonna': { en: ["At Grandma's", "Grandma's cake has vanished... and so has Mr Rossi."], de: ['Bei Oma', 'Omas Kuchen ist verschwunden... und Herr Rossi auch.'], fr: ['Chez mamie', 'Le gâteau de mamie a disparu... et monsieur Rossi aussi.'], es: ['En casa de la abuela', 'La tarta de la abuela ha desaparecido... y el señor Rossi también.'] },
-  'giardino': { en: ['In the garden', 'Someone trampled the roses. Then things got worse.'], de: ['Im Garten', 'Jemand ist auf die Rosen getreten. Dann wurde es schlimmer.'], fr: ['Au jardin', "Quelqu'un a piétiné les roses. Puis le pire est arrivé."], es: ['En el jardín', 'Alguien pisoteó las rosas. Y luego pasó lo peor.'] },
-  'panetteria': { en: ['The night of the oven', 'The bread is burnt. And the baker no longer answers.'], de: ['Die Nacht des Ofens', 'Das Brot ist verbrannt. Und der Bäcker antwortet nicht mehr.'], fr: ['La nuit du four', 'Le pain a brûlé. Et le boulanger ne répond plus.'], es: ['La noche del horno', 'El pan se ha quemado. Y el panadero ya no responde.'] },
-  'barca': { en: ['Last crossing', 'The sea was calm. The captain, much less so.'], de: ['Letzte Überfahrt', 'Die See war ruhig. Der Kapitän deutlich weniger.'], fr: ['Dernière traversée', 'La mer était calme. Le capitaine beaucoup moins.'], es: ['Última travesía', 'El mar estaba calmado. El capitán, mucho menos.'] },
-  'pizzeria': { en: ['At the pizzeria', 'Margherita for everyone, except the chef.'], de: ['In der Pizzeria', 'Margherita für alle, nur nicht für den Koch.'], fr: ['À la pizzeria', 'Une margherita pour tout le monde, sauf pour le cuisinier.'], es: ['En la pizzería', 'Margarita para todos, menos para el cocinero.'] },
-  'scuola': { en: ['At school', 'The bell rings. One teacher will not get up again.'], de: ['In der Schule', 'Es klingelt. Ein Lehrer steht nicht mehr auf.'], fr: ["À l'école", 'La cloche sonne. Un professeur ne se relèvera pas.'], es: ['En el colegio', 'Suena el timbre. Un profesor no volverá a levantarse.'] },
-  'teatro': { en: ['Behind the curtain', 'The show is over. The lead actor is not.'], de: ['Hinter dem Vorhang', 'Die Vorstellung ist vorbei. Der Hauptdarsteller nicht.'], fr: ['Derrière le rideau', 'Le spectacle est fini. Le protagoniste non.'], es: ['Detrás del telón', 'La función ha terminado. El protagonista no.'] },
-  'piscina': { en: ['Poolside', 'Someone pushed the lifeguard. Nobody saw anything.'], de: ['Am Beckenrand', 'Jemand hat den Bademeister geschubst. Niemand hat etwas gesehen.'], fr: ['Au bord de la piscine', "Quelqu'un a poussé le maître-nageur. Personne n'a rien vu."], es: ['Al borde de la piscina', 'Alguien empujó al socorrista. Nadie vio nada.'] },
-  'stazione': { en: ['At the station', 'The eight o’clock train left on time. The stationmaster did not.'], de: ['Am Bahnhof', 'Der Acht-Uhr-Zug fuhr pünktlich ab. Der Bahnhofsvorsteher nicht.'], fr: ['À la gare', 'Le train de huit heures est parti à l’heure. Le chef de gare, non.'], es: ['En la estación', 'El tren de las ocho salió puntual. El jefe de estación, no.'] },
-  'castello': { en: ['In the castle', 'The castle ghost swears it knows nothing.'], de: ['Im Schloss', 'Das Schlossgespenst schwört, nichts zu wissen.'], fr: ['Au château', 'Le fantôme du château jure ne rien savoir.'], es: ['En el castillo', 'El fantasma del castillo jura que no sabe nada.'] },
-  'ospedale': { en: ['Night shift', "The doctor didn't finish his rounds. Someone finished them for him."], de: ['Nachtschicht', 'Der Arzt hat seine Runde nicht beendet. Jemand hat sie für ihn beendet.'], fr: ['Garde de nuit', "Le médecin n'a pas fini sa tournée. Quelqu'un l'a finie pour lui."], es: ['Turno de noche', 'El médico no terminó su ronda. Alguien la terminó por él.'] },
-  'treno': { en: ['Last stop', 'The train stopped. So did the conductor.'], de: ['Letzter Halt', 'Der Zug hielt an. Der Schaffner auch.'], fr: ['Dernier arrêt', "Le train s'est arrêté. Le contrôleur aussi."], es: ['Última parada', 'El tren se detuvo. El revisor también.'] },
-  'campeggio': { en: ['At the campsite', 'Marshmallows on the fire, stars in the sky, and a mystery in the tent.'], de: ['Auf dem Campingplatz', 'Marshmallows am Feuer, Sterne am Himmel und ein Rätsel im Zelt.'], fr: ['Au camping', 'Des marshmallows sur le feu, des étoiles dans le ciel, et un mystère sous la tente.'], es: ['En el camping', 'Nubes en el fuego, estrellas en el cielo y un misterio en la tienda.'] },
-  'museo': { en: ['At the museum', 'Among statues and paintings, only one thing is off: the guard.'], de: ['Im Museum', 'Zwischen Statuen und Gemälden stimmt nur eines nicht: der Wächter.'], fr: ['Au musée', 'Entre statues et tableaux, une seule chose cloche : le gardien.'], es: ['En el museo', 'Entre estatuas y cuadros, solo una cosa no encaja: el vigilante.'] },
-  'spiaggia': { en: ['The last dive', 'The lifeguard blew his whistle once too often.'], de: ['Der letzte Sprung', 'Der Bademeister hat einmal zu oft gepfiffen.'], fr: ['Le dernier plongeon', 'Le maître-nageur a sifflé une fois de trop.'], es: ['El último salto', 'El socorrista pitó una vez de más.'] },
-  'villa': { en: ['The villa party', 'The music stopped. The host said goodbye to no one.'], de: ['Das Fest in der Villa', 'Die Musik ist verstummt. Der Hausherr hat niemanden verabschiedet.'], fr: ['La fête à la villa', "La musique s'est arrêtée. Le maître de maison n'a salué personne."], es: ['La fiesta en la villa', 'La música se acabó. El dueño de la casa no se despidió de nadie.'] }
-};
-
 /* interface text */
 var UI = {
   it: { tag: 'Gialli logici', eyebrow: 'Dossier · {n} casi', h1a: 'Chi è ', h1b: 'stato?', lead: 'Leggi gli indizi in italiano. Metti ogni sospettato sulla mappa. Trova chi era da solo con la vittima.',
@@ -248,4 +165,4 @@ var UI = {
     pigeon: 'Tranquilos, yo me encargo… bueno, tú.',
     gl: { row: 'la fila', col: 'la columna', by: 'junto a', alone: 'solo · sola', only: 'la única persona', with: 'la misma habitación', dir: 'norte · sur · este · oeste', corner: 'la esquina', not: 'no estaba', victim: 'la víctima', killer: 'el asesino' } }
 };
-if (typeof module !== 'undefined') module.exports = { LANGS: LANGS, ROOMS: ROOMS, OBJL: OBJL, ORD: ORD, CLUE: CLUE, CASEL: CASEL, UI: UI };
+if (typeof module !== 'undefined') module.exports = { LANGS: LANGS, ORD: ORD, CLUE: CLUE, UI: UI };

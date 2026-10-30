@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Validate cases and translations
-        run: node tools/verify.mjs
+      - name: Validate the giallo pack
+        run: node tools/verify.mjs --pack giallo
       - name: Check the built site is up to date
-        run: python3 build.py --check
+        run: python3 build.py --pack giallo --check
       - uses: actions/configure-pages@v5
         with:
           enablement: true

@@ -1,0 +1,10 @@
+{
+  "id": "giallo",
+  "name": "Giallo a Quadretti",
+  "description": "Gialli logici per imparare le lingue: italiano, English, Deutsch, français, español.",
+  "lang": "it",
+  "defaultLang": "it",
+  "themeColor": "#FFE14D",
+  "fonts": "https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Courier+Prime:wght@400;700&family=Gochi+Hand&display=swap",
+  "version": 1
+}

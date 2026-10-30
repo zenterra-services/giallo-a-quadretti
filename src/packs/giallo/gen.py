@@ -342,7 +342,7 @@ def true_clues(m,sol,i,level):
     out.append(dict(t='row',v=r)); out.append(dict(t='col',v=c))
     if r in (0,N-1) and c in (0,N-1): out.append(dict(t='corner'))
     if level>=2:
-        for R in set(room(*x) for x in occ):
+        for R in sorted(set(room(*x) for x in occ)):
             if R!=room(r,c): out.append(dict(t='notroom',v=R))
         if not any(j!=i and room(*sol[j])==room(r,c) for j in range(P)): out.append(dict(t='alone'))
         for j in range(P-1):

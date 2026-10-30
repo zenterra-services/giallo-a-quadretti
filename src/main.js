@@ -1,26 +1,18 @@
 const A = window.GQArt;
-const OBJ = {
- sedia:{occ:1,hu:'szék'}, divano:{occ:1,hu:'kanapé'}, tappeto:{occ:1,hu:'szőnyeg'}, letto:{occ:1,hu:'ágy'},
- tavolo:{hu:'asztal'}, scaffale:{hu:'polc'}, albero:{hu:'fa'}, cespuglio:{hu:'bokor'}, cassa:{hu:'láda'}, vaso:{hu:'váza'},
- pianta:{hu:'cserepes növény'}, masso:{hu:'kőszikla'}, frigo:{hu:'hűtő'}, forno:{hu:'kemence'}
-};
-const HU_ON={sedia:'egy széken ült',divano:'egy kanapén ült',tappeto:'egy szőnyegen állt',letto:'egy ágyon volt'};
-const HU_BY={tavolo:'egy asztal',scaffale:'egy polc',albero:'egy fa',cespuglio:'egy bokor',cassa:'egy láda',vaso:'egy váza',pianta:'egy cserepes növény',masso:'egy kőszikla',frigo:'egy hűtő',forno:'egy kemence'};
-const ORD_HU=['első','második','harmadik','negyedik','ötödik','hatodik','hetedik'];
-const HU_TIPS=['Kezdd azzal, akinek pontos nyoma van, például egy sor vagy egy szoba.','Soronként és oszloponként egy ember. Jelöld ✕-szel a lehetetlen mezőket.','Ha egy sorban csak egy szabad mező van, ott valakinek állnia kell.','A „mellett” csak ugyanabban a szobában érvényes. A fal elválaszt!','A végén az áldozat az utolsó szabad mezőre kerül.'];
-const HU_RULES=['Soronként és oszloponként pontosan egy ember.','Széken, kanapén, ágyon és szőnyegen lehet állni. Más tárgyon nem.','„Mellett” = közvetlenül fölötte, alatta, balra vagy jobbra, ugyanabban a szobában.','Észak fent, dél lent, kelet jobbra, nyugat balra.','Az áldozat az utolsó szabad mezőn van. Aki egyedül volt vele, az a gyilkos.'];
-const BGS=['yellow','pink','teal','orange','green','blue','yellow'];
-const PCOL=['#FFE14D','#FF48B0','#7FD1C9','#FF6C2F','#5FD39A','#8AA6F2'];
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const huArt=w=>/^[aeiouáéíóöőúüű]/i.test(w)?'az':'a';
 const plain=s=>String(s).replace(/[⟦⟧]/g,'');
 const fill=(s,v)=>String(s).replace(/\{(\w)\}/g,(m,k)=>v[k]!=null?v[k]:m);
-function lookOf(name,i){ return LOOKS[name] || [i%6,'short','d',[],'blue','smile']; }
+function lookOf(name,i){ return LOOKS[name] || (typeof FALLBACK_LOOK!=='undefined'?FALLBACK_LOOK:[i%6,'short','d',[],'blue','smile']); }
 
-const store={get(k,d){try{const v=localStorage.getItem('gq:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
-             set(k,v){try{localStorage.setItem('gq:'+k,JSON.stringify(v))}catch(e){}}};
-let LANG=store.get('lang','it'); if(!LANGS[LANG]) LANG='it';
-const T=k=>UI[LANG][k];
+/* Keep progress, settings and rooms separate when several style packs share an origin. */
+const STORE_NS=PACK.id==='giallo'?'':PACK.id+':';
+const NET_NS=PACK.id==='giallo'?'':PACK.id+'-';
+const roomChannel=code=>'gq-'+NET_NS+code;
+const store={get(k,d){try{const v=localStorage.getItem('gq:'+STORE_NS+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+             set(k,v){try{localStorage.setItem('gq:'+STORE_NS+k,JSON.stringify(v))}catch(e){}}};
+let LANG=store.get('lang',PACK.defaultLang||'it'); if(!LANGS[LANG]) LANG=(PACK.defaultLang&&LANGS[PACK.defaultLang])?PACK.defaultLang:'it';
+const T=k=>{ const p=(typeof PACK_UI!=='undefined')&&PACK_UI[LANG]; return p&&p[k]!=null?p[k]:UI[LANG][k]; };
 
 /* ---------- speech ---------- */
 const canSpeak = typeof window!=='undefined' && 'speechSynthesis' in window;
@@ -70,7 +62,7 @@ function makeNet(){
 function supaNet(cfg){
   const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey,{realtime:{params:{eventsPerSecond:20}}});
   return { join(code,me,h){
-    const ch=client.channel('gq-'+code,{config:{broadcast:{self:false},presence:{key:me.id}}});
+    const ch=client.channel(roomChannel(code),{config:{broadcast:{self:false},presence:{key:me.id}}});
     ch.on('broadcast',{event:'m'},({payload})=>h.onMsg(payload));
     ch.on('presence',{event:'sync'},()=>{ const st=ch.presenceState(), list=[]; for(const k in st){ const m=st[k]&&st[k][0]; if(m&&m.id) list.push({id:m.id,name:m.name,lang:m.lang,joined:m.joined}); } h.onPeers(list); });
     ch.subscribe(async status=>{ if(status==='SUBSCRIBED'){ try{ await ch.track(me); }catch(e){} h.onReady(); } else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT') h.onError(status); });
@@ -79,7 +71,7 @@ function supaNet(cfg){
 }
 function localNet(){
   return { join(code,me,h){
-    const bc=new BroadcastChannel('gq-'+code); let self=me; const seen={};
+    const bc=new BroadcastChannel(roomChannel(code)); let self=me; const seen={};
     const peers=()=>{ const now=Date.now(); const l=[self]; for(const id in seen){ if(now-seen[id].t<4000) l.push(seen[id].m); } h.onPeers(l); };
     bc.onmessage=e=>{ const m=e.data; if(m&&m.__pres){ const known=!!seen[m.me.id]; seen[m.me.id]={m:m.me,t:Date.now()}; if(!known) peers(); return; } if(m&&m.__bye){ delete seen[m.id]; peers(); return; } h.onMsg(m); };
     const beat=()=>bc.postMessage({__pres:1,me:self});
@@ -344,9 +336,9 @@ function langPicker(onPick){
 }
 function topbar(){
   return h('div',{class:'top'},
-    h('button',{class:'brand',onclick:()=>{ if(S.view!=='hub') goHub(); },'aria-label':'Giallo a Quadretti'},
+    h('button',{class:'brand',onclick:()=>{ if(S.view!=='hub') goHub(); },'aria-label':PACK.name},
       h('span',{class:'mark','aria-hidden':'true'},...[0,1,2,3,4,5,6,7,8].map(i=>h('i',{class:i===5?'v':''}))),
-      h('span',{}, h('h1',{},'Giallo a Quadretti'), h('small',{},T('tag')+' · '+LANGS[LANG].learn))),
+      h('span',{}, h('h1',{},PACK.name), h('small',{},T('tag')+' · '+LANGS[LANG].learn))),
     h('div',{class:'spacer'}),
     h('button',{class:'pill','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);render()}},'HU ', S.huAll?'✓':'–'));
 }
@@ -399,7 +391,7 @@ function renderHub(app){
   app.append(h('div',{class:'objs'},
     h('div',{class:'objbox yes'},h('h4',{},'✓ '+T('yes')),h('div',{class:'ogrid'},...occ.map(oi))),
     h('div',{class:'objbox no'},h('h4',{},'✕ '+T('no')),h('div',{class:'ogrid'},...blk.map(oi)))));
-  app.append(h('footer',{},'Giallo a Quadretti · '+Object.values(LANGS).map(l=>l.name).join(' · ')));
+  app.append(h('footer',{},PACK.name+' · '+Object.values(LANGS).map(l=>l.name).join(' · ')));
 }
 function caseGrid(onPick){
   const grid=h('div',{class:'cases'});
@@ -426,7 +418,7 @@ async function shareInvite(){
   if(!S.coop) return;
   const url=location.href.split('#')[0]+'#r-'+S.coop.code;
   try{ await navigator.clipboard.writeText(url); toast(T('copied')); return; }catch(e){}
-  if(navigator.share){ try{ await navigator.share({title:'Giallo a Quadretti',text:T('invite'),url}); return; }catch(e){} }
+  if(navigator.share){ try{ await navigator.share({title:PACK.name,text:T('invite'),url}); return; }catch(e){} }
   toast(url);
 }
 function renderLobby(app){

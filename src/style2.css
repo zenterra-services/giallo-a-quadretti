@@ -1,25 +1,5 @@
 <style>
 /* Layout: a riso-printed detective zine on graph paper — die-cut suspect stickers left, blueprint floor plan right */
-:root{
-  --paper:#F2F3EE; --card:#FFFFFF; --ink:#1D1D24; --muted:#565A68; --grid:rgba(50,85,164,.10);
-  --blue:#3255A4; --pink:#FF48B0; --yellow:#FFE14D; --red:#C62A26; --ok:#00804A; --hu:#2C4E9E;
-  --on-yellow:#1D1D24; --wall:#1D1D24; --tape:rgba(255,72,176,.55); --shadow:#1D1D24;
-  --r0:#FFF0A0; --r1:#FFD3EA; --r2:#CFDBF5; --r3:#C7EEDA; --r4:#FFD9C7; --r5:#C6E8E8;
-  --display:"Dela Gothic One","Impact","Arial Black",sans-serif;
-  --body:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --type:"Courier Prime","Courier New",ui-monospace,monospace;
-  --hand:"Gochi Hand","Comic Sans MS","Bradley Hand",cursive;
-}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#15161C; --card:#20222B; --ink:#F1F1EA; --muted:#A9ACBA; --grid:rgba(125,156,240,.09);
-  --blue:#8AA6F2; --pink:#FF6FC1; --yellow:#FFE14D; --red:#FF6A63; --ok:#4FD18E; --hu:#9DB6F5;
-  --on-yellow:#1D1D24; --wall:#F1F1EA; --tape:rgba(255,111,193,.45); --shadow:#000000;
-  --r0:#5A5126; --r1:#5A2A4C; --r2:#2E3F6B; --r3:#22503C; --r4:#5E3A26; --r5:#205252; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --paper:#15161C; --card:#20222B; --ink:#F1F1EA; --muted:#A9ACBA; --grid:rgba(125,156,240,.09);
-  --blue:#8AA6F2; --pink:#FF6FC1; --yellow:#FFE14D; --red:#FF6A63; --ok:#4FD18E; --hu:#9DB6F5;
-  --on-yellow:#1D1D24; --wall:#F1F1EA; --tape:rgba(255,111,193,.45); --shadow:#000000;
-  --r0:#5A5126; --r1:#5A2A4C; --r2:#2E3F6B; --r3:#22503C; --r4:#5E3A26; --r5:#205252; color-scheme:dark }
 html,body{background:var(--paper);color:var(--ink)}
 body{font:16px/1.45 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 48px;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}

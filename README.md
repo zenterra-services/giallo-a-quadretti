@@ -19,22 +19,38 @@ Co-op uses Supabase Realtime broadcast and presence channels. No database tables
 
 Co-op state merges per-person, so two detectives can place different suspects at the same time without losing a move. Clue ownership is part of the room state and is handed over deliberately when someone joins or leaves.
 
+## Style packs
+
+The game is an engine plus a **style pack**. A pack owns everything a specific graphic/story style needs: SVG art, cast, vocabulary, cases, theme, icon and case generator. The current pack is `giallo` — an Italian riso-printed detective zine.
+
+```
+src/packs/giallo/
+  pack.json  art.js  looks.js  vocab.js  casel.js  ui.js
+  theme.js   theme.css  hu.js  cases.json  gen.py  icon.svg
+```
+
+The engine, clue grammar and shared UI live in `src/main.js`, `src/i18n.js`, `src/style2.css` and `src/extra.css`. A new style is a new folder; see [src/packs/README.md](src/packs/README.md) for the full contract and how to add one.
+
 ## Layout
 
 - `site/` is what GitHub Pages serves (`index.html` is generated).
-- `src/` holds the sources: `art.js` (all SVG art), `i18n.js` (languages and clue grammar), `main.js` (game, co-op, phone layout), `cases.json` (generated puzzles), `gen.py` (case generator), `looks.js` (suspect portraits).
-- `tools/verify.mjs` validates every case: clue truth, unique solution, translations, art and UI strings.
-- `build.py` assembles `site/index.html` and `dist-claude.html`.
+- `src/packs/<id>/` holds the style-specific sources.
+- `src/main.js`, `src/i18n.js`, `src/style2.css`, `src/extra.css` are shared.
+- `tools/verify.mjs` validates a pack: clue truth, unique solutions, translations, vocabulary, cast and art coverage, UI strings.
+- `build.py` assembles one pack into `site/index.html` and `dist-claude.html`.
 
 ## Development
 
 ```sh
-python build.py            # rebuild site/index.html and dist-claude.html
-python build.py --check    # fail if the committed site/ is stale
-node tools/verify.mjs      # validate all cases and translations
-python src/gen.py          # regenerate cases.json (deterministic per-case seeds)
+python build.py --pack giallo                 # rebuild site/ and dist-claude.html
+python build.py --pack giallo --check         # fail if the built site/ is stale
+python build.py --pack neon --out preview/neon
+node tools/verify.mjs --pack giallo           # validate the pack
+python src/packs/giallo/gen.py                # regenerate that pack's cases.json
 ```
 
 The generator starts from a valid solution, then greedily drops clues while the puzzle keeps exactly one solution. Each map has an explicit seed, so reordering or adding maps does not change existing cases.
 
 Testing co-op without Supabase: serve `site/` locally and open two tabs with `?net=local` (or run `python -m http.server -d site 8765`).
+
+Build-time pack selection is intentional: one style per deployment keeps the page small and the cases coherent. Runtime switching is not part of the engine.
