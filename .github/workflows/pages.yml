@@ -23,8 +23,12 @@ jobs:
           node-version: 20
       - name: Validate the giallo pack
         run: node tools/verify.mjs --pack giallo
-      - name: Check the built site is up to date
+      - name: Validate the rejto pack
+        run: node tools/verify.mjs --pack rejto
+      - name: Check the giallo build is up to date
         run: python3 build.py --pack giallo --check
+      - name: Check the rejto build is up to date
+        run: python3 build.py --pack rejto --out site/rejto --check
       - uses: actions/configure-pages@v5
         with:
           enablement: true

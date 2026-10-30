@@ -133,10 +133,17 @@ def main(argv):
     out = out_raw if os.path.isabs(out_raw) else out_raw.strip('/\\')
     site, artifact, icon = build(pack_id)
     out_dir = out if os.path.isabs(out) else os.path.join(ROOT, out)
+    is_site = os.path.abspath(out_dir) == os.path.join(ROOT, 'site')
+    default_cfg = ('/* Supabase project for team play. The anon key is public by design. */\n'
+                   'window.GQ_CONFIG = { supabaseUrl: "", supabaseKey: "" };\n')
+    src_cfg = os.path.join(ROOT, 'site', 'config.js')
+    expected_files = [('index.html', site), ('icon.svg', icon)]
+    if not is_site:
+        expected_files.append(('config.js', read('site', 'config.js') if os.path.exists(src_cfg) else default_cfg))
 
     if '--check' in argv:
         problems = []
-        for name, expected in (('index.html', site), ('icon.svg', icon)):
+        for name, expected in expected_files:
             path = os.path.join(out_dir, name)
             if not os.path.exists(path):
                 problems.append(os.path.join(out, name) + ' is missing; run python build.py --pack ' + pack_id)
@@ -152,18 +159,12 @@ def main(argv):
 
     write(out, 'index.html', text=site)
     write(out, 'icon.svg', text=icon)
-    is_site = os.path.abspath(out_dir) == os.path.join(ROOT, 'site')
     if is_site:
         write('dist-claude.html', text=artifact)
-    cfg = os.path.join(out_dir, 'config.js')
-    if not os.path.exists(cfg):
-        src_cfg = os.path.join(ROOT, 'site', 'config.js')
-        if os.path.exists(src_cfg):
-            text = read('site', 'config.js')
-        else:
-            text = ('/* Supabase project for team play. The anon key is public by design. */\n'
-                    'window.GQ_CONFIG = { supabaseUrl: "", supabaseKey: "" };\n')
-        write(out, 'config.js', text=text)
+        if not os.path.exists(os.path.join(out_dir, 'config.js')):
+            write(out, 'config.js', text=default_cfg)
+    else:
+        write(out, 'config.js', text=read('site', 'config.js') if os.path.exists(src_cfg) else default_cfg)
     print('%d bytes -> %s/index.html (pack: %s)' % (len(site), out, pack_id))
     return 0
 

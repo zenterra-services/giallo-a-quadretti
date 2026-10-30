@@ -9,6 +9,8 @@ Logic murder mysteries for learning languages. Place every suspect on the floor 
 
 Play: https://zenterra-services.github.io/giallo-a-quadretti/
 
+**Rejtő edition:** https://zenterra-services.github.io/giallo-a-quadretti/rejto/ — four fan cases in Rejtő Jenő’s world, with Hungarian titles and helper copy on by default.
+
 ## Team play setup (Supabase)
 
 Co-op uses Supabase Realtime broadcast and presence channels. No database tables are needed.
