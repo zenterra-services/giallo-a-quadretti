@@ -40,6 +40,8 @@ details.drawer .inner{padding:0 12px 12px}
 .reviewchip:hover{transform:translate(-1px,-1px)}
 .reviewchip b{font-family:var(--display);font-weight:400;font-size:1.05rem;line-height:1.1}
 .reviewchip small{font:700 .72rem var(--type);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+footer .sibling{color:inherit;text-decoration:underline;text-underline-offset:2px;font-weight:700}
+footer .sibling:hover{color:var(--red)}
 .modal.review .box{max-width:780px;max-height:90vh;overflow:auto;text-align:left;padding:22px 24px;position:relative}
 .xclose{position:absolute;right:10px;top:8px;border:none;background:none;font:700 1.2rem var(--body);padding:6px 10px;border-radius:8px;color:var(--muted)}
 .xclose:hover{background:var(--grid)}

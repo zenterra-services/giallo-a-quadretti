@@ -394,7 +394,8 @@ function renderHub(app){
   app.append(h('div',{class:'objs'},
     h('div',{class:'objbox yes'},h('h4',{},'✓ '+T('yes')),h('div',{class:'ogrid'},...occ.map(oi))),
     h('div',{class:'objbox no'},h('h4',{},'✕ '+T('no')),h('div',{class:'ogrid'},...blk.map(oi)))));
-  app.append(h('footer',{},PACK.name+' · '+Object.values(LANGS).map(l=>l.name).join(' · ')));
+  app.append(h('footer',{},PACK.name+' · '+Object.values(LANGS).map(l=>l.name).join(' · '),
+    PACK.sibling?h('a',{class:'sibling',href:PACK.sibling.href},' · '+PACK.sibling.label):null));
 }
 function caseGrid(onPick){
   const grid=h('div',{class:'cases'});

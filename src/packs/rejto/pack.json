@@ -6,6 +6,7 @@
   "defaultLang": "en",
   "huHelperDefault": true,
   "themeColor": "#D9A441",
+  "sibling": { "href": "../", "label": "Giallo edition" },
   "solvedStamp": "MEGOLDVA",
   "stampText": "BŰNÖS",
   "fonts": "https://fonts.googleapis.com/css2?family=Bevan&family=Bitter:ital,wght@0,400;0,600;1,400&family=Special+Elite&family=Caveat:wght@400;700&display=swap",
