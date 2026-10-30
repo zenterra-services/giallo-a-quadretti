@@ -367,7 +367,7 @@ function renderHub(app){
   const pick=heroNames.map((n,k)=>[n,[1,2,3,4,0][k]]);
   const pos=[['4%','2%',-8],['36%','0%',5],['66%','6%',-4],['18%','36%',7],['50%','32%',-6]];
   const coll=h('div',{class:'collage','aria-hidden':'true'});
-  pick.forEach(([n,b],k)=>{ const [l,t,r]=pos[k]; coll.append(svgEl(A.portrait(lookOf(n,k),{bg:BGS[b]}),'st',`left:${l};top:${t};transform:rotate(${r}deg);animation-delay:${k*70}ms`)); });
+  pick.forEach(([n,b],k)=>{ const [l,t,r]=pos[k]; coll.append(svgEl(A.portrait(lookOf(n,k),{bg:BGS[b],label:n}),'st',`left:${l};top:${t};transform:rotate(${r}deg);animation-delay:${k*70}ms`)); });
   coll.append(svgEl(A.pigeon({lens:1}),'pg'));
   coll.append(h('div',{class:'bubble'},T('pigeon')));
   app.append(h('section',{class:'hero'},
@@ -418,7 +418,7 @@ function renderHub(app){
 
   app.append(h('div',{class:'section-h'},h('h2',{},T('how')),S.huAll?h('span',{class:'hu'},'Szabályok'):null));
   const objKeys=Object.keys(OBJ), sitKeys=objKeys.filter(k=>OBJ[k].occ), blockKeys=objKeys.filter(k=>!OBJ[k].occ);
-  const icons=[A.object(sitKeys[0]||objKeys[0]),A.object(sitKeys[1]||sitKeys[0]||objKeys[0]),A.object(blockKeys[0]||objKeys[0]),A.pigeon(),A.portrait(lookOf(Object.keys(LOOKS)[0],0),{crop:'head',bg:'pink'})];
+  const icons=[A.object(sitKeys[0]||objKeys[0]),A.object(sitKeys[1]||sitKeys[0]||objKeys[0]),A.object(blockKeys[0]||objKeys[0]),A.pigeon(),A.portrait(lookOf(Object.keys(LOOKS)[0],0),{crop:'head',bg:'pink',label:Object.keys(LOOKS)[0]})];
   app.append(h('div',{class:'rules'},...T('rules').map((it,k)=>h('div',{class:'rule'},svgEl(icons[k],'ri'),h('p',{},marked(it),' ',sayBtn(it,'')),S.huAll?h('p',{class:'hu'},HU_RULES[k]):null))));
   const occ=Object.keys(OBJ).filter(k=>OBJ[k].occ), blk=Object.keys(OBJ).filter(k=>!OBJ[k].occ);
   const oi=k=>h('div',{class:'oi'},svgEl(A.object(k,plain(OBJL[LANG][k][0])),'ic'),plain(OBJL[LANG][k][0]),S.huAll?h('small',{},OBJ[k].hu):null);
@@ -533,7 +533,7 @@ function boardEl(cs){
       onpointerup:()=>clearTimeout(lpTimer), onpointerleave:()=>clearTimeout(lpTimer), oncontextmenu:e=>e.preventDefault(),
       onclick:()=>{ S.focus=[r,c]; if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
     if(o) cell.append(svgEl(A.object(o),'ob'));
-    if(occ!=null) cell.append(svgEl(A.portrait(lookOf(cs.people[occ][0],+occ),{crop:'head',bg:BGS[occ%BGS.length]}),'pc'));
+    if(occ!=null) cell.append(svgEl(A.portrait(lookOf(cs.people[occ][0],+occ),{crop:'head',bg:BGS[occ%BGS.length],label:cs.people[occ][0]}),'pc'));
     else if(S.marks.has(key)) cell.append(h('span',{class:'xm'},'✕'));
     if(lab[k]===key) cell.append(h('span',{class:'lab'},roomName(cs,k)));
     board.append(cell);

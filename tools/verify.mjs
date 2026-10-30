@@ -177,6 +177,25 @@ if (!fs.existsSync(path.join(PACK_DIR, 'icon.svg'))) fail('pack', 'icon.svg is m
 else if (!fs.readFileSync(path.join(PACK_DIR, 'icon.svg'), 'utf8').trim().startsWith('<svg')) fail('pack', 'icon.svg is not an SVG');
 for (const k of ['BGS', 'PCOL']) if (!Array.isArray(THEME[k]) || !THEME[k].length) fail('pack', `theme.js ${k} is missing`);
 if (!Array.isArray(THEME.FALLBACK_LOOK)) fail('pack', 'theme.js FALLBACK_LOOK is missing');
+
+const PORTRAITS_PATH = path.join(PACK_DIR, 'portraits.json');
+const PORTRAITS = fs.existsSync(PORTRAITS_PATH) ? readJson(PORTRAITS_PATH) : {};
+if (PORTRAITS && typeof PORTRAITS !== 'object') fail('portraits', 'portraits.json must be an object');
+for (const [name, entry] of Object.entries(PORTRAITS)) {
+  if (name.startsWith('_')) continue;
+  if (!LOOKS[name]) fail('portraits', `no LOOKS entry for portrait "${name}"`);
+  if (!entry || typeof entry !== 'object') { fail('portraits', `${name} entry must be an object`); continue; }
+  for (const kind of ['full', 'head']) {
+    const rel = entry[kind];
+    if (!rel) { fail('portraits', `${name} is missing "${kind}"`); continue; }
+    if (path.isAbsolute(rel) || rel.split(/[\\/]/).includes('..') || !rel.startsWith('portraits/')) {
+      fail('portraits', `${name}.${kind} must be a path under portraits/`); continue;
+    }
+    const file = path.join(PACK_DIR, rel);
+    if (!fs.existsSync(file)) fail('portraits', `${name}.${kind} is missing: ${rel}`);
+    else if (fs.statSync(file).size < 100) fail('portraits', `${name}.${kind} is suspiciously small: ${rel}`);
+  }
+}
 if (!ART) fail('pack', 'art.js did not publish window.GQArt');
 else for (const fn of ['portrait', 'object', 'pigeon', 'stamp']) if (typeof ART[fn] !== 'function') fail('pack', `art.${fn}() is missing`);
 if (ART) {

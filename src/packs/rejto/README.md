@@ -13,4 +13,13 @@ The core cast is **Piszkos Fred, Fülig Jimmy, Vanek úr, Csülök, Senki Alfonz
 
 Reference character sheets shared for this project were used **only as a character bible**. No panel, pose, face or drawing from them is traced or shipped; every portrait is generated from the pack’s own SVG primitives.
 
+## Painted pieces
+
+The pack supports painted raster portraits as an optional layer. Put full-body and head crops under `portraits/` and register them in `portraits.json`; the board uses the head crop, cards/hub use the full body, and missing entries fall back to SVG.
+
+- technical spec: [`portraits/README.md`](portraits/README.md)
+- fourteen character prompts: [`CHARACTERS.md`](CHARACTERS.md)
+
+I do not generate raster art in this session; the pipeline is ready for art you generate or commission.
+
 If this is ever published beyond a private fan project, get a legal review of the character/title use and of any local translation rights.

@@ -99,9 +99,31 @@
     });
     return s;
   }
+  /* ---------- optional raster portraits (painted pieces) ---------- */
+  function rasterHead(src, opts) {
+    var clip = id('rh');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 16 100 104" role="img" aria-label="' + (opts.label || '') + '">' +
+      '<defs><clipPath id="' + clip + '"><circle cx="60" cy="66" r="44"/></clipPath></defs>' +
+      '<circle cx="60" cy="70" r="47" fill="' + shade(INK[opts.bg] || INK.yellow, 0.6) + '" stroke="' + K + '" stroke-width="3"/>' +
+      '<circle cx="60" cy="66" r="47" fill="#fff" stroke="' + K + '" stroke-width="3"/>' +
+      '<circle cx="60" cy="66" r="44" fill="' + (INK[opts.bg] || INK.yellow) + '"/>' +
+      '<image href="' + src + '" x="10" y="16" width="100" height="104" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + clip + ')"/>' +
+      '</svg>';
+  }
+  function rasterFull(src, opts) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 154" role="img" aria-label="' + (opts.label || '') + '">' +
+      '<image href="' + src + '" x="0" y="0" width="122" height="154" preserveAspectRatio="xMidYMid meet"/>' +
+      '</svg>';
+  }
+
   /* spec: [skinIdx, hairStyle, hairColorKey, [acc], shirtInk, expr, bodyType] */
   function portrait(spec, opts) {
     opts = opts || {};
+    var pr = (typeof PORTRAITS !== 'undefined') && opts.label && PORTRAITS[opts.label];
+    if (pr) {
+      if (opts.crop === 'head' && pr.head) return rasterHead(pr.head, opts);
+      if (opts.crop !== 'head' && pr.full) return rasterFull(pr.full, opts);
+    }
     var skin = SKIN[spec[0] % SKIN.length], hs = spec[1], hc = HAIR[spec[2]] || HAIR.k,
       acc = spec[3] || [], shirt = INK[spec[4]] || INK.blue, expr = spec[5] || 'smile',
       body = spec[6] || 'normal';

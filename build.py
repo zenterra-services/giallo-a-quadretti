@@ -13,6 +13,7 @@ import html
 import json
 import os
 import re
+import shutil
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -65,6 +66,13 @@ def load_pack(pack_id):
     for name in ('art.js', 'vocab.js', 'looks.js', 'casel.js', 'cases.json', 'theme.css', 'theme.js', 'hu.js', 'icon.svg'):
         if not os.path.exists(os.path.join(ROOT, pdir, name)):
             raise SystemExit('%s/%s is missing' % (pdir, name))
+    portraits_path = os.path.join(ROOT, pdir, 'portraits.json')
+    portraits = {}
+    if os.path.exists(portraits_path):
+        with open(portraits_path, encoding='utf-8-sig') as f:
+            portraits = json.load(f)
+        if not isinstance(portraits, dict):
+            raise SystemExit('%s/portraits.json must be an object' % pdir)
     pack = {
         'dir': pdir,
         'manifest': manifest,
@@ -78,6 +86,7 @@ def load_pack(pack_id):
         'hu': read(pdir, 'hu.js'),
         'ui': read_optional(pdir, 'ui.js'),
         'icon': read(pdir, 'icon.svg'),
+        'portraits': portraits,
     }
     return pack
 
@@ -148,7 +157,8 @@ def build(pack_id):
     main = read('src/main.js')
     data = ('const PACK=' + json.dumps(meta, ensure_ascii=False) + ';\n'
             'const CASES=' + json.dumps(pack['cases'], ensure_ascii=False) + ';\n'
-            'const STYLES=' + json.dumps(styles, ensure_ascii=False) + ';')
+            'const STYLES=' + json.dumps(styles, ensure_ascii=False) + ';\n'
+            'const PORTRAITS=' + json.dumps(pack['portraits'], ensure_ascii=False) + ';')
     scripts = [pack['art'], i18n, pack['theme_js'], pack['vocab'], pack['hu'], pack['looks'],
                pack['casel'], pack['ui'], data, main]
     for s in scripts:
@@ -185,17 +195,56 @@ def build(pack_id):
     return site, artifact, pack['icon'].strip()
 
 
+def portrait_files(pack):
+    src = os.path.join(ROOT, pack['dir'], 'portraits')
+    if not os.path.isdir(src):
+        return []
+    found = []
+    for root, _dirs, files in os.walk(src):
+        for name in files:
+            if os.path.splitext(name)[1].lower() in ('.webp', '.png', '.jpg', '.jpeg', '.avif', '.svg'):
+                found.append(os.path.relpath(os.path.join(root, name), src))
+    return sorted(found)
+
+
+def copy_portraits(pack, out_dir):
+    src = os.path.join(ROOT, pack['dir'], 'portraits')
+    dst_root = os.path.join(out_dir, 'portraits')
+    if os.path.isdir(dst_root):
+        shutil.rmtree(dst_root)
+    for rel in portrait_files(pack):
+        dst = os.path.join(dst_root, rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copy2(os.path.join(src, rel), dst)
+
+
+def check_portraits(pack, out_dir):
+    problems = []
+    src = os.path.join(ROOT, pack['dir'], 'portraits')
+    for rel in portrait_files(pack):
+        dst = os.path.join(out_dir, 'portraits', rel)
+        if not os.path.exists(dst):
+            problems.append('portraits/' + rel + ' is missing')
+            continue
+        with open(os.path.join(src, rel), 'rb') as a, open(dst, 'rb') as b:
+            if a.read() != b.read():
+                problems.append('portraits/' + rel + ' is stale')
+    return problems
+
+
 def main(argv):
     chooser = '--chooser' in argv
     pack_id = arg_value(argv, '--pack', DEFAULT_PACK)
     out_raw = arg_value(argv, '--out', 'site')
     out = out_raw if os.path.isabs(out_raw) else out_raw.strip('/\\')
     if chooser:
+        pack = None
         site, icon = build_chooser()
         artifact = ''
         label = 'chooser'
         run_hint = 'python build.py --chooser' + (' --out ' + out if out != 'site' else '')
     else:
+        pack = load_pack(pack_id)
         site, artifact, icon = build(pack_id)
         label = 'pack: ' + pack_id
         run_hint = 'python build.py --pack ' + pack_id + (' --out ' + out if out != 'site' else '')
@@ -221,11 +270,18 @@ def main(argv):
         if problems:
             print('\n'.join(problems), file=sys.stderr)
             return 1
+        if pack:
+            problems = check_portraits(pack, out_dir)
+            if problems:
+                print('\n'.join(problems), file=sys.stderr)
+                return 1
         print(out + '/ is up to date (' + label + ')')
         return 0
 
     write(out, 'index.html', text=site)
     write(out, 'icon.svg', text=icon)
+    if pack:
+        copy_portraits(pack, out_dir)
     if not chooser:
         if pack_id == DEFAULT_PACK:
             write('dist-claude.html', text=artifact)
