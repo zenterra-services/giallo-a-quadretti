@@ -1,0 +1,11 @@
+{
+  "name": "giallo-a-quadretti",
+  "private": true,
+  "scripts": {
+    "verify": "node tools/verify.mjs --pack giallo && node tools/verify.mjs --pack rejto",
+    "smoke": "node tools/smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

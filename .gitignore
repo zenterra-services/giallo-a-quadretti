@@ -2,3 +2,4 @@ dist-claude.html
 dist-*-claude.html
 preview/
 __pycache__/
+node_modules/

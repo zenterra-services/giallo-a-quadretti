@@ -94,7 +94,7 @@ const NET=makeNet();
 /* ---------- state ---------- */
 const S={view:'hub', cs:null, idx:0, place:{}, marks:new Set(), tool:0, t0:0, elapsed:0, hints:0, phase:'play', msg:null,
          huAll:store.get('huAll',!!PACK.huHelperDefault), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
-         hist:[], focus:null};
+         hist:[], focus:null, frozen:false};
 let timerId=null;
 const isPhone=()=>{ try{ return matchMedia('(max-width:700px)').matches; }catch(e){ return false; } };
 let PH=isPhone();
@@ -105,14 +105,14 @@ function startCase(i){
   const cs=CASES[i]; S.view='case'; S.cs=cs; S.idx=i;
   const saved=store.get('prog:'+cs.id,null);
   S.place=saved?saved.place:{}; S.marks=new Set(saved?saved.marks:[]); S.hints=saved?saved.hints:0;
-  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false; S.hist=[]; S.focus=null;
+  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false; S.hist=[]; S.focus=null; S.frozen=false;
   startTimer(); try{ if(!S.coop) location.hash=cs.id; }catch(e){}
   render(); window.scrollTo(0,0);
 }
 function startTimer(){ clearInterval(timerId); timerId=setInterval(tick,1000); }
 function saveProg(){ if(S.coop||!S.cs||S.phase==='done') return; store.set('prog:'+S.cs.id,{place:S.place,marks:[...S.marks],hints:S.hints,elapsed:curElapsed()}); }
-function curElapsed(){ if(S.coop){ const st=S.coop.st; return st.t0? Math.floor(((st.phase==='done'&&st.tEnd)?st.tEnd:Date.now())-st.t0)/1000|0 : 0; }
-  return S.elapsed + (S.phase==='done'?0:Math.floor((Date.now()-S.t0)/1000)); }
+function curElapsed(){ if(S.coop){ const st=S.coop.st; if(!st.t0) return 0; const end=(st.phase==='done'&&st.tEnd)?st.tEnd:Date.now(); return Math.floor((end-st.t0)/1000); }
+  return S.elapsed + (S.phase==='done'||S.frozen?0:Math.floor((Date.now()-S.t0)/1000)); }
 function fmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function tick(){ const el=document.getElementById('timer'); if(el) el.textContent=fmt(curElapsed()); }
 function siteStyleId(){ try{ const v=localStorage.getItem('gq:style'); return (v&&STYLES.some(s=>s.id===v))?v:null; }catch(e){ return null; } }
@@ -379,7 +379,11 @@ function renderHub(app){
       h('div',{class:'actions'}, h('button',{class:'btn',onclick:()=>{const i=CASES.findIndex(c=>!S.solved[c.id]);startCase(i<0?0:i)}}, Object.keys(S.solved).length?T('cont'):T('start')))),
     coll));
 
-  if(NET){
+  app.append(h('div',{class:'section-h'},h('h2',{},T('coop'))));
+  if(!NET){
+    app.append(h('div',{class:'coopbox'},
+      h('div',{},h('h3',{},T('coop')),h('p',{},T('offline')),S.huAll?h('p',{class:'hu'},'A csapatjáték itt most nem érhető el.'):null)));
+  } else {
     let pre=''; try{ const m=(location.hash||'').match(/^#r-([A-Z]{4})$/); if(m) pre=m[1]; }catch(e){}
     const nm=h('input',{id:'coop-name',type:'text',maxlength:'16',autocomplete:'nickname',value:globalStore.get('name','')});
     const cd=h('input',{id:'coop-code',class:'code',type:'text',maxlength:'4',autocapitalize:'characters',autocomplete:'off',placeholder:'ABCD',value:pre});
@@ -397,7 +401,6 @@ function renderHub(app){
       }
       joinRoom(newCode(),name);
     };
-    app.append(h('div',{class:'section-h'},h('h2',{},T('coop'))));
     app.append(h('div',{class:'coopbox'},
       h('div',{},h('h3',{},T('coop')),h('p',{},T('coopLead')),S.huAll?h('p',{class:'hu'},'Mindenki csak néhány nyomot lát, a saját tanult nyelvén. Olvassátok fel, osszátok meg, és oldjátok meg együtt!'):null),
       h('div',{},
@@ -645,13 +648,16 @@ function showWin(time){
 function reviewPerson(cs,i){
   const nm=cs.people[i][0], isV=i===cs.people.length-1;
   const byP=cs.clues.filter(c=>c.p===i);
+  const open=S.huAll||S.openHu.has(i);
   const lines=isV?[{it:victimStr(cs),hu:'Az áldozat. Egyedül volt a gyilkossal.'}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
   return h('div',{class:'revperson'+(isV?' victim':'')},
     head(cs,i),
-    h('div',{class:'revbody'},h('b',{},nm),
+    h('div',{class:'revbody'},
+      h('div',{class:'revname'},h('b',{},nm),
+        !S.huAll?h('button',{class:'hubtn','aria-pressed':String(open),'aria-label':'HU',onclick:e=>{e.stopPropagation();open?S.openHu.delete(i):S.openHu.add(i);showReview(cs)}},'HU'):null),
       ...lines.map(l=>h('div',{class:'revclue'},
         h('p',{class:'clue'},marked(l.it),sayBtn(nm+'. '+l.it,nm)),
-        S.huAll?h('p',{class:'hu'},marked(l.hu)):null))));
+        open?h('p',{class:'hu'},marked(l.hu)):null))));
 }
 function showReview(cs){
   const old=document.querySelector('.modal'); if(old) old.remove();
@@ -690,6 +696,10 @@ function render(){ const app=document.getElementById('app'); app.innerHTML=''; a
 function boot(){ let id=''; try{id=(location.hash||'').slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0) startCase(i); else render(); }
 window.addEventListener('hashchange',()=>{ if(S.coop) return; let id='';try{id=location.hash.slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0&&(!S.cs||S.cs.id!==id)) startCase(i); else if(i<0&&S.view!=='hub'&&!/^r-/.test(id)) goHub();});
 window.addEventListener('pagehide',()=>{ saveProg(); if(S.coop) leaveRoom(); });
+/* Solo clock pauses while the tab is hidden, so away time never inflates best times. */
+document.addEventListener('visibilitychange',()=>{ if(S.coop) return;
+  if(document.hidden){ if(S.view==='case'&&S.phase!=='done'&&!S.frozen){ S.elapsed=curElapsed(); S.frozen=true; } }
+  else if(S.frozen){ S.frozen=false; S.t0=Date.now(); } });
 boot();
 /* A host chose another style for a new room: create it here, then clean the query. */
 (function(){

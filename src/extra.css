@@ -58,6 +58,8 @@ footer .sibling:hover{color:var(--red)}
 .revperson.victim{background:color-mix(in srgb,var(--red) 9%,var(--card))}
 .revperson .hd{width:52px;margin-top:-10px}
 .revbody b{font-family:var(--display);font-weight:400;font-size:1.05rem}
+.revname{display:flex;align-items:center;gap:8px}
+.revname b{flex:1;min-width:0}
 .revclue{margin-top:4px;border-top:1px dashed var(--grid);padding-top:4px}
 .revclue .clue{font-size:.95rem}
 .revclue .hu{font-size:.82rem}

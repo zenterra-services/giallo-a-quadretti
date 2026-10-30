@@ -67,6 +67,8 @@ python build.py --pack rejto  --out site/rejto    # rejto at /rejto/
 python build.py --pack giallo --out site/giallo --check
 node tools/verify.mjs --pack giallo               # validate a pack
 python src/packs/giallo/gen.py                    # regenerate that pack's cases.json
+npm install && npx playwright install chromium    # one-time, for the browser smoke test
+npm run smoke                                     # serve site/ and drive the core flows in Chromium
 ```
 
 The generator starts from a valid solution, then greedily drops clues while the puzzle keeps exactly one solution. Each map has an explicit seed, so reordering or adding maps does not change existing cases.
