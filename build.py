@@ -9,12 +9,18 @@ The engine and shared UI live in src/.
     python build.py --pack rejto --out preview/rejto
     python build.py --check                 # fail if site/ is stale
 """
+import base64
 import html
 import json
 import os
 import re
 import shutil
 import sys
+
+# --inline-portraits: embed portrait images as data URIs in the built HTML,
+# so no separate image requests are needed (robust on static hosts that
+# mangle or drop asset requests). The pack source keeps plain file paths.
+INLINE_PORTRAITS = '--inline-portraits' in sys.argv
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_PACK = 'giallo'
@@ -73,6 +79,14 @@ def load_pack(pack_id):
             portraits = json.load(f)
         if not isinstance(portraits, dict):
             raise SystemExit('%s/portraits.json must be an object' % pdir)
+        if INLINE_PORTRAITS:
+            for pname, entry in portraits.items():
+                for kind in ('full', 'head'):
+                    rel = entry.get(kind) if isinstance(entry, dict) else None
+                    if not rel:
+                        continue
+                    with open(os.path.join(ROOT, pdir, rel), 'rb') as fh:
+                        entry[kind] = 'data:image/webp;base64,' + base64.b64encode(fh.read()).decode('ascii')
     pack = {
         'dir': pdir,
         'manifest': manifest,
@@ -129,7 +143,7 @@ def build_chooser():
     for s in styles:
         tagline = s.get('tagline') or {}
         cards.append(
-            '<a class="style-card" href="' + html.escape(s['path'], quote=True) + '" data-style="' +
+            '<a class="style-card" href="' + html.escape(s['path'] + 'index.html', quote=True) + '" data-style="' +
             html.escape(s['id'], quote=True) + '" style="--accent:' + html.escape(s.get('themeColor', '#FFE14D'), quote=True) + '">'
             '<span class="short">' + html.escape(s['short']) + '</span>'
             '<h2>' + html.escape(s['name']) + '</h2>'
@@ -270,7 +284,7 @@ def main(argv):
         if problems:
             print('\n'.join(problems), file=sys.stderr)
             return 1
-        if pack:
+        if pack and not INLINE_PORTRAITS:
             problems = check_portraits(pack, out_dir)
             if problems:
                 print('\n'.join(problems), file=sys.stderr)
@@ -280,8 +294,12 @@ def main(argv):
 
     write(out, 'index.html', text=site)
     write(out, 'icon.svg', text=icon)
-    if pack:
+    if pack and not INLINE_PORTRAITS:
         copy_portraits(pack, out_dir)
+    elif pack:
+        stale = os.path.join(out_dir, 'portraits')
+        if os.path.isdir(stale):
+            shutil.rmtree(stale)
     if not chooser:
         if pack_id == DEFAULT_PACK:
             write('dist-claude.html', text=artifact)

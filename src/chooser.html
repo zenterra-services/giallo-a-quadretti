@@ -54,10 +54,10 @@
   const legacy = location.hash;
   if (legacy && /^#[A-Za-z0-9-]{2,}$/.test(legacy)) {
     // pre-chooser root links: #r-CODE rooms and #case-id bookmarks were giallo
-    location.replace('giallo/' + legacy);
+    location.replace('giallo/index.html' + legacy);
   } else if (saved && !params.has('choose')) {
     const s = STYLES.find(x => x.id === saved);
-    if (s) location.replace(s.path + (net ? '?net=' + encodeURIComponent(net) : ''));
+    if (s) location.replace(s.path + 'index.html' + (net ? '?net=' + encodeURIComponent(net) : ''));
   }
   if (net) {
     document.querySelectorAll('[data-style]').forEach(a => {

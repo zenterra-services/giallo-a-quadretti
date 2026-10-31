@@ -20,5 +20,16 @@
       "hu": "Rejtő Jenő világa · 5 rajongói eset"
     },
     "themeColor": "#D9A441"
+  },
+  {
+    "id": "yamada",
+    "path": "yamada/",
+    "name": "Yamada a Quadretti",
+    "short": "Yamada",
+    "tagline": {
+      "en": "Cozy guild mysteries · 8 fan cases",
+      "hu": "Csokinyuszis céhrejtélyek · 8 rajongói eset"
+    },
+    "themeColor": "#FF8FB2"
   }
 ]

@@ -1,0 +1,55 @@
+/* Yamada a Quadretti — soft pastel anime theme. */
+:root{
+  --paper:#FFF5F8; --card:#FFFFFF; --ink:#4A3540; --muted:#9A8290; --grid:rgba(255,141,178,.12);
+  --blue:#7FA8DC; --pink:#FF8FB2; --yellow:#FFD98E; --red:#E86A8E; --ok:#5FA878; --hu:#B07AB8;
+  --on-yellow:#4A3540; --wall:#4A3540; --tape:rgba(255,143,178,.45); --shadow:#E8B7C6;
+  --r0:#FDE3EC; --r1:#E3EEFB; --r2:#FFF4D6; --r3:#E4F6EA; --r4:#F1E8FB; --r5:#FFE9DE; --r6:#E2F4F3;
+  --display:"Baloo 2","Nunito",sans-serif;
+  --body:"Nunito","Segoe UI",sans-serif;
+  --type:"Baloo 2","Nunito",sans-serif;
+  --hand:"Baloo 2",cursive;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#2B2229; --card:#3A2E35; --ink:#F7E8EF; --muted:#C4AEBA; --grid:rgba(255,180,205,.07);
+  --blue:#9DBEE8; --pink:#FFA5C2; --yellow:#F2CD8B; --red:#F28AA6; --ok:#8CC79E; --hu:#D3A5DA;
+  --on-yellow:#2B2229; --wall:#F7E8EF; --tape:rgba(242,138,166,.4); --shadow:#1C141A;
+  --r0:#4A3340; --r1:#33405A; --r2:#4F442E; --r3:#33493C; --r4:#423654; --r5:#4F3B32; --r6:#324A48; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#2B2229; --card:#3A2E35; --ink:#F7E8EF; --muted:#C4AEBA; --grid:rgba(255,180,205,.07);
+  --blue:#9DBEE8; --pink:#FFA5C2; --yellow:#F2CD8B; --red:#F28AA6; --ok:#8CC79E; --hu:#D3A5DA;
+  --on-yellow:#2B2229; --wall:#F7E8EF; --tape:rgba(242,138,166,.4); --shadow:#1C141A;
+  --r0:#4A3340; --r1:#33405A; --r2:#4F442E; --r3:#33493C; --r4:#423654; --r5:#4F3B32; --r6:#324A48; color-scheme:dark }
+html,body{background:var(--paper);color:var(--ink)}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),radial-gradient(circle at 85% 8%,rgba(255,143,178,.14),transparent 55%),radial-gradient(circle at 8% 88%,rgba(168,207,240,.16),transparent 55%);background-size:26px 26px,26px 26px,100% 100%,100% 100%}
+.brand h1{letter-spacing:.01em;text-transform:none}
+.brand small{letter-spacing:.1em}
+.mark{background:var(--pink);border-radius:10px;box-shadow:3px 3px 0 var(--blue);transform:rotate(-4deg)}
+.mark i.v{background:var(--blue)}
+.hero h2 .hl{background:var(--pink);color:#fff;box-shadow:5px 5px 0 var(--blue);transform:rotate(-1.5deg);border-radius:10px}
+.hero .actions .btn{background:var(--yellow)}
+.btn{border-radius:999px;border-width:3px;box-shadow:0 4px 0 var(--shadow)}
+.btn.ghost{background:var(--card)}
+.pill{border-radius:999px;border-width:2.5px}
+.pill[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+.say{color:var(--pink)}
+.case{border-radius:18px;border-width:3px;box-shadow:0 6px 0 var(--shadow)}
+.case .tape{background:repeating-linear-gradient(-45deg,var(--tape) 0 8px,transparent 8px 14px),var(--tape);border-radius:12px 0}
+.case .flav{font-style:italic}
+.card{border-radius:16px;border-width:2.5px;box-shadow:0 4px 0 var(--shadow)}
+.clip{border-radius:20px;border-width:3px;box-shadow:0 8px 0 var(--shadow)}
+.board{border-radius:10px;border-width:4px}
+.cell .lab{background:var(--card);border-width:2px;border-radius:999px;transform:rotate(-2deg)}
+.legend .chip{border-radius:999px}
+.slip{border-radius:16px;box-shadow:0 5px 0 var(--shadow)}
+.msg{border-radius:12px}
+.modal .box{border-radius:20px;box-shadow:0 10px 0 var(--shadow)}
+.modal .stp{opacity:.95}
+.reviewchip{border-radius:999px}
+.revperson{border-radius:14px}
+.rule,.objbox{border-radius:14px}
+.coderow .bigcode{background:var(--yellow);box-shadow:0 5px 0 var(--pink);border-radius:14px}
+.casehead{border-bottom:2px dashed var(--muted);padding-bottom:10px}
+.timer{border-radius:999px;box-shadow:0 3px 0 var(--pink)}
+.tip .tb{border-radius:16px 16px 16px 4px}
+.tip .tb .say-it{font-family:var(--display);font-size:1.15rem;font-weight:700}
+footer{font-family:var(--type);font-size:.8rem;letter-spacing:.03em}

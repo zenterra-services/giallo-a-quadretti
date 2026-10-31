@@ -7,10 +7,11 @@ function lookOf(name,i){ return LOOKS[name] || (typeof FALLBACK_LOOK!=='undefine
 const shortName=nm=> (typeof SHORT_NAMES!=='undefined'&&SHORT_NAMES[nm])||nm.split(' ').slice(-1)[0];
 
 /* Site root from the pack path, so style links work at /giallo/, /rejto/ and previews. */
-const ROOT_PATH=(()=>{ let p=location.pathname; if(PACK.path&&p.endsWith(PACK.path)) p=p.slice(0,-PACK.path.length); if(!p.endsWith('/')) p+='/'; return p; })();
+const ROOT_PATH=(()=>{ let p=location.pathname; if(p.endsWith('/index.html')) p=p.slice(0,-'index.html'.length); if(PACK.path&&p.endsWith(PACK.path)) p=p.slice(0,-PACK.path.length); if(!p.endsWith('/')) p+='/'; return p; })();
 const NET_PARAM=(()=>{ try{ return new URLSearchParams(location.search).get('net'); }catch(e){ return null; } })();
-const chooserHref=ROOT_PATH+'?choose=1'+(NET_PARAM?'&net='+encodeURIComponent(NET_PARAM):'');
-const styleHref=s=>ROOT_PATH+((s&&s.path)||'');
+/* Explicit index.html: static hosts without directory-index resolution 404 on bare folder links. */
+const chooserHref=ROOT_PATH+'index.html?choose=1'+(NET_PARAM?'&net='+encodeURIComponent(NET_PARAM):'');
+const styleHref=s=>ROOT_PATH+((s&&s.path)||'')+'index.html';
 const globalStore={get(k,d){try{const v=localStorage.getItem('gq:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
                    set(k,v){try{localStorage.setItem('gq:'+k,JSON.stringify(v))}catch(e){}}};
 
@@ -22,6 +23,9 @@ const store={get(k,d){try{const v=localStorage.getItem('gq:'+STORE_NS+k);return 
              set(k,v){try{localStorage.setItem('gq:'+STORE_NS+k,JSON.stringify(v))}catch(e){}}};
 let LANG=store.get('lang',PACK.defaultLang||'it'); if(!LANGS[LANG]) LANG=(PACK.defaultLang&&LANGS[PACK.defaultLang])?PACK.defaultLang:'it';
 const T=k=>{ const p=(typeof PACK_UI!=='undefined')&&PACK_UI[LANG]; return p&&p[k]!=null?p[k]:UI[LANG][k]; };
+/* Packs can soften the murder framing (e.g. kid-friendly "hidden plushie" cases)
+   by overriding Hungarian helper lines via a PACK_HU global in their hu.js. */
+const huTxt=(k,d)=> (typeof PACK_HU!=='undefined'&&PACK_HU&&PACK_HU[k]!=null)?PACK_HU[k]:d;
 
 /* ---------- speech ---------- */
 const canSpeak = typeof window!=='undefined' && 'speechSynthesis' in window;
@@ -41,7 +45,11 @@ function clueStr(cs,cl,lang){
   if(cl.t==='with'||cl.t==='dir'){ a.who=who(cl.v); a.d=cl.d; }
   return CLUE[lang](cl.t,g,a);
 }
-const victimStr=(cs,lang)=>CLUE[lang||LANG]('victim',cs.people[cs.people.length-1][1],{});
+/* Packs can replace the victim's clue line per language via PACK_UI[lang].clueVictim
+   (string or function), e.g. for a kid-friendly premise. */
+const victimStr=(cs,lang)=>{ lang=lang||LANG; const p=(typeof PACK_UI!=='undefined')&&PACK_UI[lang];
+  if(p&&p.clueVictim!=null) return typeof p.clueVictim==='function'?p.clueVictim(cs):p.clueVictim;
+  return CLUE[lang]('victim',cs.people[cs.people.length-1][1],{}); };
 function huStr(cs,cl){
   const N=cs.size, R=cs.rooms, name=i=>cs.people[i][0];
   const ord=v=> v===N-1 ? 'az ⟦utolsó' : huArt(ORD_HU[v])+' ⟦'+ORD_HU[v];
@@ -328,7 +336,7 @@ function accuse(i){
     const prev=S.solved[cs.id]; if(!prev||time<prev.time) S.solved[cs.id]={time,hints:S.hints};
     store.set('solved',S.solved); store.set('prog:'+cs.id,null);
     render(); showWin(time);
-  } else flash(fill(T('nope'),{n:cs.people[i][0]}),`Nem! ${cs.people[i][0]} nem volt az áldozat szobájában.`,'bad');
+  } else flash(fill(T('nope'),{n:cs.people[i][0]}),fill(huTxt('nope','Nem! {n} nem volt az áldozat szobájában.'),{n:cs.people[i][0]}),'bad');
 }
 function resetCase(){
   if(S.coop){ commit(st=>{ st.place={}; st.marks=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); return; }
@@ -483,7 +491,7 @@ function suspectCard(cs,i,opts){
   const byP=cs.clues.filter(c=>c.p===i);
   const see=canSee(i), holder=S.coop&&!isV?holderOf(i):null, mine=holder&&holder.id===S.coop.me.id, shared=S.coop&&S.coop.st.shared.includes(i);
   const open=S.huAll||S.openHu.has(i);
-  const lines=isV?[{it:victimStr(cs),hu:'Az áldozat. Egyedül volt a gyilkossal.'}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  const lines=isV?[{it:victimStr(cs),hu:huTxt('victim','Az áldozat. Egyedül volt a gyilkossal.')}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
   const card=h('div',{class:'card'+(isV?' victim':'')+(see?'':' locked')+(S.tool===i&&S.phase==='play'?' sel':''),style:opts&&opts.flat?'':`transform:rotate(${[-.8,.6,-.4,.9,-.6,.4,-.9][i%7]}deg)`,'data-i':String(i)},
     isV?h('span',{class:'vtag'},T('victim')):null,
     sticker(cs,i),
@@ -504,7 +512,7 @@ function glossary(cs){
   const kw=new Set(cs.clues.map(c=>c.t));
   [['row','sor','row'],['col','oszlop','col'],['by','mellett','by'],['alone','egyedül','alone'],['only','az egyetlen','onlyon'],['with','ugyanaz a szoba','with'],['dir','É · D · K · Ny','dir'],['corner','sarok','corner'],['not','nem volt','notroom']]
     .filter(e=>kw.has(e[2])).forEach(([k,hu])=>words.push({w:G[k],hu}));
-  words.push({w:G.victim,hu:'az áldozat'},{w:G.killer,hu:'a gyilkos'});
+  words.push({w:G.victim,hu:huTxt('glVictim','az áldozat')},{w:G.killer,hu:huTxt('glKiller','a gyilkos')});
   return h('div',{class:'gloss'},...words.map(w=>h('div',{class:'gw'},w.ic||null,h('div',{},h('b',{},w.w),h('p',{class:'hu'},w.hu)),sayBtn(w.w,w.w))));
 }
 let lpTimer=null, lpFired=false;
@@ -554,7 +562,7 @@ function phaseBlock(cs){
       h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
   } else if(S.phase==='accuse'){
     wrap.append(h('div',{class:'slip'},h('p',{class:'typ',style:'margin:0;color:var(--ok)'},'✓ '+T('allRight')),
-      h('h3',{},T('killerIs'),' ',sayBtn(T('killerIs'),'')),h('div',{class:'line'}),S.huAll?h('p',{class:'hu',style:'margin-bottom:8px'},'Ki a gyilkos?'):null,
+      h('h3',{},T('killerIs'),' ',sayBtn(T('killerIs'),'')),h('div',{class:'line'}),S.huAll?h('p',{class:'hu',style:'margin-bottom:8px'},huTxt('whoKiller','Ki a gyilkos?')):null,
       h('div',{class:'pick'},...cs.people.slice(0,-1).map(([nm],i)=>h('button',{class:'tool',onclick:()=>accuse(i)},head(cs,i),nm)))));
   } else {
     wrap.append(h('div',{class:'slip'},h('h3',{},fill(T('solved'),{n:cs.people[cs.killer][0]})),
@@ -635,7 +643,7 @@ function showWin(time){
       svgEl(A.stamp(PACK.stampText||'COLPEVOLE','red'),'stp'),
       h('h3',{},fill(T('solved'),{n:k})),
       h('p',{class:'typ'},`${T('time')} ${fmt(time)}`+(S.hints?` · ${T('hints')} ${S.hints}`:'')),
-      S.huAll?h('p',{class:'hu'},`A gyilkos: ${k}!`):null,
+      S.huAll?h('p',{class:'hu'},fill(huTxt('solvedHu','A gyilkos: {n}!'),{n:k})):null,
       h('div',{class:'actions',style:'justify-content:center'},
         (!S.coop||isHost())?h('button',{class:'btn',onclick:()=>{m.remove();nextCase()}},T('next')):null,
         h('button',{class:'btn ghost',onclick:()=>{m.remove();showReview(cs)}},'📖 '+T('review')),
@@ -649,7 +657,7 @@ function reviewPerson(cs,i){
   const nm=cs.people[i][0], isV=i===cs.people.length-1;
   const byP=cs.clues.filter(c=>c.p===i);
   const open=S.huAll||S.openHu.has(i);
-  const lines=isV?[{it:victimStr(cs),hu:'Az áldozat. Egyedül volt a gyilkossal.'}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  const lines=isV?[{it:victimStr(cs),hu:huTxt('victim','Az áldozat. Egyedül volt a gyilkossal.')}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
   return h('div',{class:'revperson'+(isV?' victim':'')},
     head(cs,i),
     h('div',{class:'revbody'},

@@ -42,12 +42,13 @@
   <h1>Choose a style</h1>
   <p class="lead">Each style has its own cases, artwork and voice. Your choice becomes your default style; you can change it any time from the <strong>Style</strong> link in the game.</p>
   <p class="lead hu">Minden stílus saját esetekkel, grafikával és hangulattal jön. A választásod lesz az alapértelmezett stílusod; a játékban a <strong>Stílus</strong> linkkel bármikor válthatod.</p>
-  <div class="cards"><a class="style-card" href="giallo/" data-style="giallo" style="--accent:#FFE14D"><span class="short">Giallo</span><h2>Giallo a Quadretti</h2><p>Italian riso-printed detective zine · 16 cases</p><p class="hu">Olasz rizó-nyomatos detektívfüzet · 16 eset</p><span class="go">Play →</span></a>
-<a class="style-card" href="rejto/" data-style="rejto" style="--accent:#D9A441"><span class="short">Rejtő</span><h2>Rejtő a Quadretti</h2><p>Rejtő Jenő’s 1930s world · 5 fan cases</p><p class="hu">Rejtő Jenő világa · 5 rajongói eset</p><span class="go">Play →</span></a></div>
+  <div class="cards"><a class="style-card" href="giallo/index.html" data-style="giallo" style="--accent:#FFE14D"><span class="short">Giallo</span><h2>Giallo a Quadretti</h2><p>Italian riso-printed detective zine · 16 cases</p><p class="hu">Olasz rizó-nyomatos detektívfüzet · 16 eset</p><span class="go">Play →</span></a>
+<a class="style-card" href="rejto/index.html" data-style="rejto" style="--accent:#D9A441"><span class="short">Rejtő</span><h2>Rejtő a Quadretti</h2><p>Rejtő Jenő’s 1930s world · 5 fan cases</p><p class="hu">Rejtő Jenő világa · 5 rajongói eset</p><span class="go">Play →</span></a>
+<a class="style-card" href="yamada/index.html" data-style="yamada" style="--accent:#FF8FB2"><span class="short">Yamada</span><h2>Yamada a Quadretti</h2><p>Cozy guild mysteries · 8 fan cases</p><p class="hu">Csokinyuszis céhrejtélyek · 8 rajongói eset</p><span class="go">Play →</span></a></div>
   <p class="foot">Same engine, different worlds. Co-op rooms keep the style they were created in.</p>
 </main>
 <script>
-  const STYLES = [{"id": "giallo", "path": "giallo/", "name": "Giallo a Quadretti", "short": "Giallo", "tagline": {"en": "Italian riso-printed detective zine · 16 cases", "hu": "Olasz rizó-nyomatos detektívfüzet · 16 eset"}, "themeColor": "#FFE14D"}, {"id": "rejto", "path": "rejto/", "name": "Rejtő a Quadretti", "short": "Rejtő", "tagline": {"en": "Rejtő Jenő’s 1930s world · 5 fan cases", "hu": "Rejtő Jenő világa · 5 rajongói eset"}, "themeColor": "#D9A441"}];
+  const STYLES = [{"id": "giallo", "path": "giallo/", "name": "Giallo a Quadretti", "short": "Giallo", "tagline": {"en": "Italian riso-printed detective zine · 16 cases", "hu": "Olasz rizó-nyomatos detektívfüzet · 16 eset"}, "themeColor": "#FFE14D"}, {"id": "rejto", "path": "rejto/", "name": "Rejtő a Quadretti", "short": "Rejtő", "tagline": {"en": "Rejtő Jenő’s 1930s world · 5 fan cases", "hu": "Rejtő Jenő világa · 5 rajongói eset"}, "themeColor": "#D9A441"}, {"id": "yamada", "path": "yamada/", "name": "Yamada a Quadretti", "short": "Yamada", "tagline": {"en": "Cozy guild mysteries · 8 fan cases", "hu": "Csokinyuszis céhrejtélyek · 8 rajongói eset"}, "themeColor": "#FF8FB2"}];
   const params = new URLSearchParams(location.search);
   let saved = null;
   try { saved = localStorage.getItem('gq:style'); } catch (e) {}
@@ -55,10 +56,10 @@
   const legacy = location.hash;
   if (legacy && /^#[A-Za-z0-9-]{2,}$/.test(legacy)) {
     // pre-chooser root links: #r-CODE rooms and #case-id bookmarks were giallo
-    location.replace('giallo/' + legacy);
+    location.replace('giallo/index.html' + legacy);
   } else if (saved && !params.has('choose')) {
     const s = STYLES.find(x => x.id === saved);
-    if (s) location.replace(s.path + (net ? '?net=' + encodeURIComponent(net) : ''));
+    if (s) location.replace(s.path + 'index.html' + (net ? '?net=' + encodeURIComponent(net) : ''));
   }
   if (net) {
     document.querySelectorAll('[data-style]').forEach(a => {

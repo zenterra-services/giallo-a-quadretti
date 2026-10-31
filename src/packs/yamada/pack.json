@@ -1,0 +1,14 @@
+{
+  "id": "yamada",
+  "path": "yamada/",
+  "name": "Yamada a Quadretti",
+  "description": "Kedves játékos rejtélyek a Csokinyuszi céh világában: öt nyelven, magyar segédlettel. (Privát rajongói változat.)",
+  "lang": "en",
+  "defaultLang": "en",
+  "huHelperDefault": true,
+  "themeColor": "#FF8FB2",
+  "solvedStamp": "FOUND!",
+  "stampText": "CAUGHT!",
+  "fonts": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:ital,wght@0,400;0,700;1,400&display=swap",
+  "version": 1
+}
