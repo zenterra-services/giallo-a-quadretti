@@ -1,0 +1,14 @@
+{
+  "id": "scooby",
+  "path": "scooby/",
+  "name": "Scooby a Quadretti",
+  "description": "Misteri da brivido ad Halloween a Villa Spooky Hollow: chi ha preso gli Scooby Snacks? Cinque lingue, magyar segédlettel. (Változat rajongóknak.)",
+  "lang": "en",
+  "defaultLang": "en",
+  "huHelperDefault": true,
+  "themeColor": "#e8721c",
+  "solvedStamp": "ZOINKS!",
+  "stampText": "SOLVED!",
+  "fonts": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:ital,wght@0,400;0,700;1,400&display=swap",
+  "version": 1
+}

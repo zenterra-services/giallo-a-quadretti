@@ -1,0 +1,47 @@
+{
+  "Scooby-Doo": {
+    "full": "portraits/full/scooby.webp",
+    "head": "portraits/head/scooby.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Shaggy Rogers": {
+    "full": "portraits/full/shaggy.webp",
+    "head": "portraits/head/shaggy.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Fred Jones": {
+    "full": "portraits/full/fred.webp",
+    "head": "portraits/head/fred.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Daphne Blake": {
+    "full": "portraits/full/daphne.webp",
+    "head": "portraits/head/daphne.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Velma Dinkley": {
+    "full": "portraits/full/velma.webp",
+    "head": "portraits/head/velma.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Madame Zora": {
+    "full": "portraits/full/zora.webp",
+    "head": "portraits/head/zora.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Groundskeeper Gus": {
+    "full": "portraits/full/gus.webp",
+    "head": "portraits/head/gus.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Widow Ravenna": {
+    "full": "portraits/full/ravenna.webp",
+    "head": "portraits/head/ravenna.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  },
+  "Scooby Snacks": {
+    "full": "portraits/full/snacks.webp",
+    "head": "portraits/head/snacks.webp",
+    "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"
+  }
+}

@@ -1,0 +1,1813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scooby a Quadretti</title>
+<meta name="description" content="Misteri da brivido ad Halloween a Villa Spooky Hollow: chi ha preso gli Scooby Snacks? Cinque lingue, magyar segédlettel. (Változat rajongóknak.)">
+<meta name="theme-color" content="#e8721c">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&amp;family=Nunito:ital,wght@0,400;0,700;1,400&amp;display=swap">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}*{-webkit-tap-highlight-color:transparent}
+/* Layout: a riso-printed detective zine on graph paper — die-cut suspect stickers left, blueprint floor plan right */
+html,body{background:var(--paper);color:var(--ink)}
+body{font:16px/1.45 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 48px;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.005em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,.cell:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+svg{display:block}
+mark{background:linear-gradient(transparent 38%,var(--yellow) 38%,var(--yellow) 88%,transparent 88%);color:inherit;padding:0 .12em;border-radius:2px;font-weight:600}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) mark{background:var(--yellow);color:var(--on-yellow)}}
+:root[data-theme="dark"] mark{background:var(--yellow);color:var(--on-yellow)}
+.hu{color:var(--hu);font-size:.9em;margin:0}
+.hu::before{content:"HU";font:700 .68em var(--type);letter-spacing:.08em;border:1.5px solid currentColor;border-radius:4px;padding:0 4px;margin-right:6px;vertical-align:1px}
+.typ{font-family:var(--type);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:var(--muted)}
+
+/* top bar */
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:12px;border:none;background:none;padding:0;text-align:left}
+.mark{width:46px;height:46px;flex:none;background:var(--yellow);border:3px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--pink);display:grid;grid-template-columns:repeat(3,1fr);padding:4px;gap:2px;transform:rotate(-4deg)}
+.mark i{border-radius:2px;background:var(--on-yellow);opacity:.18}.mark i.v{background:var(--red);opacity:1}
+.brand h1{font-size:1.45rem;line-height:.95}
+.brand small{display:block;font-family:var(--type);font-size:.72rem;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.spacer{flex:1}
+.pill{border:2.5px solid var(--ink);background:var(--card);border-radius:999px;padding:5px 14px;font:700 .85rem var(--type);letter-spacing:.06em;display:inline-flex;align-items:center;gap:6px}
+.pill[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--card)}
+.btn{border:3px solid var(--ink);background:var(--yellow);color:var(--on-yellow);border-radius:12px;padding:9px 18px;font-family:var(--display);font-size:1.05rem;box-shadow:4px 4px 0 var(--shadow);transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn.small{padding:6px 12px;font-size:.92rem;box-shadow:3px 3px 0 var(--shadow)}
+.say{border:none;background:none;padding:3px;border-radius:6px;flex:none;color:var(--blue);display:inline-grid;place-items:center;vertical-align:middle}
+.say:hover{background:var(--grid)}
+.say svg{width:18px;height:18px}
+
+/* hub hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:center;margin-bottom:28px}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h2{font-size:clamp(2.6rem,8vw,5rem);line-height:.92}
+.hero h2 .hl{background:var(--yellow);color:var(--on-yellow);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone;display:inline-block;transform:rotate(-2deg);box-shadow:5px 5px 0 var(--pink)}
+.hero p{max-width:52ch;margin:.8em 0 0;font-size:1.05rem}
+.hero .actions{margin-top:18px}
+.collage{position:relative;aspect-ratio:1.15;max-width:100%}
+.collage .st{position:absolute;width:30%;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.18))}
+.collage .pg{position:absolute;width:34%;right:2%;bottom:0}
+.bubble{position:absolute;left:4%;bottom:6%;max-width:58%;background:var(--card);border:3px solid var(--ink);border-radius:16px 16px 16px 4px;padding:8px 12px;font:1.15rem/1.2 var(--hand);box-shadow:3px 3px 0 var(--shadow)}
+.tape{position:absolute;height:20px;width:74px;background:repeating-linear-gradient(-45deg,var(--tape) 0 6px,transparent 6px 10px),var(--tape);opacity:.9}
+
+/* cases */
+.section-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:30px 0 14px}
+.section-h h2{font-size:1.6rem}
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.case{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:18px 16px 14px;text-align:left;display:flex;flex-direction:column;gap:8px;min-width:0;box-shadow:5px 5px 0 var(--shadow);transition:transform .1s}
+.case:hover{transform:rotate(-.6deg) translateY(-2px)}
+.case .tape{top:-11px;left:22px;transform:rotate(-4deg)}
+.case h3{font-size:1.35rem;line-height:1.05}
+.case .flav{font-size:.95rem;color:var(--muted)}
+.heads{display:flex;margin-top:2px}
+.heads span{width:38px;height:38px;margin-right:-8px}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:auto}
+.lvl{display:inline-flex;gap:3px}.lvl b{width:12px;height:12px;border:2px solid var(--ink);border-radius:3px;transform:rotate(45deg) scale(.8)}.lvl b.on{background:var(--pink)}
+.case .stampwrap{position:absolute;right:8px;top:30%;width:120px;pointer-events:none;opacity:.92}
+.case .best{font-family:var(--type);font-size:.78rem;color:var(--ok);font-weight:700}
+
+/* rules */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:14px}
+.rule{background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.rule .ri{width:44px;height:44px}
+.rule p{margin:0}
+.objs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;margin-top:14px}
+.objbox{background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:12px 14px}
+.objbox h4{margin:0 0 8px;font:700 .82rem var(--type);letter-spacing:.08em;text-transform:uppercase}
+.objbox.yes h4{color:var(--ok)}.objbox.no h4{color:var(--red)}
+.ogrid{display:flex;flex-wrap:wrap;gap:10px}
+.oi{display:flex;flex-direction:column;align-items:center;width:64px;font-size:.82rem;text-align:center;gap:2px}
+.oi .ic{width:44px;height:44px}
+.oi small{color:var(--hu);font-size:.72rem;line-height:1.1}
+
+/* case view */
+.back{border:none;background:none;font:700 .85rem var(--type);letter-spacing:.06em;text-transform:uppercase;padding:4px 0;color:var(--muted)}
+.casehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start;margin:6px 0 18px}
+.casehead h2{font-size:clamp(1.9rem,5vw,3rem);line-height:.95;margin-top:4px}
+.casehead .flav{margin:.5em 0 0;font-size:1.05rem}
+.timer{font:700 1.3rem var(--type);font-variant-numeric:tabular-nums;background:var(--card);border:2.5px solid var(--ink);border-radius:10px;padding:4px 12px;box-shadow:3px 3px 0 var(--shadow)}
+.tip{display:flex;gap:10px;align-items:flex-end;margin:0 0 18px}
+.tip .pg{width:64px;flex:none}
+.tip .tb{background:var(--card);border:2.5px solid var(--ink);border-radius:16px 16px 16px 4px;padding:8px 12px;box-shadow:3px 3px 0 var(--shadow);min-width:0;flex:1;max-width:620px}
+.tip .tb p{margin:0}
+.tip .tb .say-it{font:1.2rem/1.25 var(--hand)}
+.tip .more{border:none;background:none;font:700 .75rem var(--type);color:var(--blue);text-transform:uppercase;letter-spacing:.06em;padding:4px 0 0}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:26px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.boardcol{order:-1}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:14px;align-items:start}
+.card{position:relative;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px 12px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 10px;min-width:0;box-shadow:3px 3px 0 var(--shadow)}
+.card .pic{grid-row:span 3;width:64px;margin-top:-18px}
+.card .nm{display:flex;align-items:center;gap:6px;min-width:0}
+.card .nm b{font-family:var(--display);font-weight:400;font-size:1.15rem;line-height:1.05;overflow-wrap:anywhere;flex:1;min-width:0}
+.card.sel{outline:4px solid var(--yellow);outline-offset:-1px}
+.card.victim{background:color-mix(in srgb,var(--red) 10%,var(--card))}
+.card .vtag{position:absolute;right:-6px;top:-10px;background:var(--red);color:#fff;font:700 .7rem var(--type);letter-spacing:.1em;padding:3px 10px;transform:rotate(4deg)}
+.clue{margin:0;display:flex;gap:4px;align-items:flex-start}
+.clue span{flex:1;min-width:0}
+.hubtn{border:1.5px solid var(--hu);background:none;border-radius:5px;font:700 .66rem var(--type);padding:1px 5px;color:var(--hu);flex:none}
+.hubtn[aria-pressed="true"]{background:var(--hu);color:var(--card)}
+.placed{font:700 .74rem var(--type);color:var(--ok);letter-spacing:.04em}
+
+.boardcol{position:sticky;top:max(8px,env(safe-area-inset-top,0px))}
+@media (max-width:860px){.boardcol{position:static}}
+.clip{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:14px;box-shadow:6px 6px 0 var(--shadow)}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tool{border:2.5px solid var(--ink);background:var(--card);border-radius:999px;padding:2px 10px 2px 2px;display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.85rem}
+.tool .hd{width:28px;height:28px}
+.tool[aria-pressed="true"]{background:var(--yellow);color:var(--on-yellow)}
+.tool.done{opacity:.5}
+.tool.xmark{padding:2px 12px;font-family:var(--type)}
+.toolhint{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.toolhint.kbd{font-size:.74rem;margin-top:-6px;opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--shadow)}
+.modal:focus{outline:none}
+.boardwrap{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:4px}
+.colnums,.rownums{display:grid;font:700 .78rem var(--type);color:var(--muted);text-align:center}
+.rownums{align-items:center;padding-right:3px}
+.board{display:grid;border:4px solid var(--wall);border-radius:4px;aspect-ratio:1;max-width:100%;touch-action:manipulation;position:relative;background:var(--wall);gap:0}
+.cell{position:relative;border:0;padding:0;min-width:0;min-height:0;display:grid;place-items:center;overflow:visible}
+.cell::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.10) 1px,transparent 1.4px);background-size:7px 7px;pointer-events:none}
+.cell::after{content:"";position:absolute;inset:0;box-shadow:var(--wst,0 0 0 transparent),var(--wsl,0 0 0 transparent),inset 0 0 0 .5px rgba(29,29,36,.22);pointer-events:none}
+.cell.wt{--wst:inset 0 7px 0 -1px rgba(0,0,0,.16)}
+.cell.wl{--wsl:inset 7px 0 0 -1px rgba(0,0,0,.16)}
+.cell .ob{position:absolute;inset:8%;pointer-events:none}
+.cell .ob svg{width:100%;height:100%}
+.cell.blk{cursor:not-allowed}
+.cell .xm{position:relative;font:clamp(1.2rem,5vw,2rem)/1 var(--hand);color:var(--red);z-index:1}
+.cell .pc{position:relative;width:84%;z-index:2;filter:drop-shadow(3px 4px 0 rgba(0,0,0,.28))}
+.cell.bad .pc{animation:none;outline:3px dashed var(--red);outline-offset:1px;border-radius:50%}
+.cell .lab{position:absolute;left:2px;bottom:2px;z-index:3;background:var(--card);color:var(--ink);font:700 clamp(.42rem,1.6vw,.62rem)/1.1 var(--type);letter-spacing:.04em;text-transform:uppercase;padding:1px 4px;border:1.5px solid var(--wall);transform:rotate(-3deg);white-space:nowrap;pointer-events:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;border:2px solid var(--ink);background:var(--card);border-radius:999px;padding:2px 8px 2px 4px;font-size:.82rem;font-weight:600}
+.sw{width:16px;height:16px;border-radius:50%;border:2px solid var(--ink)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.msg{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--card);border:2.5px solid var(--ink);display:grid;gap:4px}
+.msg.good{border-color:var(--ok)}.msg.bad{border-color:var(--red)}
+.msg p{margin:0}
+.slip{margin-top:14px;background:var(--card);border:3px solid var(--ink);border-radius:12px;padding:12px 14px;box-shadow:4px 4px 0 var(--shadow)}
+.slip h3{font-size:1.35rem}
+.slip .line{border-bottom:2px dashed var(--muted);height:4px;margin:6px 0 12px}
+.pick{display:flex;flex-wrap:wrap;gap:8px}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:8px}
+.gw{background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:6px 8px;display:flex;gap:8px;align-items:center;min-width:0}
+.gw .ic{width:30px;height:30px;flex:none}
+.gw div{flex:1;min-width:0}
+.gw b{display:block;line-height:1.15}
+.gw .hu{font-size:.8rem}
+.gw .hu::before{display:none}
+
+.modal{position:fixed;inset:0;background:rgba(15,15,22,.6);display:grid;place-items:center;padding:20px;z-index:20}
+.modal .box{background:var(--card);border:3px solid var(--ink);border-radius:18px;max-width:420px;width:100%;padding:22px;text-align:center;box-sizing:border-box;box-shadow:8px 8px 0 var(--pink)}
+.modal .who{width:140px;margin:0 auto -6px;display:block}
+.modal .stp{width:230px;margin:0 auto 8px;display:block}
+.modal .who svg,.modal .stp svg,.case .stampwrap svg{width:100%;height:auto}
+.modal h3{font-size:1.6rem}
+.modal p{margin:.4em 0}
+@media (prefers-reduced-motion:no-preference){
+  .modal .stp{animation:thump .5s cubic-bezier(.2,1.6,.4,1) .15s both}
+  @keyframes thump{from{transform:scale(2.4);opacity:0}}
+  .collage .st{animation:pop .5s cubic-bezier(.2,1.5,.4,1) both}
+  @keyframes pop{from{transform:scale(.6) rotate(0deg)}}
+}
+footer{margin-top:34px;color:var(--muted);font-size:.85rem}
+
+/* ---- languages, co-op, phone ---- */
+.langs{display:flex;flex-wrap:wrap;gap:6px}
+.langs button{border:2.5px solid var(--ink);background:var(--card);border-radius:999px;padding:5px 12px;font:700 .85rem var(--body);min-height:40px}
+.langs button[aria-pressed="true"]{background:var(--yellow);color:var(--on-yellow);box-shadow:3px 3px 0 var(--shadow)}
+.coopbox{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:16px;box-shadow:6px 6px 0 var(--shadow);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:center}
+@media (max-width:760px){.coopbox{grid-template-columns:minmax(0,1fr)}}
+.coopbox h3{font-size:1.5rem}
+.coopbox p{margin:.4em 0 0}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font:700 .75rem var(--type);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.field input{font:600 1.05rem var(--body);padding:10px 12px;border:2.5px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);min-height:44px;box-sizing:border-box;width:100%}
+.field select{font:600 1.05rem var(--body);padding:10px 12px;border:2.5px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink);min-height:44px;box-sizing:border-box;width:100%}
+.top .style-link{text-decoration:none}
+.field input.code{font:700 1.3rem var(--type);letter-spacing:.3em;text-transform:uppercase}
+.row2{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.row2 .field{flex:1;min-width:120px;margin:0}
+.lobby{display:grid;gap:18px}
+.bigcode{font:700 clamp(2.4rem,9vw,4rem)/1 var(--type);letter-spacing:.2em;background:var(--yellow);color:var(--on-yellow);display:inline-block;padding:6px 14px;border:3px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--pink);transform:rotate(-1.5deg)}
+.coderow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.players{display:flex;flex-wrap:wrap;gap:10px}
+.player{display:flex;align-items:center;gap:8px;background:var(--card);border:2.5px solid var(--ink);border-radius:999px;padding:4px 12px 4px 4px;font-weight:700}
+.player .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:400 1rem var(--display);color:var(--on-yellow);border:2.5px solid var(--ink)}
+.player small{font:700 .7rem var(--type);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.teambar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
+.teambar .typ{margin-right:4px}
+.card.locked{background:repeating-linear-gradient(-45deg,var(--card) 0 10px,var(--paper) 10px 20px)}
+.card.locked .clue{color:var(--muted);font-style:italic}
+.lockic{width:18px;height:18px;flex:none;color:var(--muted);display:inline-block}.lockic svg{width:100%;height:100%}
+.sharebtn{justify-self:start;border:2px solid var(--ink);background:var(--yellow);color:var(--on-yellow);border-radius:999px;font:700 .78rem var(--type);letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;min-height:32px;margin-top:4px}
+.sharedtag{font:700 .7rem var(--type);color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
+.mine{font:700 .7rem var(--type);color:var(--ok);letter-spacing:.04em;text-transform:uppercase}
+.toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;font-weight:600;box-shadow:4px 4px 0 var(--pink);max-width:min(92vw,480px)}
+details.drawer{background:var(--card);border:2.5px solid var(--ink);border-radius:12px;margin-top:10px}
+details.drawer summary{cursor:pointer;padding:10px 14px;font-family:var(--display);font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:28px}
+details.drawer summary::after{content:"+";font-family:var(--type);font-weight:700}
+details.drawer[open] summary::after{content:"–"}
+details.drawer .inner{padding:0 12px 12px}
+
+/* ---- review notebook ---- */
+.reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:10px}
+.reviewchip{text-align:left;background:var(--card);border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;box-shadow:3px 3px 0 var(--shadow)}
+.reviewchip:hover{transform:translate(-1px,-1px)}
+.reviewchip b{font-family:var(--display);font-weight:400;font-size:1.05rem;line-height:1.1}
+.reviewchip small{font:700 .72rem var(--type);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+footer .sibling{color:inherit;text-decoration:underline;text-underline-offset:2px;font-weight:700}
+footer .sibling:hover{color:var(--red)}
+.modal.review .box{max-width:780px;max-height:90vh;overflow:auto;text-align:left;padding:22px 24px;position:relative}
+.xclose{position:absolute;right:10px;top:8px;border:none;background:none;font:700 1.2rem var(--body);padding:6px 10px;border-radius:8px;color:var(--muted)}
+.xclose:hover{background:var(--grid)}
+.revhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding-right:24px}
+.revhead h3{font-size:1.6rem}
+.hu-toggle{font-size:.75rem;padding:4px 10px;flex:none}
+.revsolved{margin:.4em 0 0;font:700 .9rem var(--type);color:var(--ok)}
+.reviewlead{margin:.4em 0 0;color:var(--muted)}
+.modal.review h4{font:700 .8rem var(--type);letter-spacing:.08em;text-transform:uppercase;margin:20px 0 8px;color:var(--muted)}
+.revlist{display:grid;gap:10px}
+.revperson{display:grid;grid-template-columns:56px 1fr;gap:10px;background:var(--card);border:2px solid var(--ink);border-radius:10px;padding:8px 10px;align-items:start}
+.revperson.victim{background:color-mix(in srgb,var(--red) 9%,var(--card))}
+.revperson .hd{width:52px;margin-top:-10px}
+.revbody b{font-family:var(--display);font-weight:400;font-size:1.05rem}
+.revname{display:flex;align-items:center;gap:8px}
+.revname b{flex:1;min-width:0}
+.revclue{margin-top:4px;border-top:1px dashed var(--grid);padding-top:4px}
+.revclue .clue{font-size:.95rem}
+.revclue .hu{font-size:.82rem}
+@media (max-width:520px){.revperson{grid-template-columns:44px 1fr}.revperson .hd{width:42px}.revhead h3{font-size:1.3rem}}
+
+/* phone game screen */
+.ph .casehead{margin:2px 0 10px;gap:10px}
+.ph .casehead h2{font-size:1.6rem}
+.ph .casehead .flav{font-size:.95rem}
+.ph .clip{padding:10px;border-radius:14px;box-shadow:4px 4px 0 var(--shadow)}
+.ph .boardwrap{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+.ph .colnums,.ph .rownums,.ph .boardwrap>span:first-child{display:none}
+.strip{display:flex;gap:6px;overflow-x:auto;padding:10px 2px 6px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip button{flex:none;border:2.5px solid var(--ink);background:var(--card);border-radius:999px;padding:2px;min-width:48px;min-height:48px;display:grid;place-items:center;position:relative}
+.strip button .hd{width:40px;height:40px}
+.strip button[aria-pressed="true"]{background:var(--yellow);box-shadow:3px 3px 0 var(--shadow)}
+.strip button.done::after{content:"✓";position:absolute;right:-4px;bottom:-4px;background:var(--ok);color:var(--card);border-radius:50%;width:18px;height:18px;font:700 11px/18px var(--body);text-align:center}
+.strip .xb{font:700 1.1rem var(--hand);padding:0 14px}
+.carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 4px 10px;scrollbar-width:none}
+.carousel::-webkit-scrollbar{display:none}
+.carousel .card{flex:0 0 86%;scroll-snap-align:center;transform:none!important}
+.dots{display:flex;justify-content:center;gap:5px;margin-top:2px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--muted);opacity:.35}
+.dots i.on{opacity:1;background:var(--ink);width:18px;border-radius:4px}
+.ph .actions .btn{flex:1;min-height:48px}
+/* Scooby a Quadretti — spooky Halloween night theme. */
+:root{
+  --paper:#241A33; --card:#322547; --ink:#F7EBDA; --muted:#B7A6CC; --grid:rgba(232,114,28,.10);
+  --blue:#7FC4C9; --pink:#E8721C; --yellow:#FFD98E; --red:#D96A5A; --ok:#8CC79E; --hu:#A98AD4;
+  --on-yellow:#241A33; --wall:#F7EBDA; --tape:rgba(232,114,28,.45); --shadow:#170F22;
+  --r0:#4A3062; --r1:#2E4460; --r2:#5A3A24; --r3:#2F4A44; --r4:#43305E; --r5:#52342E; --r6:#3A4054;
+  --display:"Baloo 2","Nunito",sans-serif;
+  --body:"Nunito","Segoe UI",sans-serif;
+  --type:"Baloo 2","Nunito",sans-serif;
+  --hand:"Baloo 2",cursive;
+  color-scheme:dark }
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --paper:#FBEFE0; --card:#FFFDF8; --ink:#3A2A4A; --muted:#8A7599; --grid:rgba(232,114,28,.12);
+  --blue:#5AA7AD; --pink:#E8721C; --yellow:#FFD98E; --red:#D95A6E; --ok:#5FA878; --hu:#8E6AC8;
+  --on-yellow:#3A2A4A; --wall:#3A2A4A; --tape:rgba(232,114,28,.45); --shadow:#E3C9A8;
+  --r0:#F1E2FA; --r1:#E0EBF8; --r2:#FFE7C4; --r3:#E0F3EA; --r4:#EDE0F8; --r5:#FFDFD2; --r6:#E4E9F6; color-scheme:light }}
+:root[data-theme="light"]{
+  --paper:#FBEFE0; --card:#FFFDF8; --ink:#3A2A4A; --muted:#8A7599; --grid:rgba(232,114,28,.12);
+  --blue:#5AA7AD; --pink:#E8721C; --yellow:#FFD98E; --red:#D95A6E; --ok:#5FA878; --hu:#8E6AC8;
+  --on-yellow:#3A2A4A; --wall:#3A2A4A; --tape:rgba(232,114,28,.45); --shadow:#E3C9A8;
+  --r0:#F1E2FA; --r1:#E0EBF8; --r2:#FFE7C4; --r3:#E0F3EA; --r4:#EDE0F8; --r5:#FFDFD2; --r6:#E4E9F6; color-scheme:light }
+html,body{background:var(--paper);color:var(--ink)}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),radial-gradient(circle at 85% 8%,rgba(232,114,28,.14),transparent 55%),radial-gradient(circle at 8% 88%,rgba(127,196,201,.14),transparent 55%);background-size:26px 26px,26px 26px,100% 100%,100% 100%}
+.brand h1{letter-spacing:.01em;text-transform:none}
+.brand small{letter-spacing:.1em}
+.mark{background:var(--pink);border-radius:10px;box-shadow:3px 3px 0 var(--blue);transform:rotate(-4deg)}
+.mark i.v{background:var(--blue)}
+.hero h1 .hl{background:var(--pink);color:#fff;box-shadow:5px 5px 0 var(--blue);transform:rotate(-1.5deg);border-radius:10px}
+.hero .actions .btn{background:var(--yellow)}
+.btn{border-radius:999px;border-width:3px;box-shadow:0 4px 0 var(--shadow)}
+.btn.ghost{background:var(--card)}
+.pill{border-radius:999px;border-width:2.5px}
+.pill[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+.say{color:var(--pink)}
+.case{border-radius:18px;border-width:3px;box-shadow:0 6px 0 var(--shadow)}
+.case .tape{background:repeating-linear-gradient(-45deg,var(--tape) 0 8px,transparent 8px 14px),var(--tape);border-radius:12px 0}
+.case .flav{font-style:italic}
+.card{border-radius:16px;border-width:2.5px;box-shadow:0 4px 0 var(--shadow)}
+.clip{border-radius:20px;border-width:3px;box-shadow:0 8px 0 var(--shadow)}
+.board{border-radius:10px;border-width:4px}
+.cell .lab{background:var(--card);border-width:2px;border-radius:999px;transform:rotate(-2deg)}
+.legend .chip{border-radius:999px}
+.slip{border-radius:16px;box-shadow:0 5px 0 var(--shadow)}
+.msg{border-radius:12px}
+.modal .box{border-radius:20px;box-shadow:0 10px 0 var(--shadow)}
+.modal .stp{opacity:.95}
+.reviewchip{border-radius:999px}
+.revperson{border-radius:14px}
+.rule,.objbox{border-radius:14px}
+.coderow .bigcode{background:var(--yellow);box-shadow:0 5px 0 var(--pink);border-radius:14px}
+.casehead{border-bottom:2px dashed var(--muted);padding-bottom:10px}
+.timer{border-radius:999px;box-shadow:0 3px 0 var(--pink)}
+.tip .tb{border-radius:16px 16px 16px 4px}
+.tip .tb .say-it{font-family:var(--display);font-size:1.15rem;font-weight:700}
+footer{font-family:var(--type);font-size:.8rem;letter-spacing:.03em}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>/* Yamada a Quadretti — soft pastel anime art. Original SVG shapes only;
+   character likenesses are established by the painted portraits in portraits.json. */
+(function (root) {
+  var INK = {
+    pink: '#FF9DBD', rose: '#E86A8E', red: '#D95A6E', peach: '#FFC09B', orange: '#F2A56B',
+    yellow: '#FFD98E', cream: '#FFF3DA', mint: '#9ADFC3', green: '#7FBF8E', teal: '#7FC4C9',
+    sky: '#A8CFF0', blue: '#7FA8DC', navy: '#5B6B9C', lavender: '#C9B2E8', purple: '#A98AD4',
+    brown: '#A0785A', choco: '#7A5340', black: '#4A3A44', paper: '#FFF9F4', steel: '#9C9CA4'
+  };
+  var SKIN = ['#FBE3CF', '#F2CDA8', '#DFA87E', '#B97F56', '#8A5A3B', '#F7D9BE'];
+  var HAIR = { k: '#332A33', d: '#4A3628', b: '#8A6242', y: '#E8BE78', a: '#D9C29A', r: '#C96B4A', g: '#9C9CA4', w: '#F0EBE0', p: '#F2A5C0', v: '#9B7EC8', u: '#3A4A6B', s: '#8A857E', choco: '#7A5340', o: '#E08A3C', biscuit: '#C99A5B' };
+  var K = '#5A4650';
+  function shade(hex, f) { var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    f = f || 0.74; r = Math.round(r * f); g = Math.round(g * f); b = Math.round(b * f);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1); }
+  var FLOOR = 'fill="#000" fill-opacity=".14"';
+  var uid = 0;
+  function id(p) { uid += 1; return p + uid; }
+
+  /* ---------- hair ---------- */
+  function hairBack(st, c) {
+    switch (st) {
+      case 'long': return '<path d="M30 58 C30 30 90 30 90 58 L94 112 C80 118 40 118 26 112 Z" fill="' + c + '"/>';
+      case 'wavy': return '<path d="M30 56 C30 28 90 28 90 56 C94 76 88 92 94 112 C86 118 78 112 76 104 C74 116 64 120 60 118 C56 120 46 116 44 104 C42 112 34 118 26 112 C32 92 26 76 30 56 Z" fill="' + c + '"/>';
+      case 'hime': return '<path d="M31 58 C31 30 89 30 89 58 L92 116 C84 120 78 114 78 108 L42 108 C42 114 36 120 28 116 Z" fill="' + c + '"/>';
+      case 'pigtails': return '<g fill="' + c + '"><path d="M30 58 C30 30 90 30 90 58 L91 82 C80 88 40 88 29 82 Z"/><path d="M30 74 C20 82 18 104 26 116 C32 108 34 92 34 80 Z"/><path d="M90 74 C100 82 102 104 94 116 C88 108 86 92 86 80 Z"/></g>';
+      case 'bob': return '<path d="M30 60 C30 30 90 30 90 60 L92 92 C80 98 40 98 28 92 Z" fill="' + c + '"/>';
+      case 'shaggy': return '<path d="M29 58 C28 28 92 26 91 58 L93 96 C86 100 82 94 82 88 C80 96 74 100 70 97 L68 86 C64 96 56 96 52 86 L50 97 C46 100 40 96 38 88 C38 94 34 100 27 96 Z" fill="' + c + '"/>';
+      case 'ponytail': return '<path d="M84 50 C104 54 106 86 96 104 C92 88 88 74 82 66 Z" fill="' + c + '"/>';
+      default: return '';
+    }
+  }
+  function hairFront(st, c) {
+    switch (st) {
+      case 'short': return '<path d="M33 56 C30 28 58 22 72 28 C86 30 92 44 88 58 C84 46 76 40 64 42 C52 44 42 44 33 56 Z" fill="' + c + '"/>';
+      case 'medium': return '<g fill="' + c + '"><path d="M31 58 C28 26 92 24 89 58 C87 46 82 40 76 42 L74 56 L70 42 L64 58 L60 40 L54 56 L50 42 C44 42 36 46 31 58 Z"/><path d="M31 58 C30 66 32 72 34 76 L38 62 Z"/><path d="M89 58 C90 66 88 72 86 76 L82 62 Z"/></g>';
+      case 'long': return '<path d="M32 60 C28 30 92 26 88 60 C82 44 70 38 60 40 C48 42 40 48 32 60 Z" fill="' + c + '"/>';
+      case 'wavy': return '<g fill="' + c + '"><path d="M31 62 C26 28 94 24 89 62 C86 48 80 40 70 42 C66 44 64 48 60 48 C56 48 54 44 50 42 C40 40 34 48 31 62 Z"/><path d="M31 62 C28 72 30 82 34 88 L38 66 Z"/><path d="M89 62 C92 72 90 82 86 88 L82 66 Z"/></g>';
+      case 'hime': return '<g fill="' + c + '"><path d="M31 60 C28 28 92 26 89 60 C86 50 84 46 80 44 L32 44 Z" transform="translate(0,-2)"/><rect x="34" y="40" width="52" height="10" rx="4"/><path d="M31 58 C30 70 32 78 36 84 L39 60 Z"/><path d="M89 58 C90 70 88 78 84 84 L81 60 Z"/></g>';
+      case 'pigtails': return '<path d="M32 60 C28 28 92 26 88 60 C86 50 80 44 74 46 L72 54 L66 44 L60 54 L54 44 L48 54 L46 46 C40 44 34 50 32 60 Z" fill="' + c + '"/>';
+      case 'bun': return '<g fill="' + c + '"><circle cx="60" cy="24" r="11"/><path d="M33 56 C32 30 88 30 87 56 C80 42 40 42 33 56 Z"/></g>';
+      case 'ponytail': return '<path d="M33 56 C32 30 88 30 87 56 C76 40 46 40 33 56 Z" fill="' + c + '"/>';
+      case 'bald': return '<g fill="' + c + '"><path d="M32 66 C30 54 34 50 36 50 L38 66 Z"/><path d="M88 66 C90 54 86 50 84 50 L82 66 Z"/></g>';
+      case 'shaggy': return '<g fill="' + c + '"><path d="M30 62 C26 26 94 24 90 62 C88 48 84 44 80 46 L78 58 L73 44 L68 58 L63 42 L58 58 L53 44 L48 58 L45 46 C39 45 33 50 30 62 Z"/><path d="M30 62 C28 72 29 82 33 90 L37 68 Z"/><path d="M90 62 C92 72 91 82 87 90 L83 68 Z"/></g>';
+      default: return '';
+    }
+  }
+  function face(expr) {
+    var e = '';
+    if (expr === 'x') {
+      e += '<g stroke="' + K + '" stroke-width="3" stroke-linecap="round"><path d="M45 60 l8 8 M53 60 l-8 8"/><path d="M67 60 l8 8 M75 60 l-8 8"/></g>';
+      e += '<path d="M52 84 q8 -5 16 0" fill="none" stroke="' + K + '" stroke-width="3" stroke-linecap="round"/>';
+      return e;
+    }
+    /* big soft anime eyes */
+    e += '<g fill="' + K + '"><ellipse cx="49" cy="64" rx="4" ry="5.4"/><ellipse cx="71" cy="64" rx="4" ry="5.4"/></g>';
+    e += '<g fill="#fff"><circle cx="50.4" cy="62.2" r="1.6"/><circle cx="72.4" cy="62.2" r="1.6"/><circle cx="47.8" cy="66" r=".9"/><circle cx="69.8" cy="66" r=".9"/></g>';
+    var brow = expr === 'smirk' ? '<path d="M43 54 l11 -2 M66 52 l11 3" />' : expr === 'flat' ? '<path d="M43 55 h11 M66 55 h11"/>' : '<path d="M43 55 q5 -4 11 -1 M66 54 q6 -3 11 1"/>';
+    e += '<g stroke="' + K + '" stroke-width="2.4" stroke-linecap="round" fill="none">' + brow + '</g>';
+    var m = expr === 'smile' ? '<path d="M51 78 q9 9 18 0" />' : expr === 'smirk' ? '<path d="M52 81 q10 4 17 -4" />' : expr === 'o' ? '<ellipse cx="60" cy="81" rx="4" ry="5"/>' : '<path d="M52 81 h16" />';
+    e += '<g stroke="' + K + '" stroke-width="2.8" stroke-linecap="round" fill="none">' + m + '</g>';
+    e += '<g fill="' + INK.pink + '" fill-opacity=".4"><ellipse cx="41" cy="73" rx="6" ry="3.4"/><ellipse cx="79" cy="73" rx="6" ry="3.4"/></g>';
+    return e;
+  }
+  function accBack(acc) {
+    var s = '';
+    if (acc.indexOf('headphones') >= 0) s += '<path d="M30 62 C26 20 94 20 90 62" fill="none" stroke="' + K + '" stroke-width="6"/>';
+    if (acc.indexOf('bunnyears') >= 0) s += '<g fill="' + INK.paper + '" stroke="' + K + '" stroke-width="2.6" stroke-linejoin="round"><path d="M42 34 C34 8 40 2 48 6 C52 10 52 24 50 36 Z"/><path d="M78 34 C86 8 80 2 72 6 C68 10 68 24 70 36 Z"/></g><g fill="' + INK.pink + '"><path d="M45 30 C40 12 43 8 47 12 C49 16 49 26 48 32 Z"/><path d="M75 30 C80 12 77 8 73 12 C71 16 71 26 72 32 Z"/></g>';
+    return s;
+  }
+  function accFront(acc, hc, skin) {
+    var s = '';
+    acc.forEach(function (a) {
+      switch (a) {
+        case 'glasses': s += '<g fill="none" stroke="' + K + '" stroke-width="2.6"><circle cx="49" cy="64" r="9.5"/><circle cx="71" cy="64" r="9.5"/><path d="M58.5 64 h3 M39.5 62 l-7 -3 M80.5 62 l7 -3"/></g>'; break;
+        case 'headphones': s += '<g fill="' + INK.navy + '" stroke="' + K + '" stroke-width="2.4"><rect x="22" y="54" width="12" height="20" rx="5"/><rect x="86" y="54" width="12" height="20" rx="5"/></g>'; break;
+        case 'ribbon': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round" fill="' + INK.rose + '"><path d="M60 20 L46 12 L48 26 Z"/><path d="M60 20 L74 12 L72 26 Z"/><circle cx="60" cy="19" r="4.6" fill="' + INK.red + '"/></g>'; break;
+        case 'headdress': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M30 44 C40 32 80 32 90 44 L90 50 C80 38 40 38 30 50 Z" fill="' + K + '"/><g fill="' + INK.paper + '"><circle cx="40" cy="42" r="3"/><circle cx="50" cy="39" r="3"/><circle cx="60" cy="38" r="3"/><circle cx="70" cy="39" r="3"/><circle cx="80" cy="42" r="3"/></g><path d="M30 48 L26 40 L34 42 Z" fill="' + K + '"/><path d="M90 48 L94 40 L86 42 Z" fill="' + K + '"/></g>'; break;
+        case 'earrings': s += '<g fill="' + INK.yellow + '" stroke="' + K + '" stroke-width="1.6"><circle cx="33" cy="80" r="3.6"/><circle cx="87" cy="80" r="3.6"/></g>'; break;
+        case 'mustache': s += '<path d="M46 76 q7 -6 14 -1 q7 -5 14 1 q-6 6 -14 2 q-8 4 -14 -2 z" fill="' + hc + '" stroke="' + K + '" stroke-width="1.6"/>'; break;
+        case 'towel': s += '<g stroke="' + K + '" stroke-width="2" stroke-linejoin="round" fill="' + INK.paper + '"><path d="M40 98 Q60 110 80 98 L84 110 Q60 122 36 110 Z"/><path d="M50 108 L46 124 L54 122 L56 110 Z"/></g>'; break;
+        case 'striped': case 'apron': case 'bunnyears': break;
+        case 'collar': s += '<g stroke="' + K + '" stroke-width="2"><path d="M44 92 Q60 102 76 92 L76 99 Q60 109 44 99 Z" fill="' + INK.teal + '"/><rect x="57" y="99" width="6" height="7" rx="2" fill="' + INK.yellow + '" stroke="' + K + '" stroke-width="1.4"/></g>'; break;
+        case 'goatee': s += '<path d="M54 84 q6 8 12 0 q-2 10 -6 10 q-4 0 -6 -10 z" fill="' + hc + '" stroke="' + K + '" stroke-width="1.4"/>'; break;
+        case 'beard': s += '<path d="M42 72 q2 26 18 28 q16 -2 18 -28 q-4 14 -18 15 q-14 -1 -18 -15 z" fill="' + hc + '" stroke="' + K + '" stroke-width="1.6"/>'; break;
+        case 'ascot': s += '<g stroke="' + K + '" stroke-width="1.8" stroke-linejoin="round" fill="' + INK.orange + '"><path d="M52 92 L60 102 L68 92 L66 104 Q60 108 54 104 Z"/><path d="M54 104 L60 118 L66 104 Z" fill="' + shade(INK.orange, .82) + '"/></g>'; break;
+        case 'headband': s += '<path d="M31 56 C38 40 82 40 89 56 L89 49 C82 33 38 33 31 49 Z" fill="' + INK.lavender + '" stroke="' + K + '" stroke-width="1.8"/>'; break;
+        case 'streak': s += '<path d="M55 27 C59 25 64 25 67 28 L65 56 L57 56 Z" fill="' + INK.paper + '" opacity=".9"/>'; break;
+      }
+    });
+    return s;
+  }
+
+  /* ---------- optional raster portraits (painted pieces) ---------- */
+  function rasterHead(src, opts) {
+    var clip = id('rh');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 16 100 104" role="img" aria-label="' + (opts.label || '') + '">' +
+      '<defs><clipPath id="' + clip + '"><circle cx="60" cy="66" r="44"/></clipPath></defs>' +
+      '<circle cx="60" cy="70" r="47" fill="' + shade(INK[opts.bg] || INK.yellow, 0.72) + '" stroke="' + K + '" stroke-width="3"/>' +
+      '<circle cx="60" cy="66" r="47" fill="#fff" stroke="' + K + '" stroke-width="3"/>' +
+      '<circle cx="60" cy="66" r="44" fill="' + (INK[opts.bg] || INK.yellow) + '"/>' +
+      '<image href="' + src + '" x="10" y="16" width="100" height="104" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + clip + ')"/>' +
+      '</svg>';
+  }
+  function rasterFull(src, opts) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 154" role="img" aria-label="' + (opts.label || '') + '">' +
+      '<image href="' + src + '" x="0" y="0" width="122" height="154" preserveAspectRatio="xMidYMid meet"/>' +
+      '</svg>';
+  }
+
+  /* ---------- the Scooby Snacks box mascot ---------- */
+  function plushFigure(opts) {
+    var B = INK.orange, BD = shade(B, 0.72), CR = INK.cream;
+    var bone = function (x, y, r) {
+      return '<g transform="translate(' + x + ' ' + y + ') rotate(' + r + ')" fill="' + HAIR.biscuit + '" stroke="' + K + '" stroke-width="1.6">' +
+        '<rect x="-7" y="-2.6" width="14" height="5.2" rx="2.6"/>' +
+        '<circle cx="-7" cy="-2.8" r="2.8"/><circle cx="-7" cy="2.8" r="2.8"/>' +
+        '<circle cx="7" cy="-2.8" r="2.8"/><circle cx="7" cy="2.8" r="2.8"/></g>';
+    };
+    var body =
+      '<path d="M46 118 v14 M74 118 v14" fill="none" stroke="' + K + '" stroke-width="7" stroke-linecap="round"/>' +
+      '<rect x="36" y="128" width="20" height="10" rx="5" fill="' + INK.choco + '" stroke="' + K + '" stroke-width="2"/>' +
+      '<rect x="64" y="128" width="20" height="10" rx="5" fill="' + INK.choco + '" stroke="' + K + '" stroke-width="2"/>' +
+      '<path d="M28 76 q-12 2 -14 14 M92 76 q12 2 14 14" fill="none" stroke="' + K + '" stroke-width="5" stroke-linecap="round"/>' +
+      '<rect x="28" y="42" width="64" height="80" rx="10" fill="' + B + '"/>' +
+      '<path d="M28 52 v60 a10 10 0 0 0 10 10 h8 V42 h-8 a10 10 0 0 0 -10 10 z" fill="' + BD + '" opacity=".55"/>' +
+      '<rect x="36" y="52" width="48" height="62" rx="8" fill="' + CR + '" stroke="' + K + '" stroke-width="2.2"/>' +
+      '<circle cx="50" cy="80" r="4.6" fill="' + K + '"/><circle cx="70" cy="80" r="4.6" fill="' + K + '"/>' +
+      '<circle cx="51.6" cy="78.4" r="1.5" fill="#fff"/><circle cx="71.6" cy="78.4" r="1.5" fill="#fff"/>' +
+      '<path d="M53 92 q7 7 14 0" fill="none" stroke="' + K + '" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<g fill="' + INK.rose + '" fill-opacity=".5"><ellipse cx="43" cy="88" rx="4.4" ry="2.8"/><ellipse cx="77" cy="88" rx="4.4" ry="2.8"/></g>' +
+      bone(44, 106, -18) + bone(76, 106, 14) +
+      '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round" fill="' + INK.red + '"><path d="M60 42 L46 32 L48 50 Z"/><path d="M60 42 L74 32 L72 50 Z"/><circle cx="60" cy="41" r="5"/></g>';
+    var keyline = '<g fill="none" stroke="' + K + '" stroke-width="3" stroke-linejoin="round"><rect x="28" y="42" width="64" height="80" rx="10"/></g>';
+    if (opts.crop === 'head') {
+      var cid = id('cl');
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 16 100 104" role="img" aria-label="' + (opts.label || '') + '">' +
+        '<defs><clipPath id="' + cid + '"><circle cx="60" cy="66" r="44"/></clipPath></defs>' +
+        '<circle cx="60" cy="70" r="47" fill="' + shade(INK[opts.bg] || INK.yellow, 0.72) + '" stroke="' + K + '" stroke-width="3"/>' +
+        '<circle cx="60" cy="66" r="47" fill="#fff" stroke="' + K + '" stroke-width="3"/>' +
+        '<circle cx="60" cy="66" r="44" fill="' + (INK[opts.bg] || INK.yellow) + '"/>' +
+        '<g clip-path="url(#' + cid + ')">' + body + keyline + '</g></svg>';
+    }
+    var sil = '<rect x="28" y="42" width="64" height="80" rx="10"/><path d="M46 30 L60 44 L74 30 L72 50 L48 50 Z"/><path d="M44 118 h32 v18 h-32 z"/>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 146 154" role="img" aria-label="' + (opts.label || '') + '">' +
+      '<g transform="translate(4 3.5)" fill="#C9B2C0" stroke="#C9B2C0" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
+      '<g fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
+      body + keyline + '</svg>';
+  }
+
+  /* spec: [skinIdx, hairStyle, hairColorKey, [acc], shirtInk, expr, bodyType] */
+  function portrait(spec, opts) {
+    opts = opts || {};
+    var pr = (typeof PORTRAITS !== 'undefined') && opts.label && PORTRAITS[opts.label];
+    if (pr) {
+      if (opts.crop === 'head' && pr.head) return rasterHead(pr.head, opts);
+      if (opts.crop !== 'head' && pr.full) return rasterFull(pr.full, opts);
+    }
+    if (spec[1] === 'plush') return plushFigure(opts);
+    var skin = SKIN[spec[0] % SKIN.length], hs = spec[1], hc = HAIR[spec[2]] || HAIR.k,
+      acc = spec[3] || [], shirt = INK[spec[4]] || INK.blue, expr = spec[5] || 'smile',
+      body = spec[6] || 'normal';
+    var BW = ({ normal: 46, thin: 36, tall: 36, fat: 56, huge: 58, small: 40 })[body] || 46;
+    var SH = ({ normal: 26, thin: 20, tall: 22, fat: 32, huge: 40, small: 24 })[body] || 26;
+    var TY = ({ normal: 100, thin: 100, tall: 96, fat: 100, huge: 98, small: 104 })[body] || 100;
+    var L = 60 - BW, R = 60 + BW, SL = 60 - SH, SR = 60 + SH;
+    var torso = 'M' + L + ' 142 C' + L + ' ' + (TY + 12) + ' ' + SL + ' ' + TY + ' 60 ' + TY +
+      ' C' + SR + ' ' + TY + ' ' + R + ' ' + (TY + 12) + ' ' + R + ' 142 Z';
+    var cid = id('cl'), lid = id('lt');
+    var rightHalf = '<clipPath id="' + lid + '"><rect x="61" y="0" width="70" height="160"/></clipPath>';
+    var sk2 = shade(skin, 0.84);
+    var bodyOverlay = '';
+    if (acc.indexOf('striped') >= 0) bodyOverlay += '<path d="' + torso + '" fill="' + shade(shirt, .72) + '" stroke="none" stroke-dasharray="6 5"/>';
+    if (acc.indexOf('apron') >= 0) bodyOverlay += '<path d="M' + (60 - BW * .45) + ' ' + (TY + 18) + ' L' + (60 + BW * .45) + ' ' + (TY + 18) +
+      ' L' + (60 + BW * .4) + ' 142 L' + (60 - BW * .4) + ' 142 Z" fill="' + INK.paper + '" stroke="' + K + '" stroke-width="2.2"/>' +
+      '<circle cx="60" cy="' + (TY + 32) + '" r="4" fill="' + INK.red + '"/><path d="M60 ' + (TY + 28) + ' q3 -5 6 -2" fill="none" stroke="' + INK.green + '" stroke-width="2"/>';
+    var figure =
+      '<g>' + hairBack(hs, hc) + '<g clip-path="url(#' + lid + ')" opacity=".18">' + hairBack(hs, '#000') + '</g>' + accBack(acc) +
+      '<path d="' + torso + '" fill="' + shirt + '"/>' +
+      '<path d="M60 ' + TY + ' C' + SR + ' ' + TY + ' ' + R + ' ' + (TY + 12) + ' ' + R + ' 142 L60 142 Z" fill="#000" fill-opacity=".12"/>' +
+      bodyOverlay +
+      '<path d="M50 ' + TY + ' L60 ' + (TY + 14) + ' L70 ' + TY + '" fill="none" stroke="' + K + '" stroke-width="2.4" stroke-linejoin="round"/>' +
+      '<rect x="51" y="86" width="18" height="' + (TY - 84) + '" fill="' + sk2 + '"/>' +
+      '<ellipse cx="60" cy="64" rx="27" ry="30" fill="' + skin + '"/>' +
+      '<path d="M74 38 C92 52 90 84 66 93 C80 80 84 58 74 38 Z" fill="' + sk2 + '" fill-opacity=".6"/>' +
+      '<ellipse cx="33" cy="68" rx="4" ry="6" fill="' + skin + '"/><ellipse cx="87" cy="68" rx="4" ry="6" fill="' + skin + '"/>' +
+      face(expr) + hairFront(hs, hc) +
+      '<g clip-path="url(#' + lid + ')" opacity=".18">' + hairFront(hs, '#000') + '</g>' +
+      '<path d="M40 40 q8 -8 18 -9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>' +
+      accFront(acc, hc, skin) + '</g>';
+    var keyline = '<g fill="none" stroke="' + K + '" stroke-width="3" stroke-linejoin="round">' +
+      '<path d="' + torso + '"/><ellipse cx="60" cy="64" rx="27" ry="30"/></g>';
+    var defs = '<defs><clipPath id="' + cid + '"><circle cx="60" cy="66" r="44"/></clipPath>' + rightHalf + '</defs>';
+    if (opts.crop === 'head') {
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 16 100 104" role="img" aria-label="' + (opts.label || '') + '">' + defs +
+        '<circle cx="60" cy="70" r="47" fill="' + shade(INK[opts.bg] || INK.yellow, 0.72) + '" stroke="' + K + '" stroke-width="3"/>' +
+        '<circle cx="60" cy="66" r="47" fill="#fff" stroke="' + K + '" stroke-width="3"/>' +
+        '<circle cx="60" cy="66" r="44" fill="' + (INK[opts.bg] || INK.yellow) + '"/>' +
+        '<g clip-path="url(#' + cid + ')">' + figure + keyline + '</g></svg>';
+    }
+    /* die-cut sticker: soft offset layer, thick white cut line, figure */
+    var silhouette = hairBack(hs, '#000') + '<path d="' + torso + '"/><ellipse cx="60" cy="64" rx="27" ry="30"/>' + hairFront(hs, '#000') +
+      accFront(acc.filter(function (a) { return ['ribbon', 'headdress'].indexOf(a) >= 0; }), '#000', '#000');
+    var sil = silhouette.replace(/fill="[^"]*"/g, '').replace(/fill-opacity="[^"]*"/g, '');
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 146 154" role="img" aria-label="' + (opts.label || '') + '">' + defs +
+      '<g transform="translate(4 3.5)" fill="' + (INK[opts.bg] || INK.yellow) + '" stroke="' + (INK[opts.bg] || INK.yellow) + '" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
+      '<g transform="translate(1.5 3)" fill="#D9C2CC" stroke="#D9C2CC" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
+      '<g fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
+      figure + keyline + '</svg>';
+  }
+
+  /* ---------- objects (100×100) ---------- */
+  function wrap(inner, label) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="' + (label || '') + '">' + inner + '</svg>';
+  }
+  var S = 'stroke="' + K + '" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"';
+  var OBJ = {
+    chair: function () { return '<g ' + FLOOR + '><rect x="30" y="16" width="44" height="72" rx="14"/></g>' +
+      '<g ' + S + '><path d="M36 74 v14 M64 74 v14" fill="none"/><rect x="30" y="12" width="40" height="52" rx="13" fill="' + INK.navy + '"/><rect x="36" y="18" width="28" height="14" rx="7" fill="' + INK.sky + '"/><rect x="22" y="48" width="56" height="20" rx="9" fill="' + INK.blue + '"/><path d="M30 38 h18" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none"/></g>'; },
+    sofa: function () { return '<g ' + FLOOR + '><rect x="16" y="32" width="78" height="56" rx="14"/></g>' +
+      '<g ' + S + '><rect x="12" y="30" width="76" height="54" rx="14" fill="' + shade(INK.mint) + '"/><rect x="12" y="24" width="76" height="52" rx="14" fill="' + INK.mint + '"/><rect x="24" y="36" width="52" height="30" rx="8" fill="' + shade(INK.mint, .86) + '"/><path d="M50 36 v30" fill="none"/></g>' +
+      '<path d="M28 42 h16 M56 42 h16" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>'; },
+    rug: function () { return '<g ' + FLOOR + ' fill-opacity=".1"><ellipse cx="52" cy="52" rx="40" ry="32"/></g>' +
+      '<g ' + S + '><ellipse cx="50" cy="48" rx="40" ry="32" fill="' + INK.pink + '"/><ellipse cx="50" cy="48" rx="30" ry="23" fill="' + INK.cream + '"/><path d="M50 38 C44 32 36 38 40 46 C43 52 50 56 50 56 C50 56 57 52 60 46 C64 38 56 32 50 38 Z" fill="' + INK.rose + '" stroke-width="2.4"/></g>'; },
+    bed: function () { return '<g ' + FLOOR + '><rect x="22" y="14" width="64" height="82" rx="8"/></g>' +
+      '<g ' + S + '><rect x="18" y="12" width="64" height="80" rx="8" fill="' + shade(INK.lavender) + '"/><rect x="18" y="7" width="64" height="80" rx="8" fill="' + INK.paper + '"/><rect x="26" y="13" width="48" height="18" rx="9" fill="' + INK.yellow + '"/><path d="M18 42 h64 v38 a8 8 0 0 1 -8 8 h-48 a8 8 0 0 1 -8 -8 z" fill="' + INK.lavender + '"/><path d="M18 52 h64" stroke="#fff" fill="none"/></g>' +
+      '<path d="M74 56 v24" stroke="' + shade(INK.lavender) + '" stroke-width="6" stroke-linecap="round"/>'; },
+    bench: function () { return '<g ' + FLOOR + '><rect x="12" y="44" width="80" height="14" rx="6"/><path d="M20 58 h60 v26 h-60 z"/></g>' +
+      '<g ' + S + '><path d="M20 54 v28 M80 54 v28" fill="none"/><rect x="10" y="40" width="80" height="14" rx="7" fill="' + INK.orange + '"/><rect x="16" y="22" width="68" height="12" rx="6" fill="' + shade(INK.orange, .85) + '"/></g>' +
+      '<path d="M18 45 h26" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>'; },
+    desk: function () { return '<g ' + FLOOR + '><rect x="14" y="52" width="76" height="12" rx="4"/></g>' +
+      '<g ' + S + '><rect x="10" y="48" width="80" height="10" rx="4" fill="' + INK.brown + '"/><path d="M16 58 v26 M84 58 v26" fill="none"/><rect x="30" y="12" width="40" height="30" rx="4" fill="' + K + '"/><rect x="33" y="15" width="34" height="24" rx="2" fill="' + INK.sky + '"/><path d="M46 42 v6 M40 48 h12" fill="none"/></g>' +
+      '<path d="M38 20 l8 8 M48 18 l8 8" stroke="#fff" stroke-opacity=".7" stroke-width="2.6" stroke-linecap="round"/>'; },
+    shelf: function () { var c = [INK.rose, INK.yellow, INK.blue, INK.green, INK.pink, INK.orange]; var b = '';
+      for (var r = 0; r < 3; r++) for (var i = 0; i < 6; i++) b += '<rect x="' + (17 + i * 11) + '" y="' + (16 + r * 23) + '" width="9" height="17" rx="2" fill="' + c[(i + r * 2) % 6] + '"/>';
+      b += '<circle cx="28" cy="22" r="5" fill="' + INK.choco + '"/><circle cx="25" cy="17" r="2" fill="' + INK.choco + '"/><circle cx="31" cy="17" r="2" fill="' + INK.choco + '"/>';
+      return '<g ' + FLOOR + '><rect x="18" y="16" width="72" height="78" rx="4"/></g>' +
+        '<g ' + S + '><rect x="12" y="14" width="76" height="78" rx="4" fill="' + shade(INK.brown, .85) + '"/><rect x="12" y="8" width="76" height="78" rx="4" fill="' + INK.brown + '"/></g>' + '<g stroke="' + K + '" stroke-width="1.6">' + b + '</g>' + '<g ' + S + ' fill="none"><path d="M12 35 h76 M12 58 h76"/></g>'; },
+    vending: function () { return '<g ' + FLOOR + '><rect x="22" y="10" width="56" height="84" rx="6"/></g>' +
+      '<g ' + S + '><rect x="18" y="8" width="56" height="84" rx="6" fill="' + INK.red + '"/><rect x="24" y="16" width="32" height="40" rx="3" fill="' + INK.paper + '"/><rect x="60" y="16" width="8" height="24" rx="2" fill="' + K + '"/><rect x="24" y="62" width="44" height="12" rx="3" fill="' + K + '"/></g>' +
+      '<g stroke="' + K + '" stroke-width="1.6"><circle cx="32" cy="26" r="4" fill="' + INK.sky + '"/><circle cx="42" cy="26" r="4" fill="' + INK.yellow + '"/><circle cx="52" cy="26" r="4" fill="' + INK.mint + '"/><circle cx="32" cy="38" r="4" fill="' + INK.pink + '"/><circle cx="42" cy="38" r="4" fill="' + INK.orange + '"/><circle cx="52" cy="38" r="4" fill="' + INK.lavender + '"/></g>' +
+      '<circle cx="64" cy="46" r="3" fill="' + INK.yellow + '" stroke="' + K + '" stroke-width="1.6"/>'; },
+    plant: function () { return '<g ' + FLOOR + '><ellipse cx="56" cy="90" rx="22" ry="6"/></g>' +
+      '<g ' + S + '><path d="M50 56 C30 50 18 30 22 14 C40 20 50 36 50 56 Z" fill="' + INK.green + '"/><path d="M50 56 C70 50 82 30 78 14 C60 20 50 36 50 56 Z" fill="' + shade(INK.green, .8) + '"/><path d="M50 58 C48 36 54 20 50 8" fill="none"/><path d="M30 58 h40 l-6 32 h-28 z" fill="' + INK.pink + '"/></g>' +
+      '<path d="M54 60 h16 l-6 30 h-12 z" fill="' + shade(INK.pink, .8) + '"/><g ' + S + ' fill="none"><path d="M30 58 h40 l-6 32 h-28 z"/><path d="M28 58 h44"/></g>'; },
+    crane: function () { return '<g ' + FLOOR + '><rect x="14" y="12" width="72" height="80" rx="6"/></g>' +
+      '<g ' + S + '><rect x="10" y="10" width="72" height="80" rx="6" fill="' + INK.sky + '"/><rect x="16" y="18" width="60" height="44" rx="4" fill="' + INK.paper + '"/><path d="M16 62 h60 v22 a6 6 0 0 1 -6 6 h-48 a6 6 0 0 1 -6 -6 z" fill="' + shade(INK.sky, .8) + '"/><path d="M48 22 v10 M42 32 h12 l-3 8 h-6 z" fill="none"/><rect x="22" y="68" width="16" height="10" rx="2" fill="' + K + '"/></g>' +
+      '<g stroke="' + K + '" stroke-width="1.6"><circle cx="28" cy="50" r="7" fill="' + INK.pink + '"/><circle cx="44" cy="52" r="7" fill="' + INK.choco + '"/><circle cx="60" cy="50" r="7" fill="' + INK.lavender + '"/><circle cx="36" cy="42" r="6" fill="' + INK.mint + '"/></g>' +
+      '<circle cx="30" cy="73" r="2.6" fill="' + INK.yellow + '"/><circle cx="33" cy="73" r="1" fill="' + K + '"/>'; },
+    fridge: function () { return '<g ' + FLOOR + '><rect x="24" y="12" width="52" height="80" rx="5"/></g>' +
+      '<g ' + S + '><rect x="20" y="10" width="52" height="80" rx="5" fill="' + INK.paper + '"/><path d="M20 46 h52"/><path d="M62 18 v18 M62 52 v18" stroke-width="4"/></g>' +
+      '<g stroke="' + K + '" stroke-width="1.6"><circle cx="34" cy="26" r="5" fill="' + INK.rose + '"/><path d="M30 26 h8 M34 22 v8" stroke-width="1.4"/><rect x="44" y="22" width="10" height="8" rx="1.6" fill="' + INK.yellow + '"/><path d="M26 56 q6 -6 12 0 q-6 6 -12 0 z" fill="' + INK.mint + '"/></g>'; },
+    table: function () { return '<g ' + FLOOR + '><rect x="16" y="40" width="72" height="10" rx="4"/></g>' +
+      '<g ' + S + '><rect x="12" y="36" width="76" height="9" rx="4" fill="' + INK.brown + '"/><path d="M46 45 v34 h8 v-34" fill="' + shade(INK.brown, .8) + '"/><path d="M34 84 h32" fill="none"/><circle cx="62" cy="26" r="8" fill="' + INK.paper + '"/><path d="M70 24 q6 0 6 4 q0 4 -6 4" fill="none"/></g>' +
+      '<path d="M60 14 q2 3 0 6 M64 14 q2 3 0 6" stroke="' + K + '" stroke-width="1.8" fill="none" opacity=".5"/>'; },
+    tree: function () { return '<g ' + FLOOR + '><ellipse cx="58" cy="58" rx="38" ry="36"/></g>' +
+      '<rect x="46" y="66" width="10" height="24" rx="4" fill="' + INK.brown + '" stroke="' + K + '" stroke-width="2.6"/>' +
+      '<g ' + S + '><circle cx="50" cy="46" r="34" fill="' + INK.green + '"/></g>' +
+      '<path d="M76 28 A34 34 0 0 1 24 70 C52 78 78 58 76 28 Z" fill="' + shade(INK.green, .78) + '"/>' +
+      '<g fill="' + INK.rose + '" stroke="' + K + '" stroke-width="1.4"><circle cx="38" cy="36" r="4"/><circle cx="60" cy="28" r="4"/><circle cx="42" cy="56" r="4"/></g>' +
+      '<circle cx="50" cy="46" r="34" fill="none" ' + S + '/>'; },
+    armchair: function () { return '<g ' + FLOOR + '><rect x="24" y="28" width="52" height="60" rx="14"/></g>' +
+      '<g ' + S + '><rect x="20" y="26" width="52" height="46" rx="13" fill="' + INK.purple + '"/><rect x="14" y="52" width="18" height="30" rx="8" fill="' + shade(INK.purple, .85) + '"/><rect x="60" y="52" width="18" height="30" rx="8" fill="' + shade(INK.purple, .85) + '"/><rect x="26" y="52" width="40" height="24" rx="9" fill="' + shade(INK.purple, .8) + '"/><path d="M28 34 h24" stroke="#fff" stroke-opacity=".4" stroke-width="3" fill="none"/></g>'; },
+    rocker: function () { return '<g ' + FLOOR + '><rect x="28" y="14" width="44" height="66" rx="12"/></g>' +
+      '<g ' + S + '><rect x="30" y="10" width="36" height="40" rx="11" fill="' + INK.brown + '"/><rect x="24" y="42" width="48" height="16" rx="7" fill="' + shade(INK.brown, .85) + '"/></g>' +
+      '<path d="M22 78 Q50 92 78 78" fill="none" stroke="' + K + '" stroke-width="4.5" stroke-linecap="round"/><path d="M32 58 v16 M64 58 v16" stroke="' + K + '" stroke-width="3.4" stroke-linecap="round"/>' +
+      '<path d="M36 20 h20" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>'; },
+    haybale: function () { return '<g ' + FLOOR + '><rect x="14" y="36" width="76" height="48" rx="16"/></g>' +
+      '<g ' + S + '><rect x="10" y="32" width="76" height="48" rx="16" fill="' + INK.yellow + '"/><path d="M10 56 h76" fill="none" stroke="' + shade(INK.yellow, .78) + '" stroke-width="5"/></g>' +
+      '<g stroke="' + K + '" stroke-width="1.8" fill="none" stroke-linecap="round"><path d="M20 44 q8 -4 16 0 M48 68 q8 -4 16 0 M60 42 q6 -3 12 1 M26 66 q6 -3 12 1"/></g>' +
+      '<path d="M18 40 h24" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>'; },
+    coffin: function () { return '<g ' + FLOOR + '><path d="M30 14 h40 l12 22 -12 58 h-40 l-12 -58 z"/></g>' +
+      '<g ' + S + '><path d="M30 10 h40 l12 22 -12 58 h-40 l-12 -58 z" fill="' + INK.choco + '"/><path d="M36 20 h28 l8 16 -8 46 h-28 l-8 -46 z" fill="' + shade(INK.choco, .82) + '"/></g>' +
+      '<g stroke="' + INK.yellow + '" stroke-width="3" stroke-linecap="round"><path d="M50 34 v20 M42 41 h16"/></g>'; },
+    piano: function () { return '<g ' + FLOOR + '><path d="M14 30 h72 v50 h-72 z"/></g>' +
+      '<g ' + S + '><path d="M10 26 C10 14 30 8 52 8 C78 8 88 20 88 34 L88 44 L10 44 Z" fill="' + K + '"/><rect x="10" y="44" width="78" height="18" fill="' + shade(K, 1.18) + '"/></g>' +
+      '<g><rect x="16" y="48" width="66" height="10" rx="2" fill="' + INK.paper + '" stroke="' + K + '" stroke-width="1.8"/><g fill="' + K + '"><rect x="21" y="48" width="4" height="6"/><rect x="29" y="48" width="4" height="6"/><rect x="40" y="48" width="4" height="6"/><rect x="48" y="48" width="4" height="6"/><rect x="59" y="48" width="4" height="6"/><rect x="67" y="48" width="4" height="6"/></g></g>' +
+      '<path d="M18 62 v20 M80 62 v20" stroke="' + K + '" stroke-width="4" stroke-linecap="round"/>'; },
+    clock: function () { return '<g ' + FLOOR + '><rect x="28" y="10" width="44" height="84" rx="6"/></g>' +
+      '<g ' + S + '><rect x="24" y="8" width="44" height="86" rx="6" fill="' + INK.brown + '"/><circle cx="46" cy="26" r="14" fill="' + INK.paper + '"/><rect x="32" y="48" width="28" height="36" rx="4" fill="' + shade(INK.brown, .8) + '"/></g>' +
+      '<g stroke="' + K + '" stroke-width="2" stroke-linecap="round"><path d="M46 26 v-8 M46 26 l6 4"/></g>' +
+      '<path d="M46 52 v22" stroke="' + INK.yellow + '" stroke-width="3.4" stroke-linecap="round"/><circle cx="46" cy="78" r="5" fill="' + INK.yellow + '" stroke="' + K + '" stroke-width="1.6"/>'; },
+    armor: function () { return '<g ' + FLOOR + '><ellipse cx="50" cy="88" rx="26" ry="6"/></g>' +
+      '<g ' + S + '><circle cx="50" cy="18" r="11" fill="' + INK.steel + '"/><path d="M38 32 C38 26 62 26 62 32 L66 62 L34 62 Z" fill="' + INK.steel + '"/><path d="M34 62 h32 l-3 22 h-26 z" fill="' + shade(INK.steel, .85) + '"/><path d="M40 84 v8 M60 84 v8" stroke-width="4"/></g>' +
+      '<path d="M44 14 h12" stroke="' + K + '" stroke-width="2.6" stroke-linecap="round"/><path d="M43 38 h14 M43 46 h14" stroke="' + shade(INK.steel, .7) + '" stroke-width="2.4" stroke-linecap="round"/>'; },
+    cauldron: function () { return '<g ' + FLOOR + '><ellipse cx="50" cy="84" rx="32" ry="7"/></g>' +
+      '<g ' + S + '><path d="M20 44 C20 72 32 84 50 84 C68 84 80 72 80 44 Z" fill="' + K + '"/><ellipse cx="50" cy="44" rx="30" ry="9" fill="' + shade(K, 1.25) + '"/><ellipse cx="50" cy="43" rx="24" ry="6" fill="' + INK.mint + '"/></g>' +
+      '<g fill="' + INK.mint + '" stroke="' + K + '" stroke-width="1.4"><circle cx="40" cy="30" r="3.4"/><circle cx="52" cy="24" r="2.6"/><circle cx="60" cy="32" r="2.2"/></g>' +
+      '<path d="M32 84 v6 M68 84 v6" stroke="' + K + '" stroke-width="4" stroke-linecap="round"/>'; }
+  };
+  function object(name, label) { var f = OBJ[name]; return f ? wrap(f(), label || name) : ''; }
+
+  /* ---------- mascot: the tip ghost ---------- */
+  function pigeon(opts) {
+    opts = opts || {};
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="ghost">' +
+      '<ellipse cx="60" cy="112" rx="28" ry="5" fill="#000" fill-opacity=".16"/>' +
+      '<g transform="translate(4 5)" fill="' + INK.purple + '" opacity=".35"><path d="M60 14 C38 14 28 36 28 58 L28 92 q8 -11 16 0 q8 -11 16 0 q8 -11 16 0 q8 -11 16 0 L92 58 C92 36 82 14 60 14 Z"/></g>' +
+      '<path d="M60 14 C38 14 28 36 28 58 L28 92 q8 -11 16 0 q8 -11 16 0 q8 -11 16 0 q8 -11 16 0 L92 58 C92 36 82 14 60 14 Z" fill="' + INK.paper + '" stroke="' + K + '" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M34 52 q-10 6 -8 16 M86 52 q10 6 8 16" fill="none" stroke="' + K + '" stroke-width="3" stroke-linecap="round"/>' +
+      '<ellipse cx="49" cy="52" rx="5" ry="7" fill="' + K + '"/><ellipse cx="71" cy="52" rx="5" ry="7" fill="' + K + '"/>' +
+      '<circle cx="50.6" cy="49.6" r="1.6" fill="#fff"/><circle cx="72.6" cy="49.6" r="1.6" fill="#fff"/>' +
+      '<path d="M53 68 q7 7 14 0" fill="none" stroke="' + K + '" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<g fill="' + INK.orange + '" fill-opacity=".55"><ellipse cx="40" cy="63" rx="4.8" ry="3"/><ellipse cx="80" cy="63" rx="4.8" ry="3"/></g>' +
+      '<g stroke="' + K + '" stroke-width="2" stroke-linejoin="round" fill="' + INK.orange + '"><path d="M60 16 L48 8 L50 23 Z"/><path d="M60 16 L72 8 L70 23 Z"/><circle cx="60" cy="15" r="4.2" fill="' + INK.red + '"/></g>' +
+      (opts.lens ? '<g ' + S + ' fill="none"><circle cx="100" cy="86" r="12" fill="#ffffff" fill-opacity=".5"/><path d="M92 95 l-12 12" stroke-width="6"/></g>' : '') +
+      '</svg>';
+  }
+
+  /* ---------- stamp ---------- */
+  function stamp(text, color) {
+    var c = INK[color] || INK.rose;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 80" role="img" aria-label="' + text + '"><g transform="rotate(-6 130 40)">' +
+      '<rect x="8" y="10" width="244" height="60" rx="16" fill="none" stroke="' + c + '" stroke-width="5"/>' +
+      '<rect x="16" y="18" width="228" height="44" rx="10" fill="none" stroke="' + c + '" stroke-width="2"/>' +
+      '<text x="130" y="52" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="30" fill="' + c + '" letter-spacing="1.5">' + text + '</text></g></svg>';
+  }
+
+  root.GQArt = { INK: INK, SKIN: SKIN, HAIR: HAIR, portrait: portrait, object: object, objects: Object.keys(OBJ), pigeon: pigeon, stamp: stamp };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>/* Giallo a Quadretti — languages. ⟦…⟧ marks the key words that get the highlighter. */
+var LANGS = {
+  it: { name: 'Italiano', voice: 'it-IT', learn: "impara l'italiano" },
+  en: { name: 'English', voice: 'en-GB', learn: 'learn English' },
+  de: { name: 'Deutsch', voice: 'de-DE', learn: 'lerne Deutsch' },
+  fr: { name: 'Français', voice: 'fr-FR', learn: 'apprends le français' },
+  es: { name: 'Español', voice: 'es-ES', learn: 'aprende español' }
+};
+
+var ORD = {
+  it: { f: ['prima', 'seconda', 'terza', 'quarta', 'quinta', 'sesta', 'settima'], last: 'ultima' },
+  en: { f: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'], last: 'last' },
+  de: { f: ['ersten', 'zweiten', 'dritten', 'vierten', 'fünften', 'sechsten', 'siebten'], last: 'letzten' },
+  fr: { f: ['première', 'deuxième', 'troisième', 'quatrième', 'cinquième', 'sixième', 'septième'], last: 'dernière' },
+  es: { f: ['primera', 'segunda', 'tercera', 'cuarta', 'quinta', 'sexta', 'séptima'], last: 'última' }
+};
+var vowel = function (s) { return /^[aeiouhàèéìòùâêîôûäöüy]/i.test(s); };
+
+/* clue sentence: kind, gender ('m'|'f'), args → string with ⟦⟧ */
+var CLUE = {
+  it: function (k, g, a) { var F = g === 'f';
+    switch (k) {
+      case 'room': return 'Era ' + a.inr + '.';
+      case 'notroom': return '⟦Non⟧ era ' + a.inr + '.';
+      case 'on': return SIT[a.o] ? 'Era ' + (F ? 'seduta' : 'seduto') + ' ' + a.on + '.' : 'Era ' + a.on + '.';
+      case 'onlyon': return "Era ⟦l'unica persona⟧ " + a.on + '.';
+      case 'by': return 'Era ' + a.on + '.';
+      case 'row': return 'Era ' + (a.last ? "nell'⟦ultima riga⟧" : 'nella ⟦' + a.ord + ' riga⟧') + '.';
+      case 'col': return 'Era ' + (a.last ? "nell'⟦ultima colonna⟧" : 'nella ⟦' + a.ord + ' colonna⟧') + '.';
+      case 'corner': return 'Era in un ⟦angolo⟧ della griglia.';
+      case 'alone': return 'Era ⟦' + (F ? 'sola' : 'solo') + '⟧.';
+      case 'with': return 'Era nella ⟦stessa area⟧ di ' + a.who + '.';
+      case 'dir': return 'Era a ⟦' + { n: 'nord', s: 'sud', e: 'est', o: 'ovest' }[a.d] + '⟧ di ' + a.who + '.';
+      case 'victim': return "La ⟦vittima⟧. Era " + (F ? 'sola' : 'solo') + " con l'⟦assassino⟧.";
+    } },
+  en: function (k, g, a) { var P = g === 'f' ? 'She' : 'He';
+    switch (k) {
+      case 'room': return P + ' was ' + a.inr + '.';
+      case 'notroom': return P + ' was ⟦not⟧ ' + a.inr + '.';
+      case 'on': return SIT[a.o] ? P + ' was sitting ' + a.on + '.' : P + ' was ' + a.on + '.';
+      case 'onlyon': return P + ' was ⟦the only person⟧ ' + a.on + '.';
+      case 'by': return P + ' was ' + a.on + '.';
+      case 'row': return P + ' was in the ⟦' + (a.last ? 'last' : a.ord) + ' row⟧.';
+      case 'col': return P + ' was in the ⟦' + (a.last ? 'last' : a.ord) + ' column⟧.';
+      case 'corner': return P + ' was in a ⟦corner⟧ of the grid.';
+      case 'alone': return P + ' was ⟦alone⟧.';
+      case 'with': return P + ' was in the ⟦same room⟧ as ' + a.who + '.';
+      case 'dir': return P + ' was ⟦' + { n: 'north', s: 'south', e: 'east', o: 'west' }[a.d] + '⟧ of ' + a.who + '.';
+      case 'victim': return 'The ⟦victim⟧. ' + P + ' was alone with the ⟦murderer⟧.';
+    } },
+  de: function (k, g, a) { var P = g === 'f' ? 'Sie' : 'Er';
+    var verb = { sedia: 'saß', divano: 'saß', tappeto: 'stand', letto: 'lag' };
+    switch (k) {
+      case 'room': return P + ' war ' + a.inr + '.';
+      case 'notroom': return P + ' war ⟦nicht⟧ ' + a.inr + '.';
+      case 'on': return P + ' ' + (verb[a.o] || 'war') + ' ' + a.on + '.';
+      case 'onlyon': return P + ' war ⟦die einzige Person⟧ ' + a.on + '.';
+      case 'by': return P + ' stand ' + a.on + '.';
+      case 'row': return P + ' war in der ⟦' + (a.last ? 'letzten' : a.ord) + ' Reihe⟧.';
+      case 'col': return P + ' war in der ⟦' + (a.last ? 'letzten' : a.ord) + ' Spalte⟧.';
+      case 'corner': return P + ' war in einer ⟦Ecke⟧ des Rasters.';
+      case 'alone': return P + ' war ⟦allein⟧.';
+      case 'with': return P + ' war im ⟦selben Raum⟧ wie ' + a.who + '.';
+      case 'dir': return P + ' war ⟦' + { n: 'nördlich', s: 'südlich', e: 'östlich', o: 'westlich' }[a.d] + '⟧ von ' + a.who + '.';
+      case 'victim': return 'Das ⟦Opfer⟧. ' + P + ' war allein mit dem ⟦Mörder⟧.';
+    } },
+  fr: function (k, g, a) { var F = g === 'f', P = F ? 'Elle' : 'Il';
+    var de = function (n) { return (vowel(n) ? "d'" : 'de ') + n; }, que = function (n) { return (vowel(n) ? "qu'" : 'que ') + n; };
+    switch (k) {
+      case 'room': return P + ' était ' + a.inr + '.';
+      case 'notroom': return P + " ⟦n'était pas⟧ " + a.inr + '.';
+      case 'on': return SIT[a.o] ? P + ' était ' + (F ? 'assise' : 'assis') + ' ' + a.on + '.' : P + ' était ' + a.on + '.';
+      case 'onlyon': return "C'était ⟦la seule personne⟧ " + a.on + '.';
+      case 'by': return P + ' était ' + a.on + '.';
+      case 'row': return P + ' était sur la ⟦' + (a.last ? 'dernière' : a.ord) + ' ligne⟧.';
+      case 'col': return P + ' était dans la ⟦' + (a.last ? 'dernière' : a.ord) + ' colonne⟧.';
+      case 'corner': return P + ' était dans un ⟦coin⟧ de la grille.';
+      case 'alone': return P + ' était ⟦' + (F ? 'seule' : 'seul') + '⟧.';
+      case 'with': return P + ' était dans la ⟦même pièce⟧ ' + que(a.who) + '.';
+      case 'dir': return P + ' était ⟦' + { n: 'au nord', s: 'au sud', e: "à l'est", o: "à l'ouest" }[a.d] + '⟧ ' + de(a.who) + '.';
+      case 'victim': return 'La ⟦victime⟧. ' + P + ' était ' + (F ? 'seule' : 'seul') + " avec l'⟦assassin⟧.";
+    } },
+  es: function (k, g, a) { var F = g === 'f';
+    switch (k) {
+      case 'room': return 'Estaba ' + a.inr + '.';
+      case 'notroom': return '⟦No⟧ estaba ' + a.inr + '.';
+      case 'on': return SIT[a.o] ? 'Estaba ' + (F ? 'sentada' : 'sentado') + ' ' + a.on + '.' : 'Estaba ' + a.on + '.';
+      case 'onlyon': return 'Era ⟦la única persona⟧ ' + a.on + '.';
+      case 'by': return 'Estaba ' + a.on + '.';
+      case 'row': return 'Estaba en la ⟦' + (a.last ? 'última' : a.ord) + ' fila⟧.';
+      case 'col': return 'Estaba en la ⟦' + (a.last ? 'última' : a.ord) + ' columna⟧.';
+      case 'corner': return 'Estaba en una ⟦esquina⟧ de la cuadrícula.';
+      case 'alone': return 'Estaba ⟦' + (F ? 'sola' : 'solo') + '⟧.';
+      case 'with': return 'Estaba en la ⟦misma habitación⟧ que ' + a.who + '.';
+      case 'dir': return 'Estaba ⟦' + { n: 'al norte', s: 'al sur', e: 'al este', o: 'al oeste' }[a.d] + '⟧ de ' + a.who + '.';
+      case 'victim': return 'La ⟦víctima⟧. Estaba ' + (F ? 'sola' : 'solo') + ' con el ⟦asesino⟧.';
+    } }
+};
+
+/* interface text */
+var UI = {
+  it: { tag: 'Gialli logici', eyebrow: 'Dossier · {n} casi', h1a: 'Chi è ', h1b: 'stato?', lead: 'Leggi gli indizi in italiano. Metti ogni sospettato sulla mappa. Trova chi era da solo con la vittima.',
+    start: 'Apri il primo caso', cont: "Continua l'indagine", cases: 'I casi', how: 'Come si gioca', yes: 'Ci puoi stare sopra', no: 'Non ci puoi stare sopra',
+    back: 'Tutti i casi', caso: 'Caso n°', levels: ['', 'Facile', 'Medio', 'Difficile', 'Esperto'], suspects: 'Sospettati', words: 'Parole del caso', rooms: 'Stanze', tip: 'Consiglio',
+    mark: '✕ segna', hintX: 'Tocca una casella per segnarla con ✕, o per togliere una persona.', hintPlace: 'Tocca una casella per mettere {n}.', longpress: 'Tieni premuto per segnare ✕.',
+    check: 'Controlla', help: 'Aiutino', restart: 'Ricomincia', undo: 'Annulla', keys: 'Frecce per spostarti, Canc per segnare ✕.', allRight: 'Tutti al posto giusto', killerIs: "L'assassino è…", next: 'Prossimo caso', again: 'Gioca di nuovo', review: 'Ripassa', notebook: 'Il tuo taccuino', cluesReview: 'Gli indizi', reviewLead: 'Rileggi con calma gli indizi e le parole di questo caso.', close: 'Chiudi', solved: "L'assassino è {n}!", time: 'Tempo', hints: 'aiutini',
+    missing: 'Persone ancora da mettere: ⟦{k}⟧.', clash: 'Due persone sono nella stessa ⟦riga⟧ o ⟦colonna⟧.', wrong: 'Quasi! Al posto sbagliato: ⟦{k}⟧. Rileggi gli indizi.', hintMsg: '{n} è in ⟦riga {r}⟧, ⟦colonna {c}⟧.', blocked: 'Non puoi stare qui.', nope: 'No! {n} non era nella ⟦stanza⟧ della vittima.',
+    more: 'Un altro consiglio →', victim: 'VITTIMA', lang: 'Lingua che impari', styles: 'Stile', roomStyle: 'Stile della stanza',
+    coop: 'Gioca in squadra', coopLead: 'Ognuno vede solo alcuni indizi, nella lingua che impara. Leggeteli ad alta voce, condivideteli e risolvete il caso insieme.', yourName: 'Il tuo nome', create: 'Crea una stanza', join: 'Entra', code: 'Codice',
+    room: 'Stanza', team: 'Squadra', you: 'tu', host: 'capo', pickCase: 'Scegli il caso per la squadra', waitHost: 'Aspetta che {n} scelga il caso.', leave: 'Esci', share: 'Condividi', sharedBy: 'condiviso da {n}', clueMoved: 'Un indizio è passato a {n}.', heldBy: 'Indizio di {n}. Chiediglielo!', yours: 'Il tuo indizio', offline: 'Gioco in squadra non disponibile qui.', invite: 'Dai il codice agli amici:', copyLink: 'Copia link invito', copied: 'Link copiato!', connecting: 'Connessione…', alone: 'Sei solo nella stanza. Invita qualcuno!',
+    rules: ['Una persona per ⟦riga⟧ e per ⟦colonna⟧.', 'Puoi stare su ⟦sedie⟧, ⟦divani⟧, ⟦letti⟧ e ⟦tappeti⟧. Sugli altri oggetti no.', '⟦Accanto⟧ = subito sopra, sotto, a destra o a sinistra, nella stessa stanza.', '⟦Nord⟧ è su, ⟦sud⟧ è giù, ⟦est⟧ è a destra, ⟦ovest⟧ a sinistra.', "La ⟦vittima⟧ è nell'ultima casella libera. Chi era solo con lei è l'⟦assassino⟧."],
+    tips: ['Comincia da chi ha un indizio preciso, come una riga o una stanza.', 'Una persona per riga e per colonna. Segna con ✕ le caselle impossibili.', 'Se una riga ha una sola casella libera, qualcuno deve stare lì.', '«Accanto» vale solo nella stessa stanza. Il muro separa!', "Alla fine la vittima va nell'ultima casella libera."],
+    pigeon: 'Tranquilli, ci penso io… cioè, tu.',
+    gl: { row: 'riga', col: 'colonna', by: 'accanto a', alone: 'solo · sola', only: "l'unica persona", with: 'la stessa area', dir: 'nord · sud · est · ovest', corner: 'angolo', not: 'non era', victim: 'la vittima', killer: "l'assassino" } },
+  en: { tag: 'Logic murder mysteries', eyebrow: 'Case files · {n} cases', h1a: 'Who ', h1b: 'did it?', lead: 'Read the clues in English. Put every suspect on the map. Find who was alone with the victim.',
+    start: 'Open the first case', cont: 'Continue the investigation', cases: 'The cases', how: 'How to play', yes: 'You can stand on it', no: "You can't stand on it",
+    back: 'All cases', caso: 'Case no.', levels: ['', 'Easy', 'Medium', 'Hard', 'Expert'], suspects: 'Suspects', words: 'Words in this case', rooms: 'Rooms', tip: 'Tip',
+    mark: '✕ mark', hintX: 'Tap a square to mark it ✕, or to remove a person.', hintPlace: 'Tap a square to place {n}.', longpress: 'Press and hold to mark ✕.',
+    check: 'Check', help: 'Hint', restart: 'Start over', undo: 'Undo', keys: 'Arrow keys to move, Delete to mark ✕.', allRight: 'Everyone is in the right place', killerIs: 'The murderer is…', next: 'Next case', again: 'Play again', review: 'Review', notebook: 'Your notebook', cluesReview: 'The clues', reviewLead: 'Read the clues and the words of this case again at your own pace.', close: 'Close', solved: 'The murderer is {n}!', time: 'Time', hints: 'hints',
+    missing: 'Still to place: ⟦{k}⟧.', clash: 'Two people are in the same ⟦row⟧ or ⟦column⟧.', wrong: 'Close! In the wrong place: ⟦{k}⟧. Read the clues again.', hintMsg: '{n} is in ⟦row {r}⟧, ⟦column {c}⟧.', blocked: "You can't stand here.", nope: 'No! {n} was not in the victim’s ⟦room⟧.',
+    more: 'Another tip →', victim: 'VICTIM', lang: 'Language you learn', styles: 'Style', roomStyle: 'Room style',
+    coop: 'Play as a team', coopLead: 'Everyone sees only some clues, in the language they are learning. Read them out, share them and solve the case together.', yourName: 'Your name', create: 'Create a room', join: 'Join', code: 'Code',
+    room: 'Room', team: 'Team', you: 'you', host: 'host', pickCase: 'Choose the case for the team', waitHost: 'Waiting for {n} to choose the case.', leave: 'Leave', share: 'Share', sharedBy: 'shared by {n}', clueMoved: 'A clue moved to {n}.', heldBy: '{n} has this clue. Ask them!', yours: 'Your clue', offline: 'Team play is not available here.', invite: 'Give your friends the code:', copyLink: 'Copy invite link', copied: 'Link copied!', connecting: 'Connecting…', alone: 'You are alone in the room. Invite someone!',
+    rules: ['One person per ⟦row⟧ and per ⟦column⟧.', 'You can stand on ⟦chairs⟧, ⟦sofas⟧, ⟦beds⟧ and ⟦rugs⟧. Not on other objects.', '⟦Next to⟧ = directly above, below, left or right, in the same room.', '⟦North⟧ is up, ⟦south⟧ is down, ⟦east⟧ is right, ⟦west⟧ is left.', 'The ⟦victim⟧ is on the last free square. Whoever was alone with them is the ⟦murderer⟧.'],
+    tips: ['Start with the suspect who has an exact clue, like a row or a room.', 'One person per row and column. Mark impossible squares with ✕.', 'If a row has only one free square, someone must be there.', '“Next to” only counts in the same room. Walls separate!', 'At the end, the victim goes on the last free square.'],
+    pigeon: 'Relax, I’ve got this… I mean, you have.',
+    gl: { row: 'row', col: 'column', by: 'next to', alone: 'alone', only: 'the only person', with: 'the same room', dir: 'north · south · east · west', corner: 'corner', not: 'was not', victim: 'the victim', killer: 'the murderer' } },
+  de: { tag: 'Logik-Krimis', eyebrow: 'Akten · {n} Fälle', h1a: 'Wer ', h1b: "war's?", lead: 'Lies die Hinweise auf Deutsch. Setz alle Verdächtigen auf den Plan. Finde heraus, wer allein mit dem Opfer war.',
+    start: 'Ersten Fall öffnen', cont: 'Weiter ermitteln', cases: 'Die Fälle', how: "So geht's", yes: 'Darauf darf man stehen', no: 'Darauf darf man nicht stehen',
+    back: 'Alle Fälle', caso: 'Fall Nr.', levels: ['', 'Leicht', 'Mittel', 'Schwer', 'Profi'], suspects: 'Verdächtige', words: 'Wörter im Fall', rooms: 'Räume', tip: 'Tipp',
+    mark: '✕ markieren', hintX: 'Tippe auf ein Feld, um es mit ✕ zu markieren oder eine Person zu entfernen.', hintPlace: 'Tippe auf ein Feld, um {n} hinzustellen.', longpress: 'Lange drücken markiert ✕.',
+    check: 'Prüfen', help: 'Hilfe', restart: 'Neu anfangen', undo: 'Rückgängig', keys: 'Pfeiltasten zum Bewegen, Entf zum Markieren ✕.', allRight: 'Alle stehen richtig', killerIs: 'Der Mörder ist…', next: 'Nächster Fall', again: 'Nochmal spielen', review: 'Wiederholen', notebook: 'Dein Notizbuch', cluesReview: 'Die Hinweise', reviewLead: 'Lies die Hinweise und Wörter dieses Falls in Ruhe noch einmal.', close: 'Schließen', solved: 'Der Mörder ist {n}!', time: 'Zeit', hints: 'Tipps',
+    missing: 'Noch zu setzen: ⟦{k}⟧.', clash: 'Zwei Personen stehen in derselben ⟦Reihe⟧ oder ⟦Spalte⟧.', wrong: 'Fast! Falsch gesetzt: ⟦{k}⟧. Lies die Hinweise nochmal.', hintMsg: '{n} steht in ⟦Reihe {r}⟧, ⟦Spalte {c}⟧.', blocked: 'Hier kann niemand stehen.', nope: 'Nein! {n} war nicht im ⟦Raum⟧ des Opfers.',
+    more: 'Noch ein Tipp →', victim: 'OPFER', lang: 'Sprache, die du lernst', styles: 'Stil', roomStyle: 'Raumstil',
+    coop: 'Im Team spielen', coopLead: 'Jede Person sieht nur einige Hinweise, in der Sprache, die sie lernt. Lest sie vor, teilt sie und löst den Fall gemeinsam.', yourName: 'Dein Name', create: 'Raum erstellen', join: 'Beitreten', code: 'Code',
+    room: 'Raum', team: 'Team', you: 'du', host: 'Leitung', pickCase: 'Wähle den Fall fürs Team', waitHost: 'Warte, bis {n} den Fall wählt.', leave: 'Verlassen', share: 'Teilen', sharedBy: 'geteilt von {n}', clueMoved: 'Ein Hinweis ist jetzt bei {n}.', heldBy: '{n} hat diesen Hinweis. Frag nach!', yours: 'Dein Hinweis', offline: 'Teamspiel ist hier nicht verfügbar.', invite: 'Gib deinen Freunden den Code:', copyLink: 'Einladungslink kopieren', copied: 'Link kopiert!', connecting: 'Verbinde…', alone: 'Du bist allein im Raum. Lade jemanden ein!',
+    rules: ['Eine Person pro ⟦Reihe⟧ und pro ⟦Spalte⟧.', 'Man darf auf ⟦Stühlen⟧, ⟦Sofas⟧, ⟦Betten⟧ und ⟦Teppichen⟧ stehen. Auf anderen Dingen nicht.', '⟦Neben⟧ = direkt darüber, darunter, links oder rechts, im selben Raum.', '⟦Norden⟧ ist oben, ⟦Süden⟧ unten, ⟦Osten⟧ rechts, ⟦Westen⟧ links.', 'Das ⟦Opfer⟧ steht auf dem letzten freien Feld. Wer allein mit ihm war, ist der ⟦Mörder⟧.'],
+    tips: ['Fang bei der Person an, die einen genauen Hinweis hat, zum Beispiel eine Reihe oder einen Raum.', 'Eine Person pro Reihe und Spalte. Markiere unmögliche Felder mit ✕.', 'Hat eine Reihe nur ein freies Feld, muss dort jemand stehen.', '„Neben“ gilt nur im selben Raum. Wände trennen!', 'Zum Schluss kommt das Opfer auf das letzte freie Feld.'],
+    pigeon: 'Keine Sorge, ich mach das… also, du.',
+    gl: { row: 'die Reihe', col: 'die Spalte', by: 'neben', alone: 'allein', only: 'die einzige Person', with: 'derselbe Raum', dir: 'nördlich · südlich · östlich · westlich', corner: 'die Ecke', not: 'war nicht', victim: 'das Opfer', killer: 'der Mörder' } },
+  fr: { tag: 'Enquêtes logiques', eyebrow: 'Dossiers · {n} affaires', h1a: 'Qui ', h1b: "l'a fait ?", lead: "Lis les indices en français. Place chaque suspect sur le plan. Trouve qui était seul avec la victime.",
+    start: 'Ouvrir la première affaire', cont: "Continuer l'enquête", cases: 'Les affaires', how: 'Comment jouer', yes: 'On peut monter dessus', no: 'On ne peut pas monter dessus',
+    back: 'Toutes les affaires', caso: 'Affaire n°', levels: ['', 'Facile', 'Moyen', 'Difficile', 'Expert'], suspects: 'Suspects', words: "Mots de l'affaire", rooms: 'Pièces', tip: 'Conseil',
+    mark: '✕ marquer', hintX: 'Touche une case pour la marquer ✕, ou pour retirer une personne.', hintPlace: 'Touche une case pour placer {n}.', longpress: 'Appui long pour marquer ✕.',
+    check: 'Vérifier', help: 'Indice', restart: 'Recommencer', undo: 'Annuler', keys: 'Flèches pour te déplacer, Suppr pour marquer ✕.', allRight: 'Tout le monde est à sa place', killerIs: "L'assassin est…", next: 'Affaire suivante', again: 'Rejouer', review: 'Réviser', notebook: 'Ton carnet', cluesReview: 'Les indices', reviewLead: 'Relis les indices et les mots de cette affaire à ton rythme.', close: 'Fermer', solved: "L'assassin est {n} !", time: 'Temps', hints: 'indices',
+    missing: 'Encore à placer : ⟦{k}⟧.', clash: 'Deux personnes sont sur la même ⟦ligne⟧ ou ⟦colonne⟧.', wrong: 'Presque ! Mal placés : ⟦{k}⟧. Relis les indices.', hintMsg: '{n} est ⟦ligne {r}⟧, ⟦colonne {c}⟧.', blocked: 'Personne ne peut se mettre ici.', nope: "Non ! {n} n'était pas dans la ⟦pièce⟧ de la victime.",
+    more: 'Un autre conseil →', victim: 'VICTIME', lang: 'Langue que tu apprends', styles: 'Style', roomStyle: 'Style de la salle',
+    coop: 'Jouer en équipe', coopLead: "Chacun ne voit que certains indices, dans la langue qu'il apprend. Lisez-les à voix haute, partagez-les et résolvez l'affaire ensemble.", yourName: 'Ton prénom', create: 'Créer une salle', join: 'Rejoindre', code: 'Code',
+    room: 'Salle', team: 'Équipe', you: 'toi', host: 'chef', pickCase: "Choisis l'affaire pour l'équipe", waitHost: "On attend que {n} choisisse l'affaire.", leave: 'Quitter', share: 'Partager', sharedBy: 'partagé par {n}', clueMoved: 'Un indice est passé à {n}.', heldBy: '{n} a cet indice. Demande-le !', yours: 'Ton indice', offline: "Le jeu en équipe n'est pas disponible ici.", invite: 'Donne le code à tes amis :', copyLink: "Copier le lien d'invitation", copied: 'Lien copié !', connecting: 'Connexion…', alone: 'Tu es seul dans la salle. Invite quelqu’un !',
+    rules: ['Une personne par ⟦ligne⟧ et par ⟦colonne⟧.', 'On peut se mettre sur les ⟦chaises⟧, ⟦canapés⟧, ⟦lits⟧ et ⟦tapis⟧. Pas sur les autres objets.', '⟦À côté⟧ = juste au-dessus, en dessous, à gauche ou à droite, dans la même pièce.', 'Le ⟦nord⟧ est en haut, le ⟦sud⟧ en bas, l’⟦est⟧ à droite, l’⟦ouest⟧ à gauche.', "La ⟦victime⟧ est sur la dernière case libre. Celui qui était seul avec elle est l'⟦assassin⟧."],
+    tips: ["Commence par le suspect qui a un indice précis, comme une ligne ou une pièce.", 'Une personne par ligne et par colonne. Marque les cases impossibles avec ✕.', "Si une ligne n'a qu'une case libre, quelqu'un doit y être.", '« À côté » ne compte que dans la même pièce. Les murs séparent !', 'À la fin, la victime va sur la dernière case libre.'],
+    pigeon: "Pas de panique, je m'en occupe… enfin, toi.",
+    gl: { row: 'la ligne', col: 'la colonne', by: 'à côté de', alone: 'seul · seule', only: 'la seule personne', with: 'la même pièce', dir: 'nord · sud · est · ouest', corner: 'le coin', not: "n'était pas", victim: 'la victime', killer: "l'assassin" } },
+  es: { tag: 'Misterios lógicos', eyebrow: 'Expedientes · {n} casos', h1a: '¿Quién ', h1b: 'fue?', lead: 'Lee las pistas en español. Pon a cada sospechoso en el mapa. Descubre quién estaba solo con la víctima.',
+    start: 'Abrir el primer caso', cont: 'Seguir investigando', cases: 'Los casos', how: 'Cómo se juega', yes: 'Te puedes poner encima', no: 'No te puedes poner encima',
+    back: 'Todos los casos', caso: 'Caso n.º', levels: ['', 'Fácil', 'Medio', 'Difícil', 'Experto'], suspects: 'Sospechosos', words: 'Palabras del caso', rooms: 'Habitaciones', tip: 'Consejo',
+    mark: '✕ marcar', hintX: 'Toca una casilla para marcarla con ✕ o para quitar a una persona.', hintPlace: 'Toca una casilla para poner a {n}.', longpress: 'Mantén pulsado para marcar ✕.',
+    check: 'Comprobar', help: 'Pista', restart: 'Empezar de nuevo', undo: 'Deshacer', keys: 'Flechas para moverte, Supr para marcar ✕.', allRight: 'Todos en su sitio', killerIs: 'El asesino es…', next: 'Siguiente caso', again: 'Jugar otra vez', review: 'Repasar', notebook: 'Tu cuaderno', cluesReview: 'Las pistas', reviewLead: 'Vuelve a leer las pistas y las palabras de este caso con calma.', close: 'Cerrar', solved: '¡El asesino es {n}!', time: 'Tiempo', hints: 'pistas',
+    missing: 'Faltan por colocar: ⟦{k}⟧.', clash: 'Dos personas están en la misma ⟦fila⟧ o ⟦columna⟧.', wrong: '¡Casi! Mal colocados: ⟦{k}⟧. Vuelve a leer las pistas.', hintMsg: '{n} está en la ⟦fila {r}⟧, ⟦columna {c}⟧.', blocked: 'Aquí no se puede poner nadie.', nope: '¡No! {n} no estaba en la ⟦habitación⟧ de la víctima.',
+    more: 'Otro consejo →', victim: 'VÍCTIMA', lang: 'Idioma que aprendes', styles: 'Estilo', roomStyle: 'Estilo de la sala',
+    coop: 'Jugar en equipo', coopLead: 'Cada uno ve solo algunas pistas, en el idioma que aprende. Leedlas en voz alta, compartidlas y resolved el caso juntos.', yourName: 'Tu nombre', create: 'Crear una sala', join: 'Entrar', code: 'Código',
+    room: 'Sala', team: 'Equipo', you: 'tú', host: 'jefe', pickCase: 'Elige el caso para el equipo', waitHost: 'Esperando a que {n} elija el caso.', leave: 'Salir', share: 'Compartir', sharedBy: 'compartido por {n}', clueMoved: 'Una pista ha pasado a {n}.', heldBy: '{n} tiene esta pista. ¡Pregúntale!', yours: 'Tu pista', offline: 'El juego en equipo no está disponible aquí.', invite: 'Dale el código a tus amigos:', copyLink: 'Copiar enlace de invitación', copied: '¡Enlace copiado!', connecting: 'Conectando…', alone: 'Estás solo en la sala. ¡Invita a alguien!',
+    rules: ['Una persona por ⟦fila⟧ y por ⟦columna⟧.', 'Te puedes poner en ⟦sillas⟧, ⟦sofás⟧, ⟦camas⟧ y ⟦alfombras⟧. En los demás objetos no.', '⟦Junto a⟧ = justo arriba, abajo, a la izquierda o a la derecha, en la misma habitación.', 'El ⟦norte⟧ está arriba, el ⟦sur⟧ abajo, el ⟦este⟧ a la derecha y el ⟦oeste⟧ a la izquierda.', 'La ⟦víctima⟧ está en la última casilla libre. Quien estaba solo con ella es el ⟦asesino⟧.'],
+    tips: ['Empieza por quien tiene una pista exacta, como una fila o una habitación.', 'Una persona por fila y por columna. Marca con ✕ las casillas imposibles.', 'Si una fila tiene una sola casilla libre, alguien tiene que estar ahí.', '«Junto a» solo vale en la misma habitación. ¡Las paredes separan!', 'Al final, la víctima va en la última casilla libre.'],
+    pigeon: 'Tranquilos, yo me encargo… bueno, tú.',
+    gl: { row: 'la fila', col: 'la columna', by: 'junto a', alone: 'solo · sola', only: 'la única persona', with: 'la misma habitación', dir: 'norte · sur · este · oeste', corner: 'la esquina', not: 'no estaba', victim: 'la víctima', killer: 'el asesino' } }
+};
+if (typeof module !== 'undefined') module.exports = { LANGS: LANGS, ORD: ORD, CLUE: CLUE, UI: UI };
+</script>
+<script>/* Scooby a Quadretti — spooky Halloween night palette. */
+var BGS=['orange','lavender','teal','yellow','purple','peach','sky'];
+var PCOL=['#E8721C','#7FC4C9','#A98AD4','#FFD98E','#9ADFC3','#F2A56B'];
+var FALLBACK_LOOK=[0,'short','k',[],'teal','smile'];
+var SHORT_NAMES={'Scooby-Doo':'Scooby','Shaggy Rogers':'Shaggy','Fred Jones':'Fred','Daphne Blake':'Daphne','Velma Dinkley':'Velma','Madame Zora':'Zora','Groundskeeper Gus':'Gus','Widow Ravenna':'Ravenna','Scooby Snacks':'Snacks'};
+
+if (typeof module !== 'undefined') module.exports = { BGS: BGS, PCOL: PCOL, FALLBACK_LOOK: FALLBACK_LOOK, SHORT_NAMES: SHORT_NAMES };
+</script>
+<script>/* Scooby a Quadretti — pack vocabulary.
+   World: Halloween night at Spooky Hollow Manor — a creaky mansion, its grounds
+   and the little Halloween fair outside. The Scooby Snacks box has vanished.
+   ROOMS: room key -> per language [name, in-phrase]; 'it' required plus en/de/fr/es.
+   OBJL:  per language { key: [nominative, phrase-form] }.
+   OBJ:   occ=1 means characters can stand/sit on it (drives on-clues).
+   German 'on'-clue verb map only knows sedia/divano/tappeto/letto; all other
+   keys use the safe generic fallback — still read one German on-clue aloud. */
+var ROOMS = {
+  'Foyer': { it:['Atrio',"nell'⟦atrio⟧"], en:['Foyer','in the ⟦foyer⟧'], de:['Eingangshalle','in der ⟦Eingangshalle⟧'], fr:['Hall','dans le ⟦hall⟧'], es:['Vestíbulo','en el ⟦vestíbulo⟧'] },
+  'Ballroom': { it:['Sala da ballo','nella ⟦sala da ballo⟧'], en:['Ballroom','in the ⟦ballroom⟧'], de:['Ballsaal','im ⟦Ballsaal⟧'], fr:['Salle de bal','dans la ⟦salle de bal⟧'], es:['Salón de baile','en el ⟦salón de baile⟧'] },
+  'Library': { it:['Biblioteca','in ⟦biblioteca⟧'], en:['Library','in the ⟦library⟧'], de:['Bibliothek','in der ⟦Bibliothek⟧'], fr:['Bibliothèque','dans la ⟦bibliothèque⟧'], es:['Biblioteca','en la ⟦biblioteca⟧'] },
+  'DiningRoom': { it:['Sala da pranzo','nella ⟦sala da pranzo⟧'], en:['Dining room','in the ⟦dining room⟧'], de:['Esszimmer','im ⟦Esszimmer⟧'], fr:['Salle à manger','dans la ⟦salle à manger⟧'], es:['Comedor','en el ⟦comedor⟧'] },
+  'Kitchen': { it:['Cucina','in ⟦cucina⟧'], en:['Kitchen','in the ⟦kitchen⟧'], de:['Küche','in der ⟦Küche⟧'], fr:['Cuisine','dans la ⟦cuisine⟧'], es:['Cocina','en la ⟦cocina⟧'] },
+  'Cellar': { it:['Cantina','in ⟦cantina⟧'], en:['Cellar','in the ⟦cellar⟧'], de:['Keller','im ⟦Keller⟧'], fr:['Cave','dans la ⟦cave⟧'], es:['Sótano','en el ⟦sótano⟧'] },
+  'Attic': { it:['Soffitta','in ⟦soffitta⟧'], en:['Attic','in the ⟦attic⟧'], de:['Dachboden','auf dem ⟦Dachboden⟧'], fr:['Grenier','dans le ⟦grenier⟧'], es:['Desván','en el ⟦desván⟧'] },
+  'Study': { it:['Studio','nello ⟦studio⟧'], en:['Study','in the ⟦study⟧'], de:['Arbeitszimmer','im ⟦Arbeitszimmer⟧'], fr:['Bureau','dans le ⟦bureau⟧'], es:['Estudio','en el ⟦estudio⟧'] },
+  'Tower': { it:['Torre','sulla ⟦torre⟧'], en:['Tower','in the ⟦tower⟧'], de:['Turm','im ⟦Turm⟧'], fr:['Tour','dans la ⟦tour⟧'], es:['Torre','en la ⟦torre⟧'] },
+  'Corridor': { it:['Corridoio','nel ⟦corridoio⟧'], en:['Corridor','in the ⟦corridor⟧'], de:['Flur','im ⟦Flur⟧'], fr:['Couloir','dans le ⟦couloir⟧'], es:['Pasillo','en el ⟦pasillo⟧'] },
+  'Conservatory': { it:['Serra','nella ⟦serra⟧'], en:['Conservatory','in the ⟦conservatory⟧'], de:['Wintergarten','im ⟦Wintergarten⟧'], fr:['Véranda','dans la ⟦véranda⟧'], es:['Invernadero','en el ⟦invernadero⟧'] },
+  'Bedroom': { it:['Camera','in ⟦camera⟧'], en:['Bedroom','in the ⟦bedroom⟧'], de:['Schlafzimmer','im ⟦Schlafzimmer⟧'], fr:['Chambre','dans la ⟦chambre⟧'], es:['Dormitorio','en el ⟦dormitorio⟧'] },
+  'MusicRoom': { it:['Sala musica','nella ⟦sala musica⟧'], en:['Music room','in the ⟦music room⟧'], de:['Musikzimmer','im ⟦Musikzimmer⟧'], fr:['Salon de musique','dans le ⟦salon de musique⟧'], es:['Sala de música','en la ⟦sala de música⟧'] },
+  'PumpkinPatch': { it:['Campo di zucche','nel ⟦campo di zucche⟧'], en:['Pumpkin patch','in the ⟦pumpkin patch⟧'], de:['Kürbisfeld','auf dem ⟦Kürbisfeld⟧'], fr:['Champ de citrouilles','dans le ⟦champ de citrouilles⟧'], es:['Huerto de calabazas','en el ⟦huerto de calabazas⟧'] },
+  'CornMaze': { it:['Labirinto di granturco','nel ⟦labirinto di granturco⟧'], en:['Corn maze','in the ⟦corn maze⟧'], de:['Maislabyrinth','im ⟦Maislabyrinth⟧'], fr:['Labyrinthe de maïs','dans le ⟦labyrinthe de maïs⟧'], es:['Laberinto de maíz','en el ⟦laberinto de maíz⟧'] },
+  'Graveyard': { it:['Cimitero','nel ⟦cimitero⟧'], en:['Graveyard','in the ⟦graveyard⟧'], de:['Friedhof','auf dem ⟦Friedhof⟧'], fr:['Cimetière','dans le ⟦cimetière⟧'], es:['Cementerio','en el ⟦cementerio⟧'] },
+  'Garden': { it:['Giardino','in ⟦giardino⟧'], en:['Garden','in the ⟦garden⟧'], de:['Garten','im ⟦Garten⟧'], fr:['Jardin','dans le ⟦jardin⟧'], es:['Jardín','en el ⟦jardín⟧'] },
+  'Porch': { it:['Portico','sul ⟦portico⟧'], en:['Front porch','on the ⟦front porch⟧'], de:['Veranda','auf der ⟦Veranda⟧'], fr:['Porche','sur le ⟦porche⟧'], es:['Porche','en el ⟦porche⟧'] },
+  'Barn': { it:['Fienile','nel ⟦fienile⟧'], en:['Barn','in the ⟦barn⟧'], de:['Scheune','in der ⟦Scheune⟧'], fr:['Grange','dans la ⟦grange⟧'], es:['Granero','en el ⟦granero⟧'] },
+  'Bonfire': { it:['Falò','intorno al ⟦falò⟧'], en:['Bonfire','by the ⟦bonfire⟧'], de:['Lagerfeuer','am ⟦Lagerfeuer⟧'], fr:['Feu de joie','près du ⟦feu de joie⟧'], es:['Hoguera','junto a la ⟦hoguera⟧'] },
+  'CandyStand': { it:['Banco dei dolcetti','al ⟦banco dei dolcetti⟧'], en:['Candy stand','at the ⟦candy stand⟧'], de:['Süßigkeitenstand','am ⟦Süßigkeitenstand⟧'], fr:['Stand de bonbons','au ⟦stand de bonbons⟧'], es:['Puesto de dulces','en el ⟦puesto de dulces⟧'] },
+  'FortuneTent': { it:['Tenda della veggente','nella ⟦tenda della veggente⟧'], en:['Fortune tent','in the ⟦fortune tent⟧'], de:['Wahrsagerzelt','im ⟦Wahrsagerzelt⟧'], fr:['Tente de la voyante','dans la ⟦tente de la voyante⟧'], es:['Tienda de la vidente','en la ⟦tienda de la vidente⟧'] },
+  'Well': { it:['Pozzo','al ⟦pozzo⟧'], en:['Old well','at the ⟦old well⟧'], de:['Brunnen','am ⟦Brunnen⟧'], fr:['Puits','au ⟦puits⟧'], es:['Pozo','en el ⟦pozo⟧'] },
+  'Gate': { it:['Cancello','al ⟦cancello⟧'], en:['Gate','at the ⟦gate⟧'], de:['Tor','am ⟦Tor⟧'], fr:['Portail','au ⟦portail⟧'], es:['Verja','en la ⟦verja⟧'] },
+  'Stables': { it:['Scuderie','nelle ⟦scuderie⟧'], en:['Stables','in the ⟦stables⟧'], de:['Ställe','in den ⟦Ställen⟧'], fr:['Écuries','dans les ⟦écuries⟧'], es:['Establos','en los ⟦establos⟧'] }
+};
+
+var OBJL = {
+  it: { chair:['la sedia','su una ⟦sedia⟧'], sofa:['il divano','su un ⟦divano⟧'], rug:['il tappeto','su un ⟦tappeto⟧'], bed:['il letto','su un ⟦letto⟧'], bench:['la panchina','su una ⟦panchina⟧'],
+        armchair:['la poltrona','su una ⟦poltrona⟧'], rocker:['la sedia a dondolo','su una ⟦sedia a dondolo⟧'], haybale:['la balla di fieno','su una ⟦balla di fieno⟧'], coffin:['la bara','su una ⟦bara⟧'],
+        table:['il tavolo','⟦accanto⟧ a un ⟦tavolo⟧'], desk:['la scrivania','⟦accanto⟧ a una ⟦scrivania⟧'], shelf:['lo scaffale','⟦accanto⟧ a uno ⟦scaffale⟧'], piano:['il pianoforte','⟦accanto⟧ a un ⟦pianoforte⟧'],
+        clock:["l'orologio a pendolo",'⟦accanto⟧ a un ⟦orologio a pendolo⟧'], armor:["l'armatura","⟦accanto⟧ a un'⟦armatura⟧"], cauldron:['il calderone','⟦accanto⟧ a un ⟦calderone⟧'], plant:['la pianta','⟦accanto⟧ a una ⟦pianta⟧'] },
+  en: { chair:['the chair','on a ⟦chair⟧'], sofa:['the sofa','on a ⟦sofa⟧'], rug:['the rug','on a ⟦rug⟧'], bed:['the bed','on a ⟦bed⟧'], bench:['the bench','on a ⟦bench⟧'],
+        armchair:['the armchair','on an ⟦armchair⟧'], rocker:['the rocking chair','on the ⟦rocking chair⟧'], haybale:['the hay bale','on a ⟦hay bale⟧'], coffin:['the coffin','on a ⟦coffin⟧'],
+        table:['the table','⟦next to⟧ a ⟦table⟧'], desk:['the desk','⟦next to⟧ a ⟦desk⟧'], shelf:['the bookshelf','⟦next to⟧ a ⟦bookshelf⟧'], piano:['the piano','⟦next to⟧ a ⟦piano⟧'],
+        clock:['the grandfather clock','⟦next to⟧ the ⟦grandfather clock⟧'], armor:['the suit of armor','⟦next to⟧ a ⟦suit of armor⟧'], cauldron:['the cauldron','⟦next to⟧ a ⟦cauldron⟧'], plant:['the plant','⟦next to⟧ a ⟦plant⟧'] },
+  de: { chair:['der Stuhl','auf einem ⟦Stuhl⟧'], sofa:['das Sofa','auf einem ⟦Sofa⟧'], rug:['der Teppich','auf einem ⟦Teppich⟧'], bed:['das Bett','auf einem ⟦Bett⟧'], bench:['die Bank','auf einer ⟦Bank⟧'],
+        armchair:['der Sessel','auf einem ⟦Sessel⟧'], rocker:['der Schaukelstuhl','auf einem ⟦Schaukelstuhl⟧'], haybale:['der Heuballen','auf einem ⟦Heuballen⟧'], coffin:['der Sarg','auf einem ⟦Sarg⟧'],
+        table:['der Tisch','⟦neben⟧ einem ⟦Tisch⟧'], desk:['der Schreibtisch','⟦neben⟧ einem ⟦Schreibtisch⟧'], shelf:['das Bücherregal','⟦neben⟧ einem ⟦Bücherregal⟧'], piano:['das Klavier','⟦neben⟧ einem ⟦Klavier⟧'],
+        clock:['die Standuhr','⟦neben⟧ einer ⟦Standuhr⟧'], armor:['die Ritterrüstung','⟦neben⟧ einer ⟦Ritterrüstung⟧'], cauldron:['der Kessel','⟦neben⟧ einem ⟦Kessel⟧'], plant:['die Pflanze','⟦neben⟧ einer ⟦Pflanze⟧'] },
+  fr: { chair:['la chaise','sur une ⟦chaise⟧'], sofa:['le canapé','sur un ⟦canapé⟧'], rug:['le tapis','sur un ⟦tapis⟧'], bed:['le lit','sur un ⟦lit⟧'], bench:['le banc','sur un ⟦banc⟧'],
+        armchair:['le fauteuil','sur un ⟦fauteuil⟧'], rocker:['le rocking-chair','sur le ⟦rocking-chair⟧'], haybale:['la botte de foin','sur une ⟦botte de foin⟧'], coffin:['le cercueil','sur un ⟦cercueil⟧'],
+        table:['la table',"⟦à côté⟧ d'une ⟦table⟧"], desk:['le bureau',"⟦à côté⟧ d'un ⟦bureau⟧"], shelf:['la bibliothèque',"⟦à côté⟧ d'une ⟦bibliothèque⟧"], piano:['le piano',"⟦à côté⟧ d'un ⟦piano⟧"],
+        clock:["l'horloge comtoise","⟦à côté⟧ d'une ⟦horloge comtoise⟧"], armor:["l'armure","⟦à côté⟧ d'une ⟦armure⟧"], cauldron:['le chaudron',"⟦à côté⟧ d'un ⟦chaudron⟧"], plant:['la plante',"⟦à côté⟧ d'une ⟦plante⟧"] },
+  es: { chair:['la silla','en una ⟦silla⟧'], sofa:['el sofá','en un ⟦sofá⟧'], rug:['la alfombra','sobre una ⟦alfombra⟧'], bed:['la cama','en una ⟦cama⟧'], bench:['el banco','en un ⟦banco⟧'],
+        armchair:['el sillón','en un ⟦sillón⟧'], rocker:['la mecedora','en una ⟦mecedora⟧'], haybale:['la paca de heno','en una ⟦paca de heno⟧'], coffin:['el ataúd','sobre un ⟦ataúd⟧'],
+        table:['la mesa','⟦junto a⟧ una ⟦mesa⟧'], desk:['el escritorio','⟦junto a⟧ un ⟦escritorio⟧'], shelf:['la estantería','⟦junto a⟧ una ⟦estantería⟧'], piano:['el piano','⟦junto a⟧ un ⟦piano⟧'],
+        clock:['el reloj de pie','⟦junto a⟧ un ⟦reloj de pie⟧'], armor:['la armadura','⟦junto a⟧ una ⟦armadura⟧'], cauldron:['el caldero','⟦junto a⟧ un ⟦caldero⟧'], plant:['la planta','⟦junto a⟧ una ⟦planta⟧'] }
+};
+
+var SIT = { chair: 1, sofa: 1, bench: 1, armchair: 1, rocker: 1, haybale: 1 };
+
+var OBJ = {
+ chair:{occ:1,hu:'szék'}, sofa:{occ:1,hu:'kanapé'}, rug:{occ:1,hu:'szőnyeg'}, bed:{occ:1,hu:'ágy'}, bench:{occ:1,hu:'pad'},
+ armchair:{occ:1,hu:'fotel'}, rocker:{occ:1,hu:'hintaszék'}, haybale:{occ:1,hu:'szénabála'}, coffin:{occ:1,hu:'koporsó'},
+ table:{hu:'asztal'}, desk:{hu:'íróasztal'}, shelf:{hu:'könyvespolc'}, piano:{hu:'zongora'},
+ clock:{hu:'állóóra'}, armor:{hu:'páncél'}, cauldron:{hu:'üst'}, plant:{hu:'szobanövény'}
+};
+var HU_ON={chair:'egy széken ült',sofa:'egy kanapén ült',rug:'egy szőnyegen állt',bed:'egy ágyon volt',bench:'egy padon ült',armchair:'egy fotelben ült',rocker:'egy hintaszékben ült',haybale:'egy szénabálán ült',coffin:'egy koporsón feküdt'};
+var HU_BY={table:'egy asztal',desk:'egy íróasztal',shelf:'egy könyvespolc',piano:'egy zongora',clock:'egy állóóra',armor:'egy páncél',cauldron:'egy üst',plant:'egy szobanövény'};
+
+if (typeof module !== 'undefined') module.exports = { ROOMS: ROOMS, OBJL: OBJL, SIT: SIT, OBJ: OBJ, HU_ON: HU_ON, HU_BY: HU_BY };
+</script>
+<script>/* Hungarian helper copy and ordinal words for this pack. */
+var ORD_HU=['első','második','harmadik','negyedik','ötödik','hatodik','hetedik'];
+var HU_TIPS=['Kezdd azzal, akinek pontos nyoma van, például egy sor vagy egy helyiség.','Soronként és oszloponként egy ember. Jelöld ✕-szel a lehetetlen mezőket.','Ha egy sorban csak egy szabad mező van, ott valakinek állnia kell.','A „mellett” csak ugyanabban a helyiségben érvényes. A fal elválaszt!','A végén a nasidoboz az utolsó szabad helyre kerül. Zoinks!'];
+var HU_RULES=['Soronként és oszloponként pontosan egy ember.','Széken, kanapén, ágyon, padon, szőnyegen, fotelben, hintaszéken, szénabálán és koporsón lehet lenni. Más tárgyon nem.','„Mellett” = közvetlenül fölötte, alatta, balra vagy jobbra, ugyanabban a helyiségben.','Észak fent, dél lent, kelet jobbra, nyugat balra.','A nasidoboz az utolsó szabad mezőn van. Aki egyedül volt vele, az vitte el.'];
+
+/* Kid-friendly overrides for the engine's Hungarian helper lines. */
+var PACK_HU={
+  victim:'A Scooby Snacks doboza. Egyedül volt azzal, aki elvitte.',
+  nope:'Nem! {n} nem volt a doboz szobájában.',
+  glVictim:'a nasidoboz',
+  glKiller:'aki elvitte',
+  whoKiller:'Ki vitte el a Scooby Snackset?',
+  solvedHu:'{n} vitte el a Scooby Snackset!'
+};
+
+if (typeof module !== 'undefined') module.exports = { ORD_HU: ORD_HU, HU_TIPS: HU_TIPS, HU_RULES: HU_RULES, PACK_HU: PACK_HU };
+</script>
+<script>/* ============================================================
+   SCOOBY A QUADRETTI — LOOKS (chi è chi)
+   [skin, hairStyle, hairColor, [accessories], shirtInk, expression]
+   ============================================================ */
+var LOOKS = {
+  'Scooby-Doo':        [2, 'short', 'choco', ['collar'], 'brown', 'smile'],
+  'Shaggy Rogers':     [0, 'shaggy', 'b', ['goatee'], 'green', 'smile', 'thin'],
+  'Fred Jones':        [0, 'short', 'y', ['ascot'], 'paper', 'smile'],
+  'Daphne Blake':      [0, 'wavy', 'o', ['headband'], 'purple', 'smile'],
+  'Velma Dinkley':     [0, 'bob', 'b', ['glasses'], 'orange', 'smile'],
+  'Madame Zora':       [1, 'wavy', 'k', ['earrings'], 'teal', 'smile'],
+  'Groundskeeper Gus': [2, 'bald', 's', ['beard'], 'navy', 'smile'],
+  'Widow Ravenna':     [0, 'long', 's', ['streak', 'earrings'], 'purple', 'flat'],
+  'Scooby Snacks':     [1, 'plush', 'biscuit', ['ribbon'], 'yellow', 'smile']
+};
+
+if (typeof module !== 'undefined') module.exports = LOOKS;
+</script>
+<script>/* Scooby a Quadretti — case titles and one-liners in en/de/fr/es.
+   Italian lives in cases.json; Hungarian is titleHu/flavHu, shown with the HU helper. */
+var CASEL = {
+  'vanishing-snacks': {
+    en: ['The Vanishing Snacks', 'Halloween night at Spooky Hollow Manor. During the party, the box of Scooby Snacks vanished from the foyer!'],
+    de: ['Die verschwundenen Snacks', 'Halloween-Nacht im Spukhaus-Spooky-Hollow. Während der Party ist die Schachtel Scooby Snacks aus der Eingangshalle verschwunden!'],
+    fr: ['Les snacks envolés', "Nuit d'Halloween au manoir Spooky Hollow. Pendant la fête, la boîte de Scooby Snacks a disparu du hall !"],
+    es: ['Los snacks desaparecidos', 'Noche de Halloween en la mansión Spooky Hollow. ¡Durante la fiesta, la caja de Scooby Snacks desapareció del vestíbulo!']
+  },
+  'pumpkin-prank': {
+    en: ['The Pumpkin Patch Prank', 'Out among the pumpkins, someone is playing pranks. The snack box went missing between one laugh and the next!'],
+    de: ['Der Kürbisfeld-Streich', 'Draußen zwischen den Kürbissen spielt jemand Streiche. Die Snackschachtel ist zwischen zwei Lachern verschwunden!'],
+    fr: ['La farce du champ de citrouilles', "Dehors, parmi les citrouilles, quelqu'un fait des farces. La boîte de snacks a disparu entre deux éclats de rire !"],
+    es: ['La broma del huerto de calabazas', 'Ahí fuera, entre las calabazas, alguien gasta bromas. ¡La caja de snacks desapareció entre risa y risa!']
+  },
+  'ghost-library': {
+    en: ['The Ghost in the Library', 'A white figure was seen floating in the library. And the Scooby Snacks? Gone!'],
+    de: ['Der Geist in der Bibliothek', 'Eine weiße Gestalt wurde in der Bibliothek gesehen. Und die Scooby Snacks? Verschwunden!'],
+    fr: ['Le fantôme de la bibliothèque', 'Une silhouette blanche a été aperçue dans la bibliothèque. Et les Scooby Snacks ? Disparus !'],
+    es: ['El fantasma de la biblioteca', 'Se vio una figura blanca flotando en la biblioteca. ¿Y los Scooby Snacks? ¡Desaparecieron!']
+  },
+  'midnight-bonfire': {
+    en: ['Midnight at the Bonfire', 'Spooky stories around the fair bonfire. When midnight struck, the snack box was nowhere to be found!'],
+    de: ['Mitternacht am Lagerfeuer', 'Gruselgeschichten am Lagerfeuer des Jahrmarkts. Als es Mitternacht schlug, war die Snackschachtel weg!'],
+    fr: ['Minuit au feu de joie', 'Histoires effrayantes autour du feu de joie de la fête. À minuit, la boîte de snacks avait disparu !'],
+    es: ['Medianoche junto a la hoguera', 'Historias de miedo junto a la hoguera de la feria. Al dar la medianoche, ¡la caja de snacks ya no estaba!']
+  },
+  'fortune-warning': {
+    en: ["The Fortune Teller's Warning", 'Madame Zora gazes into her crystal ball: "Beware the snacks!" Too late...'],
+    de: ['Die Warnung der Wahrsagerin', 'Madame Zora blickt in ihre Kristallkugel: „Hütet euch vor den Snacks!" Zu spät...'],
+    fr: ["L'avertissement de la voyante", 'Madame Zora lit sa boule de cristal : « Méfiez-vous des snacks ! » Trop tard...'],
+    es: ['La advertencia de la vidente', 'Madame Zora mira su bola de cristal: «¡Cuidado con los snacks!» Demasiado tarde...']
+  },
+  'cellar-cobwebs': {
+    en: ['Cobwebs in the Cellar', 'The manor cellar is full of cobwebs and strange noises. Who carried the snacks down there?'],
+    de: ['Spinnenweben im Keller', 'Der Keller des Hauses ist voller Spinnenweben und seltsamer Geräusche. Wer hat die Snacks hinuntergetragen?'],
+    fr: ['Toiles d’araignée à la cave', 'La cave du manoir est pleine de toiles d’araignée et de bruits étranges. Qui a descendu les snacks ?'],
+    es: ['Telarañas en el sótano', 'El sótano de la mansión está lleno de telarañas y ruidos extraños. ¿Quién bajó los snacks?']
+  },
+  'corn-maze-chase': {
+    en: ['The Corn Maze Chase', 'A scarecrow... moved! The gang chases it through the corn maze, but the snacks disappear.'],
+    de: ['Die Jagd im Maislabyrinth', 'Eine Vogelscheuche... hat sich bewegt! Die Bande jagt sie durchs Maislabyrinth, doch die Snacks verschwinden.'],
+    fr: ['La poursuite dans le labyrinthe', "Un épouvantail... a bougé ! La bande le poursuit dans le labyrinthe de maïs, mais les snacks disparaissent."],
+    es: ['La persecución en el laberinto', '¡Un espantapájaros... se movió! La pandilla lo persigue por el laberinto de maíz, pero los snacks desaparecen.']
+  },
+  'thunder-tower': {
+    en: ['Thunder over the Tower', 'A storm strikes the manor tower. In the darkness, someone hid the Scooby Snacks!'],
+    de: ['Gewitter über dem Turm', 'Ein Sturm trifft den Turm des Hauses. Im Dunkeln hat jemand die Scooby Snacks versteckt!'],
+    fr: ['Tonnerre sur la tour', 'Un orage frappe la tour du manoir. Dans le noir, quelqu’un a caché les Scooby Snacks !'],
+    es: ['Truenos sobre la torre', 'Una tormenta azota la torre de la mansión. ¡En la oscuridad, alguien escondió los Scooby Snacks!']
+  },
+  'graveyard-gig': {
+    en: ['The Graveyard Gig', 'Mysterious music echoes from the old graveyard. During the concert, the box went missing!'],
+    de: ['Das Friedhofskonzert', 'Geheimnisvolle Musik erklingt vom alten Friedhof. Während des Konzerts verschwand die Schachtel!'],
+    fr: ['Le concert du cimetière', 'Une musique mystérieuse résonne depuis le vieux cimetière. Pendant le concert, la boîte a disparu !'],
+    es: ['El concierto del cementerio', 'Una música misteriosa resuena desde el viejo cementerio. ¡Durante el concierto, la caja desapareció!']
+  },
+  'headless-scarecrow': {
+    en: ['The Headless Scarecrow', 'The fair scarecrow has lost its head... and the snacks have lost their box!'],
+    de: ['Die kopflose Vogelscheuche', 'Die Vogelscheuche des Jahrmarkts hat ihren Kopf verloren... und die Snacks ihre Schachtel!'],
+    fr: ["L'épouvantail sans tête", "L'épouvantail de la fête a perdu sa tête... et les snacks ont perdu leur boîte !"],
+    es: ['El espantapájaros sin cabeza', '¡El espantapájaros de la feria ha perdido la cabeza... y los snacks han perdido su caja!']
+  },
+  'ballroom-howl': {
+    en: ['The Ballroom Howl', 'An icy howl fills the ballroom during the costume ball. The snacks: gone!'],
+    de: ['Das Heulen im Ballsaal', 'Ein eisiges Heulen erfüllt den Ballsaal während des Kostümballs. Die Snacks: weg!'],
+    fr: ['Le hurlement de la salle de bal', 'Un hurlement glacial remplit la salle de bal pendant le bal costumé. Les snacks : disparus !'],
+    es: ['El aullido del salón de baile', 'Un aullido helado llena el salón de baile durante el baile de disfraces. Los snacks: ¡desaparecidos!']
+  },
+  'last-scooby-snack': {
+    en: ['The Last Scooby Snack', 'Only one Scooby Snack was left... and now that one is gone too! The grand Halloween finale.'],
+    de: ['Der letzte Scooby Snack', 'Es war nur noch ein einziger Scooby Snack übrig... und jetzt ist auch der weg! Das große Halloween-Finale.'],
+    fr: ['Le dernier Scooby Snack', "Il ne restait plus qu'un seul Scooby Snack... et il a disparu lui aussi ! Le grand final d'Halloween."],
+    es: ['El último Scooby Snack', 'Solo quedaba un Scooby Snack... ¡y ese también ha desaparecido! El gran final de Halloween.']
+  }
+};
+if (typeof module !== 'undefined') module.exports = CASEL;
+</script>
+<script>/* Scooby a Quadretti — UI copy in the pack's spooky-but-sweet voice.
+   Overrides the murder framing with the "Who took the Scooby Snacks?" premise.
+   clueVictim is a pack hook read by the engine for the victim's clue line. */
+var PACK_UI = {
+  it: {
+    tag: 'Misteri da brivido ad Halloween', eyebrow: 'Caselle · {n} casi',
+    h1a: 'Chi ha preso gli ', h1b: 'Scooby Snacks?',
+    lead: "Leggi gli indizi in italiano. Metti ogni amico sulla mappa di Villa Spooky Hollow. Scopri chi era da solo con la scatola degli Scooby Snacks.",
+    pigeon: 'Psst… zoinks! La scatola non può essere lontana. Hai controllato vicino al falò?',
+    victim: 'SPARITA', suspects: 'Amici',
+    killerIs: 'Chi ha preso gli Scooby Snacks?', solved: 'È stato {n} a prendere gli Scooby Snacks!',
+    nope: 'No! {n} non era nella ⟦stanza⟧ della scatola.',
+    clueVictim: 'Questa è la ⟦scatola⟧ degli Scooby Snacks. Era da sola con il ⟦colpevole⟧.',
+    rules: ['Una persona per ⟦riga⟧ e per ⟦colonna⟧.', 'Puoi stare su ⟦sedie⟧, ⟦divani⟧, ⟦letti⟧, ⟦panche⟧, ⟦tappeti⟧, ⟦poltrone⟧, ⟦sedie a dondolo⟧, ⟦balle di fieno⟧ e ⟦bare⟧. Sulle altre cose no.', '⟦Accanto⟧ = subito sopra, sotto, a destra o a sinistra, nella stessa stanza.', '⟦Nord⟧ è su, ⟦sud⟧ è giù, ⟦est⟧ è a destra, ⟦ovest⟧ a sinistra.', "La ⟦scatola⟧ è sull'ultima casella libera. Chi era solo con lei è il ⟦colpevole⟧."],
+    tips: ['Comincia da chi ha un indizio preciso, come una riga o una stanza.', 'Una persona per riga e per colonna. Segna con ✕ le caselle impossibili.', 'Se una riga ha una sola casella libera, qualcuno deve stare lì.', '«Accanto» vale solo nella stessa stanza. Il muro separa!', "Alla fine la scatola va sull'ultima casella libera. Zoinks!"],
+    gl: { victim: 'la scatola degli snack', killer: 'il colpevole' }
+  },
+  en: {
+    tag: 'Spooky-sweet Halloween mysteries', eyebrow: 'Case files · {n} cases',
+    h1a: 'Who took the ', h1b: 'Scooby Snacks?',
+    lead: 'Read the clues in English. Put every friend on the map of Spooky Hollow Manor. Find out who was alone with the box of Scooby Snacks.',
+    pigeon: 'Psst… zoinks! The box can’t be far. Have you checked by the bonfire?',
+    victim: 'MISSING', suspects: 'Friends',
+    killerIs: 'Who took the Scooby Snacks?', solved: '{n} took the Scooby Snacks!',
+    nope: 'No! {n} was not in the box’s ⟦room⟧.',
+    clueVictim: 'This is the ⟦box⟧ of Scooby Snacks. It was alone with the ⟦culprit⟧.',
+    rules: ['One person per ⟦row⟧ and per ⟦column⟧.', 'You can stand on ⟦chairs⟧, ⟦sofas⟧, ⟦beds⟧, ⟦benches⟧, ⟦rugs⟧, ⟦armchairs⟧, ⟦rocking chairs⟧, ⟦hay bales⟧ and ⟦coffins⟧. Not on other things.', '⟦Next to⟧ = directly above, below, left or right, in the same room.', '⟦North⟧ is up, ⟦south⟧ is down, ⟦east⟧ is right, ⟦west⟧ is left.', 'The ⟦box⟧ is on the last free square. Whoever was alone with it is the ⟦culprit⟧.'],
+    tips: ['Start with the friend who has an exact clue, like a row or a room.', 'One person per row and column. Mark impossible squares with ✕.', 'If a row has only one free square, someone must be there.', '“Next to” only counts in the same room. Walls separate!', 'At the end, the box goes on the last free square. Zoinks!'],
+    gl: { victim: 'the snack box', killer: 'the culprit' }
+  },
+  de: {
+    tag: 'Gruselig-süße Halloween-Rätsel', eyebrow: 'Akten · {n} Fälle',
+    h1a: 'Wer hat die ', h1b: 'Scooby Snacks genommen?',
+    lead: 'Lies die Hinweise auf Deutsch. Setz alle Freunde auf den Plan von Spooky Hollow. Finde heraus, wer allein bei der Schachtel Scooby Snacks war.',
+    pigeon: 'Psst… zoinks! Die Schachtel ist bestimmt nicht weit. Hast du am Lagerfeuer geschaut?',
+    victim: 'VERSCHWUNDEN', suspects: 'Freunde',
+    killerIs: 'Wer hat die Scooby Snacks genommen?', solved: '{n} hat die Scooby Snacks genommen!',
+    nope: 'Nein! {n} war nicht im ⟦Raum⟧ der Schachtel.',
+    clueVictim: 'Das ist die ⟦Schachtel⟧ der Scooby Snacks. Sie war allein mit dem ⟦Übeltäter⟧.',
+    rules: ['Eine Person pro ⟦Reihe⟧ und pro ⟦Spalte⟧.', 'Man darf auf ⟦Stühlen⟧, ⟦Sofas⟧, ⟦Betten⟧, ⟦Bänken⟧, ⟦Teppichen⟧, ⟦Sesseln⟧, ⟦Schaukelstühlen⟧, ⟦Heuballen⟧ und ⟦Särgen⟧ stehen. Auf anderen Dingen nicht.', '⟦Neben⟧ = direkt darüber, darunter, links oder rechts, im selben Raum.', '⟦Norden⟧ ist oben, ⟦Süden⟧ unten, ⟦Osten⟧ rechts, ⟦Westen⟧ links.', 'Die ⟦Schachtel⟧ steht auf dem letzten freien Feld. Wer allein bei ihr war, ist der ⟦Übeltäter⟧.'],
+    tips: ['Fang bei der Person an, die einen genauen Hinweis hat, zum Beispiel eine Reihe oder einen Raum.', 'Eine Person pro Reihe und Spalte. Markiere unmögliche Felder mit ✕.', 'Hat eine Reihe nur ein freies Feld, muss dort jemand stehen.', '„Neben“ gilt nur im selben Raum. Wände trennen!', 'Am Ende kommt die Schachtel auf das letzte freie Feld. Zoinks!'],
+    gl: { victim: 'die Snackschachtel', killer: 'der Übeltäter' }
+  },
+  fr: {
+    tag: 'Mystères d’Halloween qui font frissonner', eyebrow: 'Dossiers · {n} affaires',
+    h1a: 'Qui a pris les ', h1b: 'Scooby Snacks ?',
+    lead: 'Lis les indices en français. Place chaque ami sur le plan du manoir Spooky Hollow. Découvre qui était seul avec la boîte de Scooby Snacks.',
+    pigeon: 'Psst… zoinks ! La boîte ne peut pas être loin. Tu as regardé près du feu de joie ?',
+    victim: 'DISPARUE', suspects: 'Amis',
+    killerIs: 'Qui a pris les Scooby Snacks ?', solved: "C'est {n} qui a pris les Scooby Snacks !",
+    nope: 'Non ! {n} n’était pas dans la ⟦pièce⟧ de la boîte.',
+    clueVictim: 'Voici la ⟦boîte⟧ de Scooby Snacks. Elle était seule avec le ⟦coupable⟧.',
+    rules: ['Une personne par ⟦ligne⟧ et par ⟦colonne⟧.', 'On peut se mettre sur les ⟦chaises⟧, ⟦canapés⟧, ⟦lits⟧, ⟦bancs⟧, ⟦tapis⟧, ⟦fauteuils⟧, ⟦rocking-chairs⟧, ⟦bottes de foin⟧ et ⟦cercueils⟧. Pas sur les autres objets.', '⟦À côté⟧ = juste au-dessus, en dessous, à gauche ou à droite, dans la même pièce.', 'Le ⟦nord⟧ est en haut, le ⟦sud⟧ en bas, l’⟦est⟧ à droite, l’⟦ouest⟧ à gauche.', 'La ⟦boîte⟧ est sur la dernière case libre. Celui qui était seul avec elle est le ⟦coupable⟧.'],
+    tips: ['Commence par l’ami qui a un indice précis, comme une ligne ou une pièce.', 'Une personne par ligne et par colonne. Marque les cases impossibles avec ✕.', "Si une ligne n'a qu'une case libre, quelqu'un doit y être.", '« À côté » ne compte que dans la même pièce. Les murs séparent !', 'À la fin, la boîte va sur la dernière case libre. Zoinks !'],
+    gl: { victim: 'la boîte de snacks', killer: 'le coupable' }
+  },
+  es: {
+    tag: 'Misterios de Halloween de dulce susto', eyebrow: 'Expedientes · {n} casos',
+    h1a: '¿Quién se llevó los ', h1b: 'Scooby Snacks?',
+    lead: 'Lee las pistas en español. Coloca a cada amigo en el mapa de la mansión Spooky Hollow. Descubre quién estaba a solas con la caja de Scooby Snacks.',
+    pigeon: 'Psst… ¡zoinks! La caja no puede estar lejos. ¿Has mirado junto a la hoguera?',
+    victim: 'PERDIDA', suspects: 'Amigos',
+    killerIs: '¿Quién se llevó los Scooby Snacks?', solved: '¡{n} se llevó los Scooby Snacks!',
+    nope: '¡No! {n} no estaba en la ⟦habitación⟧ de la caja.',
+    clueVictim: 'Esta es la ⟦caja⟧ de los Scooby Snacks. Estaba a solas con el ⟦culpable⟧.',
+    rules: ['Una persona por ⟦fila⟧ y por ⟦columna⟧.', 'Te puedes poner en ⟦sillas⟧, ⟦sofás⟧, ⟦camas⟧, ⟦bancos⟧, ⟦alfombras⟧, ⟦sillones⟧, ⟦mecedoras⟧, ⟦balas de heno⟧ y ⟦ataúdes⟧. En las demás cosas no.', '⟦Junto a⟧ = justo arriba, abajo, a la izquierda o a la derecha, en la misma habitación.', 'El ⟦norte⟧ está arriba, el ⟦sur⟧ abajo, el ⟦este⟧ a la derecha y el ⟦oeste⟧ a la izquierda.', 'La ⟦caja⟧ está en la última casilla libre. Quien estaba a solas con ella es el ⟦culpable⟧.'],
+    tips: ['Empieza por quien tiene una pista exacta, como una fila o una habitación.', 'Una persona por fila y por columna. Marca con ✕ las casillas imposibles.', 'Si una fila tiene una sola casilla libre, alguien tiene que estar ahí.', '«Junto a» solo vale en la misma habitación. ¡Las paredes separan!', 'Al final, la caja va en la última casilla libre. ¡Zoinks!'],
+    gl: { victim: 'la caja de snacks', killer: 'el culpable' }
+  }
+};
+if (typeof module !== 'undefined') module.exports = PACK_UI;
+</script>
+<script>const PACK={"id": "scooby", "path": "scooby/", "name": "Scooby a Quadretti", "description": "Misteri da brivido ad Halloween a Villa Spooky Hollow: chi ha preso gli Scooby Snacks? Cinque lingue, magyar segédlettel. (Változat rajongóknak.)", "lang": "en", "defaultLang": "en", "huHelperDefault": true, "themeColor": "#e8721c", "solvedStamp": "ZOINKS!", "stampText": "SOLVED!", "fonts": "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:ital,wght@0,400;0,700;1,400&display=swap", "version": 1};
+const CASES=[{"id": "vanishing-snacks", "title": "La sparizione degli snack", "titleHu": "Az eltűnt nasik", "flav": "È Halloween a Villa Spooky Hollow. Durante la festa, la scatola degli Scooby Snacks è sparita dall'ingresso!", "flavHu": "Halloween van a Spooky Hollow-kastélyban. A buli alatt eltűnt a Scooby Snacks doboza az előszobából!", "size": 4, "grid": ["FFCC", "FFCC", "KKDD", "KKDD"], "rooms": {"F": {"it": "Foyer", "itIn": "nell'atrio", "hu": "előszoba", "huIn": "az előszobában"}, "C": {"it": "Corridor", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "K": {"it": "Kitchen", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "D": {"it": "DiningRoom", "itIn": "nella sala da pranzo", "hu": "ebédlő", "huIn": "az ebédlőben"}}, "objs": {"0,1": "chair", "1,1": "rug", "0,3": "armor", "1,2": "plant", "2,0": "table", "2,2": "sofa", "3,0": "shelf", "3,3": "armchair"}, "people": [["Scooby-Doo", "m"], ["Shaggy Rogers", "m"], ["Velma Dinkley", "f"], ["Scooby Snacks", "f"]], "level": 1, "solution": [[0, 1], [2, 3], [3, 2], [1, 0]], "killer": 0, "clues": [{"p": 0, "t": "onlyon", "v": "chair"}, {"p": 1, "t": "col", "v": 3}, {"p": 2, "t": "room", "v": "D"}, {"p": 1, "t": "row", "v": 2}, {"p": 0, "t": "row", "v": 0}]}, {"id": "pumpkin-prank", "title": "Lo scherzo del campo di zucche", "titleHu": "Tréfa a tökföldön", "flav": "Fuori, tra le zucche, qualcuno fa scherzi. La scatola degli snack è sparita tra una risata e l'altra!", "flavHu": "Odakint, a tökök között valaki tréfál. A nasidoboz eltűnt két nevetés között!", "size": 4, "grid": ["PPGG", "PPGG", "OOBB", "OOBB"], "rooms": {"P": {"it": "PumpkinPatch", "itIn": "nel campo di zucche", "hu": "tökföld", "huIn": "a tökföldön"}, "G": {"it": "Garden", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "O": {"it": "Porch", "itIn": "sul portico", "hu": "tornác", "huIn": "a tornácon"}, "B": {"it": "Barn", "itIn": "nel fienile", "hu": "csűr", "huIn": "a csűrben"}}, "objs": {"0,1": "haybale", "1,1": "plant", "0,3": "cauldron", "1,2": "rug", "2,0": "rocker", "2,2": "table", "3,0": "haybale", "3,3": "bench"}, "people": [["Scooby-Doo", "m"], ["Fred Jones", "m"], ["Daphne Blake", "f"], ["Scooby Snacks", "f"]], "level": 1, "solution": [[3, 1], [2, 0], [1, 3], [0, 2]], "killer": 2, "clues": [{"p": 0, "t": "row", "v": 3}, {"p": 1, "t": "room", "v": "O"}, {"p": 2, "t": "room", "v": "G"}, {"p": 1, "t": "onlyon", "v": "rocker"}, {"p": 2, "t": "col", "v": 3}, {"p": 1, "t": "on", "v": "rocker"}]}, {"id": "ghost-library", "title": "Il fantasma della biblioteca", "titleHu": "A könyvtár szelleme", "flav": "Una figura bianca è stata vista in biblioteca. E gli Scooby Snacks? Spariti!", "flavHu": "Fehér alakot láttak a könyvtárban. És a Scooby Snacks? Eltűnt!", "size": 4, "grid": ["LLSS", "LLSS", "MMCC", "MMCC"], "rooms": {"L": {"it": "Library", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "S": {"it": "Study", "itIn": "nello studio", "hu": "dolgozószoba", "huIn": "a dolgozószobában"}, "M": {"it": "MusicRoom", "itIn": "nella sala musica", "hu": "zeneszoba", "huIn": "a zeneszobában"}, "C": {"it": "Corridor", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}}, "objs": {"0,1": "shelf", "1,1": "armchair", "0,3": "desk", "1,2": "rug", "2,0": "piano", "2,2": "chair", "3,0": "shelf", "3,3": "clock"}, "people": [["Velma Dinkley", "f"], ["Fred Jones", "m"], ["Groundskeeper Gus", "m"], ["Scooby Snacks", "f"]], "level": 1, "solution": [[0, 0], [3, 2], [2, 3], [1, 1]], "killer": 0, "clues": [{"p": 0, "t": "row", "v": 0}, {"p": 1, "t": "room", "v": "C"}, {"p": 2, "t": "room", "v": "C"}, {"p": 2, "t": "row", "v": 2}, {"p": 2, "t": "col", "v": 3}]}, {"id": "midnight-bonfire", "title": "Mezzanotte al falò", "titleHu": "Éjfél a máglyánál", "flav": "Storie spaventose intorno al falò della fiera. A mezzanotte la scatola degli snack non c'era più!", "flavHu": "Ijesztő történetek a vásári máglyánál. Éjfélkor a nasidoboz már nem volt sehol!", "size": 5, "grid": ["BBCCC", "BBCCC", "GGGCC", "GGTTT", "WWTTT"], "rooms": {"B": {"it": "Bonfire", "itIn": "intorno al falò", "hu": "máglya", "huIn": "a máglyánál"}, "C": {"it": "CandyStand", "itIn": "al banco dei dolcetti", "hu": "édességasztal", "huIn": "az édességasztalnál"}, "G": {"it": "Garden", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "T": {"it": "Gate", "itIn": "al cancello", "hu": "kapu", "huIn": "a kapunál"}, "W": {"it": "Well", "itIn": "al pozzo", "hu": "kút", "huIn": "a kútnál"}}, "objs": {"0,1": "bench", "1,1": "rug", "0,4": "table", "2,0": "plant", "2,3": "cauldron", "3,4": "clock", "4,0": "chair", "3,1": "haybale", "2,2": "table", "2,1": "plant", "4,3": "bench"}, "people": [["Scooby-Doo", "m"], ["Shaggy Rogers", "m"], ["Daphne Blake", "f"], ["Madame Zora", "f"], ["Scooby Snacks", "f"]], "level": 2, "solution": [[4, 2], [2, 4], [0, 0], [3, 3], [1, 1]], "killer": 2, "clues": [{"p": 0, "t": "dir", "d": "e", "v": 2}, {"p": 1, "t": "dir", "d": "s", "v": 2}, {"p": 2, "t": "row", "v": 0}, {"p": 3, "t": "dir", "d": "s", "v": 1}, {"p": 0, "t": "dir", "d": "s", "v": 1}, {"p": 1, "t": "alone"}, {"p": 2, "t": "corner"}, {"p": 3, "t": "by", "v": "clock"}, {"p": 3, "t": "notroom", "v": "G"}]}, {"id": "fortune-warning", "title": "L'avvertimento della veggente", "titleHu": "A jósnő figyelmeztetése", "flav": "Madame Zora legge il futuro nella sfera: \"Attenti agli snack!\" Troppo tardi...", "flavHu": "Madame Zora a gömbbe néz: „Vigyázzatok a nasira!\" De már késő...", "size": 5, "grid": ["FFFCC", "FFFCC", "MMMCC", "MMPPP", "TTPPP"], "rooms": {"F": {"it": "FortuneTent", "itIn": "nella tenda della veggente", "hu": "jósdasátor", "huIn": "a jósdasátorban"}, "C": {"it": "CandyStand", "itIn": "al banco dei dolcetti", "hu": "édességasztal", "huIn": "az édességasztalnál"}, "M": {"it": "CornMaze", "itIn": "nel labirinto di granturco", "hu": "kukoricalabirintus", "huIn": "a kukoricalabirintusban"}, "P": {"it": "Porch", "itIn": "sul portico", "hu": "tornác", "huIn": "a tornácon"}, "T": {"it": "Gate", "itIn": "al cancello", "hu": "kapu", "huIn": "a kapunál"}}, "objs": {"0,1": "rug", "1,1": "table", "0,4": "clock", "2,0": "plant", "2,3": "chair", "3,4": "rocker", "4,0": "haybale", "3,1": "sofa", "2,2": "cauldron", "2,1": "table", "4,3": "rug"}, "people": [["Madame Zora", "f"], ["Velma Dinkley", "f"], ["Shaggy Rogers", "m"], ["Widow Ravenna", "f"], ["Scooby Snacks", "f"]], "level": 2, "solution": [[3, 3], [1, 0], [0, 1], [2, 4], [4, 2]], "killer": 0, "clues": [{"p": 0, "t": "col", "v": 3}, {"p": 1, "t": "dir", "d": "o", "v": 0}, {"p": 2, "t": "dir", "d": "n", "v": 0}, {"p": 3, "t": "dir", "d": "n", "v": 0}, {"p": 1, "t": "by", "v": "table"}, {"p": 2, "t": "onlyon", "v": "rug"}, {"p": 2, "t": "col", "v": 1}]}, {"id": "cellar-cobwebs", "title": "Ragnatele in cantina", "titleHu": "Pókháló a pincében", "flav": "La cantina della villa è piena di ragnatele e strani rumori. Chi ha portato giù gli snack?", "flavHu": "A kastély pincéje tele van pókhálóval és furcsa hangokkal. Ki vitte le a nasit?", "size": 5, "grid": ["CCCKK", "CCCKK", "AAAKK", "AAOOO", "SSSOO"], "rooms": {"C": {"it": "Cellar", "itIn": "in cantina", "hu": "pince", "huIn": "a pincében"}, "K": {"it": "Kitchen", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "A": {"it": "Attic", "itIn": "in soffitta", "hu": "padlás", "huIn": "a padláson"}, "O": {"it": "Corridor", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "S": {"it": "Study", "itIn": "nello studio", "hu": "dolgozószoba", "huIn": "a dolgozószobában"}}, "objs": {"0,1": "shelf", "1,1": "rug", "0,4": "table", "2,0": "coffin", "2,3": "chair", "3,4": "armor", "4,0": "bed", "3,1": "sofa", "2,2": "desk", "2,1": "shelf", "4,3": "armchair"}, "people": [["Scooby-Doo", "m"], ["Fred Jones", "m"], ["Groundskeeper Gus", "m"], ["Widow Ravenna", "f"], ["Scooby Snacks", "f"]], "level": 2, "solution": [[3, 0], [1, 3], [0, 2], [4, 1], [2, 4]], "killer": 1, "clues": [{"p": 0, "t": "notroom", "v": "O"}, {"p": 1, "t": "dir", "d": "n", "v": 3}, {"p": 2, "t": "dir", "d": "n", "v": 1}, {"p": 3, "t": "notroom", "v": "A"}, {"p": 0, "t": "dir", "d": "o", "v": 3}, {"p": 1, "t": "row", "v": 1}, {"p": 1, "t": "col", "v": 3}, {"p": 2, "t": "dir", "d": "e", "v": 3}, {"p": 3, "t": "col", "v": 1}]}, {"id": "corn-maze-chase", "title": "L'inseguimento nel labirinto", "titleHu": "Hajsza a labirintusban", "flav": "Uno spaventapasseri... si è mosso! La banda lo insegue nel labirinto di granturco, ma gli snack spariscono.", "flavHu": "A madárijesztő... megmozdult! A banda a kukoricalabirintusban üldözi, de a nasi eltűnik.", "size": 6, "grid": ["MMMPPP", "MMMPPP", "SSSBBB", "SSSBBB", "WWWTTT", "WWWTTT"], "rooms": {"M": {"it": "CornMaze", "itIn": "nel labirinto di granturco", "hu": "kukoricalabirintus", "huIn": "a kukoricalabirintusban"}, "P": {"it": "PumpkinPatch", "itIn": "nel campo di zucche", "hu": "tökföld", "huIn": "a tökföldön"}, "S": {"it": "Stables", "itIn": "nelle scuderie", "hu": "istálló", "huIn": "az istállóban"}, "B": {"it": "Barn", "itIn": "nel fienile", "hu": "csűr", "huIn": "a csűrben"}, "W": {"it": "Well", "itIn": "al pozzo", "hu": "kút", "huIn": "a kútnál"}, "T": {"it": "Gate", "itIn": "al cancello", "hu": "kapu", "huIn": "a kapunál"}}, "objs": {"0,1": "haybale", "1,1": "plant", "0,4": "cauldron", "1,4": "table", "2,0": "haybale", "2,2": "bench", "3,3": "rug", "2,5": "shelf", "4,0": "plant", "4,1": "clock", "5,4": "bench", "3,0": "table", "4,4": "rocker", "5,1": "rug", "3,5": "haybale"}, "people": [["Scooby-Doo", "m"], ["Shaggy Rogers", "m"], ["Fred Jones", "m"], ["Daphne Blake", "f"], ["Groundskeeper Gus", "m"], ["Scooby Snacks", "f"]], "level": 3, "solution": [[3, 3], [4, 4], [1, 0], [2, 1], [0, 2], [5, 5]], "killer": 1, "clues": [{"p": 0, "t": "notroom", "v": "P"}, {"p": 1, "t": "dir", "d": "e", "v": 2}, {"p": 2, "t": "notroom", "v": "P"}, {"p": 3, "t": "dir", "d": "e", "v": 2}, {"p": 4, "t": "dir", "d": "o", "v": 0}, {"p": 0, "t": "onlyon", "v": "rug"}, {"p": 1, "t": "onlyon", "v": "rocker"}, {"p": 2, "t": "by", "v": "plant"}, {"p": 3, "t": "alone"}, {"p": 4, "t": "dir", "d": "e", "v": 3}]}, {"id": "thunder-tower", "title": "Tuono sulla torre", "titleHu": "Vihar a torony felett", "flav": "Un temporale colpisce la torre della villa. Al buio, qualcuno ha nascosto gli Scooby Snacks!", "flavHu": "Vihar csap a kastély tornyára. A sötétben valaki elrejtette a Scooby Snackset!", "size": 6, "grid": ["TTTAAA", "TTTAAA", "LLLSSS", "LLLSSS", "BBBCCC", "BBBCCC"], "rooms": {"T": {"it": "Tower", "itIn": "sulla torre", "hu": "torony", "huIn": "a toronyban"}, "A": {"it": "Attic", "itIn": "in soffitta", "hu": "padlás", "huIn": "a padláson"}, "L": {"it": "Library", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "S": {"it": "Study", "itIn": "nello studio", "hu": "dolgozószoba", "huIn": "a dolgozószobában"}, "B": {"it": "Bedroom", "itIn": "in camera", "hu": "hálószoba", "huIn": "a hálószobában"}, "C": {"it": "Corridor", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}}, "objs": {"0,1": "clock", "1,1": "rug", "0,4": "bed", "1,4": "shelf", "2,0": "shelf", "2,2": "armchair", "3,3": "desk", "2,5": "table", "4,0": "bed", "4,1": "rug", "5,4": "armor", "3,0": "shelf", "4,4": "chair", "5,1": "plant"}, "people": [["Velma Dinkley", "f"], ["Daphne Blake", "f"], ["Widow Ravenna", "f"], ["Fred Jones", "m"], ["Madame Zora", "f"], ["Scooby Snacks", "f"]], "level": 3, "solution": [[3, 4], [1, 3], [0, 5], [2, 1], [5, 0], [4, 2]], "killer": 4, "clues": [{"p": 0, "t": "notroom", "v": "C"}, {"p": 1, "t": "dir", "d": "o", "v": 0}, {"p": 2, "t": "dir", "d": "e", "v": 3}, {"p": 3, "t": "dir", "d": "s", "v": 2}, {"p": 4, "t": "dir", "d": "o", "v": 0}, {"p": 0, "t": "by", "v": "desk"}, {"p": 1, "t": "by", "v": "shelf"}, {"p": 3, "t": "by", "v": "shelf"}, {"p": 3, "t": "alone"}, {"p": 4, "t": "by", "v": "plant"}, {"p": 4, "t": "dir", "d": "o", "v": 3}]}, {"id": "graveyard-gig", "title": "Il concerto al cimitero", "titleHu": "Koncert a temetőben", "flav": "Musica misteriosa risuona dal vecchio cimitero. Durante il concerto, la scatola è sparita!", "flavHu": "Rejtélyes zene szól a régi temetőből. A koncert alatt a doboz eltűnt!", "size": 6, "grid": ["GGGMMM", "GGGMMM", "CCCDDD", "CCCDDD", "BBBTTT", "BBBTTT"], "rooms": {"G": {"it": "Graveyard", "itIn": "nel cimitero", "hu": "temető", "huIn": "a temetőben"}, "M": {"it": "MusicRoom", "itIn": "nella sala musica", "hu": "zeneszoba", "huIn": "a zeneszobában"}, "C": {"it": "Conservatory", "itIn": "nella serra", "hu": "üvegház", "huIn": "az üvegházban"}, "D": {"it": "Garden", "itIn": "in giardino", "hu": "kert", "huIn": "a kertben"}, "B": {"it": "Bonfire", "itIn": "intorno al falò", "hu": "máglya", "huIn": "a máglyánál"}, "T": {"it": "Gate", "itIn": "al cancello", "hu": "kapu", "huIn": "a kapunál"}}, "objs": {"0,1": "bench", "1,1": "plant", "0,4": "piano", "1,4": "chair", "2,0": "plant", "2,2": "rug", "3,3": "table", "2,5": "cauldron", "4,0": "bench", "4,1": "rug", "5,4": "armor", "3,0": "plant", "4,4": "clock", "5,1": "haybale"}, "people": [["Shaggy Rogers", "m"], ["Scooby-Doo", "m"], ["Madame Zora", "f"], ["Groundskeeper Gus", "m"], ["Daphne Blake", "f"], ["Scooby Snacks", "f"]], "level": 3, "solution": [[5, 1], [3, 4], [2, 3], [0, 0], [1, 5], [4, 2]], "killer": 0, "clues": [{"p": 0, "t": "dir", "d": "s", "v": 3}, {"p": 1, "t": "dir", "d": "e", "v": 0}, {"p": 2, "t": "room", "v": "D"}, {"p": 3, "t": "dir", "d": "n", "v": 1}, {"p": 4, "t": "dir", "d": "e", "v": 0}, {"p": 0, "t": "onlyon", "v": "haybale"}, {"p": 1, "t": "by", "v": "table"}, {"p": 2, "t": "dir", "d": "n", "v": 1}, {"p": 3, "t": "alone"}, {"p": 3, "t": "dir", "d": "o", "v": 0}, {"p": 4, "t": "dir", "d": "s", "v": 3}]}, {"id": "headless-scarecrow", "title": "Lo spaventapasseri senza testa", "titleHu": "A fej nélküli madárijesztő", "flav": "Lo spaventapasseri della fiera ha perso la testa... e gli snack hanno perso la scatola!", "flavHu": "A vásár madárijesztője elvesztette a fejét... a nasi pedig a dobozát!", "size": 7, "grid": ["PPPMMMM", "PPPMMMM", "PPPBBBB", "SSSBBBB", "SSSWWWW", "GGGWWWW", "GGGTTTT"], "rooms": {"P": {"it": "PumpkinPatch", "itIn": "nel campo di zucche", "hu": "tökföld", "huIn": "a tökföldön"}, "M": {"it": "CornMaze", "itIn": "nel labirinto di granturco", "hu": "kukoricalabirintus", "huIn": "a kukoricalabirintusban"}, "B": {"it": "Barn", "itIn": "nel fienile", "hu": "csűr", "huIn": "a csűrben"}, "S": {"it": "Stables", "itIn": "nelle scuderie", "hu": "istálló", "huIn": "az istállóban"}, "W": {"it": "Well", "itIn": "al pozzo", "hu": "kút", "huIn": "a kútnál"}, "G": {"it": "Graveyard", "itIn": "nel cimitero", "hu": "temető", "huIn": "a temetőben"}, "T": {"it": "Gate", "itIn": "al cancello", "hu": "kapu", "huIn": "a kapunál"}}, "objs": {"0,1": "haybale", "1,1": "plant", "0,4": "cauldron", "1,5": "table", "2,0": "plant", "2,3": "bench", "3,0": "haybale", "3,4": "rug", "2,6": "shelf", "4,1": "bench", "4,4": "clock", "5,0": "plant", "5,5": "rug", "6,1": "armor", "6,4": "rocker", "3,6": "table"}, "people": [["Scooby-Doo", "m"], ["Shaggy Rogers", "m"], ["Fred Jones", "m"], ["Daphne Blake", "f"], ["Velma Dinkley", "f"], ["Groundskeeper Gus", "m"], ["Scooby Snacks", "f"]], "level": 4, "solution": [[5, 6], [6, 5], [1, 3], [2, 1], [3, 4], [4, 2], [0, 0]], "killer": 3, "clues": [{"p": 0, "t": "dir", "d": "e", "v": 3}, {"p": 1, "t": "notroom", "v": "M"}, {"p": 2, "t": "dir", "d": "n", "v": 1}, {"p": 3, "t": "dir", "d": "o", "v": 4}, {"p": 4, "t": "on", "v": "rug"}, {"p": 5, "t": "dir", "d": "s", "v": 4}, {"p": 0, "t": "dir", "d": "s", "v": 5}, {"p": 1, "t": "dir", "d": "o", "v": 0}, {"p": 1, "t": "dir", "d": "e", "v": 2}, {"p": 2, "t": "row", "v": 1}, {"p": 3, "t": "by", "v": "plant"}, {"p": 3, "t": "dir", "d": "o", "v": 5}, {"p": 4, "t": "onlyon", "v": "rug"}, {"p": 4, "t": "alone"}, {"p": 5, "t": "dir", "d": "n", "v": 1}]}, {"id": "ballroom-howl", "title": "L'ululato nella sala da ballo", "titleHu": "Üvöltés a bálteremben", "flav": "Un ululato gelido riempie la sala da ballo durante il ballo in maschera. Gli snack: spariti!", "flavHu": "Jéghideg üvöltés tölti be a báltermet a jelmezbál alatt. A nasi: eltűnt!", "size": 7, "grid": ["BBBDDDD", "BBBDDDD", "BBKKKKK", "MMMKKKK", "MMMFFFF", "CCCFFFF", "CCCLLLL"], "rooms": {"B": {"it": "Ballroom", "itIn": "nella sala da ballo", "hu": "bálterem", "huIn": "a bálteremben"}, "D": {"it": "DiningRoom", "itIn": "nella sala da pranzo", "hu": "ebédlő", "huIn": "az ebédlőben"}, "K": {"it": "Kitchen", "itIn": "in cucina", "hu": "konyha", "huIn": "a konyhában"}, "M": {"it": "MusicRoom", "itIn": "nella sala musica", "hu": "zeneszoba", "huIn": "a zeneszobában"}, "F": {"it": "Foyer", "itIn": "nell'atrio", "hu": "előszoba", "huIn": "az előszobában"}, "C": {"it": "Corridor", "itIn": "nel corridoio", "hu": "folyosó", "huIn": "a folyosón"}, "L": {"it": "Library", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}}, "objs": {"0,1": "clock", "1,1": "rug", "0,4": "table", "1,5": "plant", "2,0": "piano", "2,4": "table", "3,1": "armchair", "3,5": "chair", "4,0": "sofa", "4,4": "armor", "5,1": "rug", "5,5": "shelf", "6,0": "chair", "6,3": "shelf", "6,5": "desk", "2,6": "cauldron"}, "people": [["Fred Jones", "m"], ["Daphne Blake", "f"], ["Velma Dinkley", "f"], ["Madame Zora", "f"], ["Widow Ravenna", "f"], ["Groundskeeper Gus", "m"], ["Scooby Snacks", "f"]], "level": 4, "solution": [[6, 0], [2, 1], [1, 4], [0, 6], [4, 3], [3, 5], [5, 2]], "killer": 0, "clues": [{"p": 0, "t": "on", "v": "chair"}, {"p": 1, "t": "dir", "d": "o", "v": 2}, {"p": 2, "t": "dir", "d": "n", "v": 1}, {"p": 3, "t": "dir", "d": "e", "v": 0}, {"p": 4, "t": "notroom", "v": "D"}, {"p": 5, "t": "dir", "d": "e", "v": 1}, {"p": 1, "t": "alone"}, {"p": 2, "t": "dir", "d": "o", "v": 3}, {"p": 4, "t": "by", "v": "armor"}, {"p": 5, "t": "on", "v": "chair"}, {"p": 5, "t": "alone"}]}, {"id": "last-scooby-snack", "title": "L'ultimo Scooby Snack", "titleHu": "Az utolsó Scooby Snack", "flav": "È rimasto un solo Scooby Snack... ed è sparito anche quello! Il gran finale di Halloween.", "flavHu": "Csak egyetlen Scooby Snack maradt... és az is eltűnt! A halloweeni nagy finálé.", "size": 7, "grid": ["FFFLLLL", "FFFLLLL", "CCCLLLL", "CCCTTTT", "GGCTTTT", "GGGMMMM", "GGGOOOO"], "rooms": {"F": {"it": "Foyer", "itIn": "nell'atrio", "hu": "előszoba", "huIn": "az előszobában"}, "L": {"it": "Library", "itIn": "in biblioteca", "hu": "könyvtár", "huIn": "a könyvtárban"}, "C": {"it": "Cellar", "itIn": "in cantina", "hu": "pince", "huIn": "a pincében"}, "T": {"it": "Tower", "itIn": "sulla torre", "hu": "torony", "huIn": "a toronyban"}, "G": {"it": "Graveyard", "itIn": "nel cimitero", "hu": "temető", "huIn": "a temetőben"}, "M": {"it": "CornMaze", "itIn": "nel labirinto di granturco", "hu": "kukoricalabirintus", "huIn": "a kukoricalabirintusban"}, "O": {"it": "FortuneTent", "itIn": "nella tenda della veggente", "hu": "jósdasátor", "huIn": "a jósdasátorban"}}, "objs": {"0,1": "armor", "1,1": "rug", "0,4": "shelf", "1,5": "shelf", "2,0": "cauldron", "2,3": "armchair", "3,1": "coffin", "3,4": "clock", "4,0": "plant", "4,4": "desk", "5,1": "table", "5,5": "haybale", "6,0": "bench", "6,3": "rug", "6,5": "table", "2,6": "piano"}, "people": [["Scooby-Doo", "m"], ["Shaggy Rogers", "m"], ["Fred Jones", "m"], ["Daphne Blake", "f"], ["Velma Dinkley", "f"], ["Widow Ravenna", "f"], ["Scooby Snacks", "f"]], "level": 4, "solution": [[1, 1], [4, 6], [3, 2], [2, 4], [6, 3], [5, 5], [0, 0]], "killer": 0, "clues": [{"p": 0, "t": "on", "v": "rug"}, {"p": 1, "t": "dir", "d": "s", "v": 3}, {"p": 2, "t": "dir", "d": "s", "v": 0}, {"p": 3, "t": "notroom", "v": "T"}, {"p": 4, "t": "dir", "d": "s", "v": 5}, {"p": 5, "t": "notroom", "v": "O"}, {"p": 0, "t": "dir", "d": "o", "v": 2}, {"p": 1, "t": "dir", "d": "s", "v": 2}, {"p": 2, "t": "alone"}, {"p": 2, "t": "dir", "d": "o", "v": 3}, {"p": 4, "t": "on", "v": "rug"}, {"p": 5, "t": "onlyon", "v": "haybale"}]}];
+const STYLES=[{"id": "giallo", "path": "giallo/", "name": "Giallo a Quadretti", "short": "Giallo", "tagline": {"en": "Italian riso-printed detective zine · 16 cases", "hu": "Olasz rizó-nyomatos detektívfüzet · 16 eset"}, "themeColor": "#FFE14D"}, {"id": "rejto", "path": "rejto/", "name": "Rejtő a Quadretti", "short": "Rejtő", "tagline": {"en": "Rejtő Jenő’s 1930s world · 5 fan cases", "hu": "Rejtő Jenő világa · 5 rajongói eset"}, "themeColor": "#D9A441"}, {"id": "yamada", "path": "yamada/", "name": "Yamada a Quadretti", "short": "Yamada", "tagline": {"en": "Cozy guild mysteries · 8 fan cases", "hu": "Csokinyuszis céhrejtélyek · 8 rajongói eset"}, "themeColor": "#FF8FB2"}, {"id": "scooby", "path": "scooby/", "name": "Scooby a Quadretti", "short": "Scooby", "tagline": {"en": "Spooky-sweet Halloween mysteries · 12 fan cases", "hu": "Spooky Hollow-i halloweeni rejtélyek · 12 rajongói eset"}, "themeColor": "#e8721c"}];
+const PORTRAITS={"Scooby-Doo": {"full": "portraits/full/scooby.webp", "head": "portraits/head/scooby.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Shaggy Rogers": {"full": "portraits/full/shaggy.webp", "head": "portraits/head/shaggy.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Fred Jones": {"full": "portraits/full/fred.webp", "head": "portraits/head/fred.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Daphne Blake": {"full": "portraits/full/daphne.webp", "head": "portraits/head/daphne.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Velma Dinkley": {"full": "portraits/full/velma.webp", "head": "portraits/head/velma.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Madame Zora": {"full": "portraits/full/zora.webp", "head": "portraits/head/zora.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Groundskeeper Gus": {"full": "portraits/full/gus.webp", "head": "portraits/head/gus.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Widow Ravenna": {"full": "portraits/full/ravenna.webp", "head": "portraits/head/ravenna.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}, "Scooby Snacks": {"full": "portraits/full/snacks.webp", "head": "portraits/head/snacks.webp", "credit": "AI-generated original cartoon design; spooky-sweet Halloween cast"}};</script>
+<script>const A = window.GQArt;
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const huArt=w=>/^[aeiouáéíóöőúüű]/i.test(w)?'az':'a';
+const plain=s=>String(s).replace(/[⟦⟧]/g,'');
+const fill=(s,v)=>String(s).replace(/\{(\w)\}/g,(m,k)=>v[k]!=null?v[k]:m);
+function lookOf(name,i){ return LOOKS[name] || (typeof FALLBACK_LOOK!=='undefined'?FALLBACK_LOOK:[i%6,'short','d',[],'blue','smile']); }
+const shortName=nm=> (typeof SHORT_NAMES!=='undefined'&&SHORT_NAMES[nm])||nm.split(' ').slice(-1)[0];
+
+/* Site root from the pack path, so style links work at /giallo/, /rejto/ and previews. */
+const ROOT_PATH=(()=>{ let p=location.pathname; if(p.endsWith('/index.html')) p=p.slice(0,-'index.html'.length); if(PACK.path&&p.endsWith(PACK.path)) p=p.slice(0,-PACK.path.length); if(!p.endsWith('/')) p+='/'; return p; })();
+const NET_PARAM=(()=>{ try{ return new URLSearchParams(location.search).get('net'); }catch(e){ return null; } })();
+/* Explicit index.html: static hosts without directory-index resolution 404 on bare folder links. */
+const chooserHref=ROOT_PATH+'index.html?choose=1'+(NET_PARAM?'&net='+encodeURIComponent(NET_PARAM):'');
+const styleHref=s=>ROOT_PATH+((s&&s.path)||'')+'index.html';
+const globalStore={get(k,d){try{const v=localStorage.getItem('gq:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+                   set(k,v){try{localStorage.setItem('gq:'+k,JSON.stringify(v))}catch(e){}}};
+
+/* Keep progress, settings and rooms separate when several style packs share an origin. */
+const STORE_NS=PACK.id==='giallo'?'':PACK.id+':';
+const NET_NS=PACK.id==='giallo'?'':PACK.id+'-';
+const roomChannel=code=>'gq-'+NET_NS+code;
+const store={get(k,d){try{const v=localStorage.getItem('gq:'+STORE_NS+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+             set(k,v){try{localStorage.setItem('gq:'+STORE_NS+k,JSON.stringify(v))}catch(e){}}};
+let LANG=store.get('lang',PACK.defaultLang||'it'); if(!LANGS[LANG]) LANG=(PACK.defaultLang&&LANGS[PACK.defaultLang])?PACK.defaultLang:'it';
+const T=k=>{ const p=(typeof PACK_UI!=='undefined')&&PACK_UI[LANG]; return p&&p[k]!=null?p[k]:UI[LANG][k]; };
+/* Packs can soften the murder framing (e.g. kid-friendly "hidden plushie" cases)
+   by overriding Hungarian helper lines via a PACK_HU global in their hu.js. */
+const huTxt=(k,d)=> (typeof PACK_HU!=='undefined'&&PACK_HU&&PACK_HU[k]!=null)?PACK_HU[k]:d;
+
+/* ---------- speech ---------- */
+const canSpeak = typeof window!=='undefined' && 'speechSynthesis' in window;
+function voiceFor(code){ try{ const vs=speechSynthesis.getVoices(), p=code.slice(0,2); return vs.find(v=>v.lang===code)||vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(p))||null; }catch(e){ return null; } }
+if(canSpeak){ try{speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged=()=>{}}catch(e){} }
+function say(text){ if(!canSpeak) return; try{ speechSynthesis.cancel(); const code=LANGS[LANG].voice; const u=new SpeechSynthesisUtterance(plain(text)); u.lang=code; const v=voiceFor(code); if(v) u.voice=v; u.rate=.85; speechSynthesis.speak(u);}catch(e){} }
+
+/* ---------- text ---------- */
+const caseTitle=cs=> (S.huAll&&cs.titleHu)?cs.titleHu:(LANG==='it'?cs.title:CASEL[cs.id][LANG][0]);
+const caseFlav=cs=> (S.huAll&&cs.titleHu&&cs.flavHu)?cs.flavHu:(LANG==='it'?cs.flav:CASEL[cs.id][LANG][1]);
+const roomName=(cs,k)=> ROOMS[cs.rooms[k].it][LANG][0];
+function clueStr(cs,cl,lang){
+  lang=lang||LANG; const N=cs.size, g=cs.people[cl.p][1], who=i=>cs.people[i][0], a={};
+  if(cl.t==='room'||cl.t==='notroom') a.inr=ROOMS[cs.rooms[cl.v].it][lang][1];
+  if(cl.t==='on'||cl.t==='onlyon'||cl.t==='by'){ a.o=cl.v; a.on=OBJL[lang][cl.v][1]; }
+  if(cl.t==='row'||cl.t==='col'){ a.last=cl.v===N-1; a.ord=ORD[lang].f[cl.v]; }
+  if(cl.t==='with'||cl.t==='dir'){ a.who=who(cl.v); a.d=cl.d; }
+  return CLUE[lang](cl.t,g,a);
+}
+/* Packs can replace the victim's clue line per language via PACK_UI[lang].clueVictim
+   (string or function), e.g. for a kid-friendly premise. */
+const victimStr=(cs,lang)=>{ lang=lang||LANG; const p=(typeof PACK_UI!=='undefined')&&PACK_UI[lang];
+  if(p&&p.clueVictim!=null) return typeof p.clueVictim==='function'?p.clueVictim(cs):p.clueVictim;
+  return CLUE[lang]('victim',cs.people[cs.people.length-1][1],{}); };
+function huStr(cs,cl){
+  const N=cs.size, R=cs.rooms, name=i=>cs.people[i][0];
+  const ord=v=> v===N-1 ? 'az ⟦utolsó' : huArt(ORD_HU[v])+' ⟦'+ORD_HU[v];
+  switch(cl.t){
+    case 'room': return '⟦'+cap(R[cl.v].huIn)+'⟧ volt.';
+    case 'notroom': return `⟦Nem⟧ ${R[cl.v].huIn} volt.`;
+    case 'on': return cap(HU_ON[cl.v])+'.';
+    case 'onlyon': return `Ő volt az ⟦egyetlen⟧, aki ${HU_ON[cl.v]}.`;
+    case 'by': return cap(HU_BY[cl.v])+' ⟦mellett⟧ volt.';
+    case 'row': return cap(ord(cl.v))+' sorban⟧ volt.';
+    case 'col': return cap(ord(cl.v))+' oszlopban⟧ volt.';
+    case 'corner': return 'A rács egyik ⟦sarkában⟧ volt.';
+    case 'alone': return '⟦Egyedül⟧ volt a szobában.';
+    case 'with': return `⟦Ugyanabban a szobában⟧ volt, mint ${name(cl.v)}.`;
+    case 'dir': return `⟦${{n:'Északabbra',s:'Délebbre',e:'Keletebbre',o:'Nyugatabbra'}[cl.d]}⟧ volt, mint ${name(cl.v)}.`;
+  } return '';
+}
+
+/* ---------- network (co-op) ---------- */
+function makeNet(){
+  let q=null; try{ q=new URLSearchParams(location.search).get('net'); }catch(e){}
+  if(q==='local' && 'BroadcastChannel' in window) return localNet();
+  const cfg=window.GQ_CONFIG||{};
+  if(cfg.supabaseUrl && cfg.supabaseKey && window.supabase && window.supabase.createClient) return supaNet(cfg);
+  return null;
+}
+function supaNet(cfg){
+  const client=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseKey,{realtime:{params:{eventsPerSecond:20}}});
+  return { join(code,me,h){
+    const ch=client.channel(roomChannel(code),{config:{broadcast:{self:false},presence:{key:me.id}}});
+    ch.on('broadcast',{event:'m'},({payload})=>h.onMsg(payload));
+    ch.on('presence',{event:'sync'},()=>{ const st=ch.presenceState(), list=[]; for(const k in st){ const m=st[k]&&st[k][0]; if(m&&m.id) list.push({id:m.id,name:m.name,lang:m.lang,joined:m.joined}); } h.onPeers(list); });
+    ch.subscribe(async status=>{ if(status==='SUBSCRIBED'){ try{ await ch.track(me); }catch(e){} h.onReady(); } else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT') h.onError(status); });
+    return { send:m=>{ try{ ch.send({type:'broadcast',event:'m',payload:m}); }catch(e){} }, update:me2=>{ try{ ch.track(me2); }catch(e){} }, leave:()=>{ try{ ch.untrack(); client.removeChannel(ch); }catch(e){} } };
+  } };
+}
+function localNet(){
+  return { join(code,me,h){
+    const bc=new BroadcastChannel(roomChannel(code)); let self=me; const seen={};
+    const peers=()=>{ const now=Date.now(); const l=[self]; for(const id in seen){ if(now-seen[id].t<4000) l.push(seen[id].m); } h.onPeers(l); };
+    bc.onmessage=e=>{ const m=e.data; if(m&&m.__pres){ const known=!!seen[m.me.id]; seen[m.me.id]={m:m.me,t:Date.now()}; if(!known) peers(); return; } if(m&&m.__bye){ delete seen[m.id]; peers(); return; } h.onMsg(m); };
+    const beat=()=>bc.postMessage({__pres:1,me:self});
+    const iv=setInterval(()=>{ beat(); peers(); },1000);
+    setTimeout(()=>{ beat(); peers(); h.onReady(); },50);
+    return { send:m=>bc.postMessage(m), update:m2=>{ self=m2; beat(); peers(); }, leave:()=>{ clearInterval(iv); bc.postMessage({__bye:1,id:self.id}); bc.close(); } };
+  } };
+}
+const NET=makeNet();
+
+/* ---------- state ---------- */
+const S={view:'hub', cs:null, idx:0, place:{}, marks:new Set(), tool:0, t0:0, elapsed:0, hints:0, phase:'play', msg:null,
+         huAll:store.get('huAll',!!PACK.huHelperDefault), solved:store.get('solved',{}), openHu:new Set(), tip:0, coop:null, winShown:false,
+         hist:[], focus:null, frozen:false};
+let timerId=null;
+const isPhone=()=>{ try{ return matchMedia('(max-width:700px)').matches; }catch(e){ return false; } };
+let PH=isPhone();
+try{ matchMedia('(max-width:700px)').addEventListener('change',()=>{ PH=isPhone(); render(); }); }catch(e){}
+
+/* solo */
+function startCase(i){
+  const cs=CASES[i]; S.view='case'; S.cs=cs; S.idx=i;
+  const saved=store.get('prog:'+cs.id,null);
+  S.place=saved?saved.place:{}; S.marks=new Set(saved?saved.marks:[]); S.hints=saved?saved.hints:0;
+  S.elapsed=saved?saved.elapsed:0; S.t0=Date.now(); S.tool=0; S.phase='play'; S.msg=null; S.openHu=new Set(); S.tip=0; S.winShown=false; S.hist=[]; S.focus=null; S.frozen=false;
+  startTimer(); try{ if(!S.coop) location.hash=cs.id; }catch(e){}
+  render(); window.scrollTo(0,0);
+}
+function startTimer(){ clearInterval(timerId); timerId=setInterval(tick,1000); }
+function saveProg(){ if(S.coop||!S.cs||S.phase==='done') return; store.set('prog:'+S.cs.id,{place:S.place,marks:[...S.marks],hints:S.hints,elapsed:curElapsed()}); }
+function curElapsed(){ if(S.coop){ const st=S.coop.st; if(!st.t0) return 0; const end=(st.phase==='done'&&st.tEnd)?st.tEnd:Date.now(); return Math.floor((end-st.t0)/1000); }
+  return S.elapsed + (S.phase==='done'||S.frozen?0:Math.floor((Date.now()-S.t0)/1000)); }
+function fmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function tick(){ const el=document.getElementById('timer'); if(el) el.textContent=fmt(curElapsed()); }
+function siteStyleId(){ try{ const v=localStorage.getItem('gq:style'); return (v&&STYLES.some(s=>s.id===v))?v:null; }catch(e){ return null; } }
+function goHub(){
+  const wasCoop=!!S.coop;
+  saveProg(); clearInterval(timerId); if(S.coop) leaveRoom();
+  const target=wasCoop?siteStyleId():null;
+  if(target&&target!==PACK.id){ const s=STYLES.find(x=>x.id===target); if(s){ location.href=styleHref(s); return; } }
+  S.view='hub'; S.cs=null; try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}; render(); window.scrollTo(0,0);
+}
+
+/* ---------- co-op ---------- */
+const CODE_ABC='ABCDEFGHJKLMNPQRSTUVWXYZ';
+function newCode(){ let s=''; for(let i=0;i<4;i++) s+=CODE_ABC[Math.floor(Math.random()*CODE_ABC.length)]; return s; }
+function myId(){ let id=globalStore.get('pid',null); if(!id){ id='p'+Math.random().toString(36).slice(2,10); globalStore.set('pid',id); } return id; }
+function emptySt(){ return {v:0,by:'',caseId:null,place:{},marks:[],shared:[],owners:[],phase:'lobby',t0:0,tEnd:0,hints:0,lam:0,pc:{},mc:{}}; }
+function joinRoom(code,name){
+  if(!NET) return;
+  code=code.toUpperCase().replace(/[^A-Z]/g,'').slice(0,4); if(code.length!==4) return;
+  name=(name||'').trim().slice(0,16)||'Detective'; globalStore.set('name',name);
+  const me={id:myId()+'-'+Math.random().toString(36).slice(2,5),name,lang:LANG,joined:Date.now()};
+  S.coop={code,me,peers:[me],st:emptySt(),ready:false,link:null};
+  S.view='lobby'; render();
+  S.coop.link=NET.join(code,me,{
+    onReady(){ if(!S.coop) return; S.coop.ready=true; S.coop.link.send({t:'hello',from:me.id}); render(); },
+    onError(){ if(!S.coop) return; S.coop.error=true; render(); },
+    onPeers(list){ if(!S.coop) return; const seen={}; const ps=list.filter(p=>p&&p.id&&!seen[p.id]&&(seen[p.id]=1)).sort((a,b)=>(a.joined-b.joined)||(a.id<b.id?-1:1));
+      const sig=ps.map(p=>p.id+'|'+p.name+'|'+p.lang).join(','); if(sig===S.coop.sig) return; S.coop.sig=sig; S.coop.peers=ps; render();
+      if(isHost()) setTimeout(ensureOwners,0); },
+    onMsg(m){ if(!S.coop||!m) return;
+      if(m.t==='hello'){ if(S.coop.st.v>0) S.coop.link.send({t:'state',st:S.coop.st}); }
+      else if(m.t==='state') mergeSt(m.st);
+      else if(m.t==='toast') toast(m.txt);
+    }
+  });
+  try{ history.replaceState(null,'',location.pathname+location.search+'#r-'+code); }catch(e){}
+}
+function leaveRoom(){ if(S.coop&&S.coop.link) S.coop.link.leave(); S.coop=null; }
+const newerStamp=(a,b)=>!b||(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1]));
+function mergeSt(inc){
+  const cur=S.coop.st; if(!inc||typeof inc.v!=='number') return;
+  const scalarNewer=inc.v>cur.v||(inc.v===cur.v&&inc.by>cur.by);
+  // A different case is a full reset, not a merge.
+  if(inc.caseId!==cur.caseId && inc.caseId && (!cur.caseId||inc.v>=cur.v)){
+    const before=new Set(cur.shared||[]);
+    S.coop.st=JSON.parse(JSON.stringify(inc)); applySt();
+    (inc.shared||[]).forEach(i=>{ if(!before.has(i)&&S.cs){ const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+    return;
+  }
+  const beforeShared=new Set(cur.shared||[]);
+  const st=JSON.parse(JSON.stringify(cur));
+  st.lam=Math.max(cur.lam||0,inc.lam||0);
+  // placements: last writer per person wins
+  const pc={...(cur.pc||{})}, incPc=inc.pc||{}, place={...(cur.place||{})};
+  for(const i of new Set([...Object.keys(pc),...Object.keys(incPc)])){
+    if(!incPc[i]||!newerStamp(incPc[i],pc[i])) continue;
+    pc[i]=incPc[i];
+    if(inc.place&&inc.place[i]) place[i]=inc.place[i]; else delete place[i];
+  }
+  st.pc=pc; st.place=place;
+  // ✕ notes: last writer per cell wins
+  const mc={...(cur.mc||{})}, incMc=inc.mc||{}, marks=new Set(cur.marks||[]);
+  for(const k of new Set([...Object.keys(mc),...Object.keys(incMc)])){
+    if(!incMc[k]||!newerStamp(incMc[k],mc[k])) continue;
+    mc[k]=incMc[k];
+    if((inc.marks||[]).includes(k)) marks.add(k); else marks.delete(k);
+  }
+  st.mc=mc; st.marks=[...marks];
+  // sharing is permanent: union both sides
+  st.shared=[...new Set([...(cur.shared||[]),...(inc.shared||[])])];
+  if(scalarNewer){
+    st.phase=inc.phase; st.hints=inc.hints; st.t0=inc.t0; st.tEnd=inc.tEnd;
+    if(inc.owners&&inc.owners.length) st.owners=inc.owners;
+    st.v=inc.v; st.by=inc.by;
+  }
+  S.coop.st=st; applySt();
+  st.shared.forEach(i=>{ if(!beforeShared.has(i)&&inc.by!==S.coop.me.id&&S.cs){
+    const sh=S.coop.peers.find(p=>p.id===inc.by); toast(fill(T('sharedBy'),{n:sh?sh.name:'?'})+': '+S.cs.people[i][0]); } });
+}
+function commit(mut){
+  const c=S.coop, old=c.st, st=JSON.parse(JSON.stringify(old));
+  mut(st);
+  const L=(old.lam||0)+1, by=c.me.id;
+  st.lam=L;
+  // stamp only what this move actually changed, so parallel moves can merge
+  const op=(old.place||{}), np=(st.place||{}), pc={...(old.pc||{})};
+  for(const i of new Set([...Object.keys(op),...Object.keys(np)])){
+    const a=op[i], b=np[i];
+    if((!a)!==(!b)||(a&&b&&(a[0]!==b[0]||a[1]!==b[1]))) pc[i]=[L,by];
+  }
+  const om=new Set(old.marks||[]), nm=new Set(st.marks||[]), mc={...(old.mc||{})};
+  for(const k of new Set([...om,...nm])) if(om.has(k)!==nm.has(k)) mc[k]=[L,by];
+  st.pc=pc; st.mc=mc;
+  if(st.caseId!==old.caseId){ st.pc={}; st.mc={}; }
+  st.v=old.v+1; st.by=by;
+  c.st=st; c.link.send({t:'state',st}); applySt();
+}
+function applySt(){
+  const st=S.coop.st;
+  if(st.caseId){ const i=CASES.findIndex(c=>c.id===st.caseId); if(i<0) return;
+    if(!S.cs||S.cs.id!==st.caseId){ S.cs=CASES[i]; S.idx=i; S.tool=0; S.openHu=new Set(); S.winShown=false; S.msg=null; startTimer(); window.scrollTo(0,0); }
+    S.view='case'; S.place=st.place; S.marks=new Set(st.marks); S.phase=st.phase; S.hints=st.hints;
+    if(st.phase==='done'&&!S.winShown){ S.winShown=true; render(); showWin(curElapsed()); return; }
+  } else { S.view='lobby'; S.cs=null; }
+  render();
+}
+const players=()=>S.coop?S.coop.peers:[];
+const isHost=()=>S.coop&&players()[0]&&players()[0].id===S.coop.me.id;
+function holderOf(i){
+  const ps=players(), owners=S.coop&&S.coop.st.owners;
+  if(!owners||!owners[i]) return null;
+  return ps.find(p=>p.id===owners[i])||null;
+}
+function assignOwners(n){ const ps=players(), out=[]; for(let i=0;i<n;i++) out.push(ps.length?ps[i%ps.length].id:null); return out; }
+// Keep every suspect's clue with a present player, even after somebody joins or leaves.
+function ensureOwners(){
+  const c=S.coop; if(!c||!isHost()||!c.st.caseId||!S.cs) return;
+  const ps=players(); if(!ps.length) return;
+  const P=S.cs.people.length-1;
+  const owners=(c.st.owners||[]).slice(0,P);
+  while(owners.length<P) owners.push(null);
+  const ids=new Set(ps.map(p=>p.id));
+  let changed=false;
+  const count=()=>{ const m={}; for(const o of owners) if(o) m[o]=(m[o]||0)+1; return m; };
+  for(let i=0;i<P;i++) if(!owners[i]||!ids.has(owners[i])){ owners[i]=null; changed=true; }
+  for(let i=0;i<P;i++) if(!owners[i]){
+    const m=count(); let best=ps[0];
+    for(const p of ps) if((m[p.id]||0)<(m[best.id]||0)) best=p;
+    owners[i]=best.id; changed=true;
+  }
+  // a player who joins mid-case should still have something to read
+  for(const p of ps){
+    if(count()[p.id]) continue;
+    const donors=ps.filter(q=>q.id!==p.id&&(count()[q.id]||0)>1).sort((a,b)=>count()[b.id]-count()[a.id]);
+    if(!donors.length) break;
+    const d=donors[0];
+    let idx=-1;
+    for(let i=0;i<P;i++) if(owners[i]===d.id&&!c.st.shared.includes(i)){ idx=i; break; }
+    if(idx<0) for(let i=P-1;i>=0;i--) if(owners[i]===d.id){ idx=i; break; }
+    if(idx>=0){ owners[idx]=p.id; changed=true; toast(fill(T('clueMoved'),{n:p.name})); }
+  }
+  if(changed) commit(st=>{ st.owners=owners; });
+}
+function canSee(i){ if(!S.coop) return true; const cs=S.cs; if(i===cs.people.length-1) return true;
+  if(S.coop.st.shared.includes(i)) return true; const h=holderOf(i); return !h||h.id===S.coop.me.id; }
+function chooseCase(i){ commit(st=>{ st.caseId=CASES[i].id; st.place={}; st.marks=[]; st.shared=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0;
+  st.owners=assignOwners(CASES[i].people.length-1); }); }
+function shareClue(i){ commit(st=>{ if(!st.shared.includes(i)) st.shared.push(i); }); }
+
+/* ---------- moves (solo or co-op) ---------- */
+function setBoard(place,marks,extra){
+  if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; if(extra) extra(st); });
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); if(S.hist.length>200) S.hist.shift();
+    S.place=place; S.marks=marks; saveProg(); render(); }
+}
+function onCell(r,c,longpress){
+  const cs=S.cs; if(S.phase!=='play') return;
+  const key=r+','+c, o=cs.objs[key];
+  const place={...S.place}, marks=new Set(S.marks);
+  const occupant=Object.keys(place).find(i=>place[i][0]===r&&place[i][1]===c);
+  if(S.tool==='x'||longpress){
+    if(occupant!=null && !longpress) delete place[occupant];
+    else if(occupant==null){ if(marks.has(key)) marks.delete(key); else marks.add(key); }
+  } else {
+    if(o && !OBJ[o].occ){ flash(T('blocked')+' ('+plain(OBJL[LANG][o][0])+')',`Erre a mezőre nem lehet állni (${OBJ[o].hu}).`,'bad'); return; }
+    const t=S.tool;
+    if(occupant!=null && String(occupant)===String(t)) delete place[t];
+    else { if(occupant!=null) delete place[occupant]; place[t]=[r,c]; marks.delete(key);
+      const next=cs.people.map((_,i)=>i).find(i=>place[i]==null); if(next!=null) S.tool=next; }
+  }
+  S.msg=null; setBoard(place,marks);
+}
+function flash(it,hu,kind){ S.msg={it,hu,kind}; render(); }
+function conflicts(){
+  const bad=new Set(); const ents=Object.entries(S.place);
+  for(let a=0;a<ents.length;a++)for(let b=a+1;b<ents.length;b++){ const [ra,ca]=ents[a][1],[rb,cb]=ents[b][1]; if(ra===rb||ca===cb){bad.add(ents[a][0]);bad.add(ents[b][0]);} }
+  return bad;
+}
+function check(){
+  const cs=S.cs, P=cs.people.length, placed=Object.keys(S.place).length;
+  if(placed<P){ flash(fill(T('missing'),{k:P-placed}),`Még ${P-placed} embert kell elhelyezni.`,'bad'); return; }
+  if(conflicts().size){ flash(T('clash'),'Két ember ugyanabban a sorban vagy oszlopban van.','bad'); return; }
+  let wrong=0; cs.solution.forEach((p,i)=>{ const q=S.place[i]; if(!q||q[0]!==p[0]||q[1]!==p[1]) wrong++; });
+  if(wrong){ flash(fill(T('wrong'),{k:wrong}),`Majdnem! ${wrong} ember rossz helyen van. Olvasd el újra a nyomokat.`,'bad'); return; }
+  S.msg=null;
+  if(S.coop) commit(st=>{ st.phase='accuse'; }); else { S.phase='accuse'; render(); }
+}
+function hint(){
+  const cs=S.cs; if(S.phase!=='play') return;
+  const order=cs.people.map((_,i)=>i);
+  let target=order.find(i=>S.place[i] && (S.place[i][0]!==cs.solution[i][0]||S.place[i][1]!==cs.solution[i][1]));
+  if(target==null) target=order.find(i=>S.place[i]==null);
+  if(target==null){ check(); return; }
+  const [r,c]=cs.solution[target], place={...S.place}, marks=new Set(S.marks);
+  for(const k of Object.keys(place)) if(place[k][0]===r&&place[k][1]===c) delete place[k];
+  place[target]=[r,c]; marks.delete(r+','+c);
+  const nm=cs.people[target][0];
+  S.msg={it:fill(T('hintMsg'),{n:nm,r:r+1,c:c+1}),hu:`Kis segítség: ${nm} a ${r+1}. sorban, ${c+1}. oszlopban van.`,kind:'good'};
+  if(S.coop) commit(st=>{ st.place=place; st.marks=[...marks]; st.hints=(st.hints||0)+1; });
+  else { S.hist.push({place:{...S.place},marks:[...S.marks],hints:S.hints}); if(S.hist.length>200) S.hist.shift(); S.place=place; S.marks=marks; S.hints++; saveProg(); render(); }
+}
+function undo(){
+  if(S.coop) return;
+  const h=S.hist.pop(); if(!h) return;
+  S.place=h.place; S.marks=new Set(h.marks); S.hints=h.hints; S.msg=null; saveProg(); render();
+}
+function accuse(i){
+  const cs=S.cs;
+  if(i===cs.killer){
+    say(fill(T('solved'),{n:cs.people[i][0]}));
+    if(S.coop){ commit(st=>{ st.phase='done'; st.tEnd=Date.now(); }); return; }
+    const time=curElapsed(); S.phase='done'; S.elapsed=time;
+    const prev=S.solved[cs.id]; if(!prev||time<prev.time) S.solved[cs.id]={time,hints:S.hints};
+    store.set('solved',S.solved); store.set('prog:'+cs.id,null);
+    render(); showWin(time);
+  } else flash(fill(T('nope'),{n:cs.people[i][0]}),fill(huTxt('nope','Nem! {n} nem volt az áldozat szobájában.'),{n:cs.people[i][0]}),'bad');
+}
+function resetCase(){
+  if(S.coop){ commit(st=>{ st.place={}; st.marks=[]; st.phase='play'; st.t0=Date.now(); st.tEnd=0; st.hints=0; }); return; }
+  S.place={}; S.marks=new Set(); S.hints=0; S.elapsed=0; S.t0=Date.now(); S.phase='play'; S.msg=null; S.tool=0; S.hist=[]; store.set('prog:'+S.cs.id,null); render();
+}
+function nextCase(){ const n=(S.idx+1)%CASES.length; if(S.coop){ if(isHost()) chooseCase(n); } else startCase(n); }
+
+/* ---------- dom helpers ---------- */
+const h=(tag,attrs={},...kids)=>{const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==='class')e.className=v;else if(k==='html')e.innerHTML=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==false&&v!=null)e.setAttribute(k,v===true?'':v)}for(const k of kids.flat()){if(k==null||k===false)continue;e.append(k.nodeType?k:document.createTextNode(k))}return e};
+const svgEl=(html,cls,style)=>h('span',{class:cls||'',style:style||'',html});
+function marked(s){ const out=h('span'); String(s).split(/(⟦[^⟧]*⟧)/).forEach(part=>{ if(part.startsWith('⟦')) out.append(h('mark',{},part.slice(1,-1))); else if(part) out.append(part.replace(/[⟦⟧]/g,'')); }); return out; }
+const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor" fill-opacity=".15"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function sayBtn(text,label){ return canSpeak? h('button',{class:'say',title:'🔊','aria-label':label,onclick:e=>{e.stopPropagation();say(text)},html:SPK}) : null; }
+function head(cs,i){ const nm=cs.people[i][0]; return svgEl(A.portrait(lookOf(nm,i),{crop:'head',bg:BGS[i%BGS.length],label:nm}),'hd'); }
+function sticker(cs,i){ const nm=cs.people[i][0]; return svgEl(A.portrait(lookOf(nm,i),{bg:BGS[i%BGS.length],label:nm}),'pic'); }
+let toastT=null;
+function toast(txt){ let el=document.getElementById('toast'); if(el) el.remove(); el=h('div',{class:'toast',id:'toast',role:'status'},txt); document.body.append(el); clearTimeout(toastT); toastT=setTimeout(()=>{ el.remove(); },3200); }
+function langPicker(onPick){
+  return h('div',{class:'langs',role:'group','aria-label':T('lang')},...Object.entries(LANGS).map(([k,v])=>h('button',{'aria-pressed':String(k===LANG),onclick:()=>{ LANG=k; store.set('lang',k); if(S.coop){ S.coop.me={...S.coop.me,lang:k}; S.coop.link&&S.coop.link.update(S.coop.me); } onPick&&onPick(); render(); }},v.name)));
+}
+function topbar(){
+  return h('div',{class:'top'},
+    h('button',{class:'brand',onclick:()=>{ if(S.view!=='hub') goHub(); },'aria-label':PACK.name},
+      h('span',{class:'mark','aria-hidden':'true'},...[0,1,2,3,4,5,6,7,8].map(i=>h('i',{class:i===5?'v':''}))),
+      h('span',{}, h('h1',{},PACK.name), h('small',{},T('tag')+' · '+LANGS[LANG].learn))),
+    h('div',{class:'spacer'}),
+    h('a',{class:'pill style-link',href:chooserHref},'🎨 ',T('styles')),
+    h('button',{class:'pill','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);render()}},'HU ', S.huAll?'✓':'–'));
+}
+
+/* ---------- hub ---------- */
+function renderHub(app){
+  app.append(topbar());
+  const heroNames=Object.keys(LOOKS).slice(0,5);
+  const pick=heroNames.map((n,k)=>[n,[1,2,3,4,0][k]]);
+  const pos=[['4%','2%',-8],['36%','0%',5],['66%','6%',-4],['18%','36%',7],['50%','32%',-6]];
+  const coll=h('div',{class:'collage','aria-hidden':'true'});
+  pick.forEach(([n,b],k)=>{ const [l,t,r]=pos[k]; coll.append(svgEl(A.portrait(lookOf(n,k),{bg:BGS[b],label:n}),'st',`left:${l};top:${t};transform:rotate(${r}deg);animation-delay:${k*70}ms`)); });
+  coll.append(svgEl(A.pigeon({lens:1}),'pg'));
+  coll.append(h('div',{class:'bubble'},T('pigeon')));
+  app.append(h('section',{class:'hero'},
+    h('div',{},
+      h('span',{class:'typ'},fill(T('eyebrow'),{n:CASES.length})),
+      h('h2',{},T('h1a'),h('span',{class:'hl'},T('h1b'))),
+      h('p',{},T('lead')),
+      h('div',{style:'margin-top:16px'},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
+      h('div',{class:'actions'}, h('button',{class:'btn',onclick:()=>{const i=CASES.findIndex(c=>!S.solved[c.id]);startCase(i<0?0:i)}}, Object.keys(S.solved).length?T('cont'):T('start')))),
+    coll));
+
+  app.append(h('div',{class:'section-h'},h('h2',{},T('coop'))));
+  if(!NET){
+    app.append(h('div',{class:'coopbox'},
+      h('div',{},h('h3',{},T('coop')),h('p',{},T('offline')),S.huAll?h('p',{class:'hu'},'A csapatjáték itt most nem érhető el.'):null)));
+  } else {
+    let pre=''; try{ const m=(location.hash||'').match(/^#r-([A-Z]{4})$/); if(m) pre=m[1]; }catch(e){}
+    const nm=h('input',{id:'coop-name',type:'text',maxlength:'16',autocomplete:'nickname',value:globalStore.get('name','')});
+    const cd=h('input',{id:'coop-code',class:'code',type:'text',maxlength:'4',autocapitalize:'characters',autocomplete:'off',placeholder:'ABCD',value:pre});
+    const styleSel=h('select',{id:'coop-style',class:'style-select'},...STYLES.map(s=>h('option',{value:s.id,selected:s.id===PACK.id},s.name)));
+    const createRoom=()=>{
+      const name=nm.value.trim(); globalStore.set('name',name);
+      const sid=styleSel.value;
+      if(sid!==PACK.id){
+        const target=STYLES.find(s=>s.id===sid);
+        if(target){
+          let href=styleHref(target)+'?create=1&name='+encodeURIComponent(name);
+          if(NET_PARAM) href+='&net='+encodeURIComponent(NET_PARAM);
+          location.href=href; return;
+        }
+      }
+      joinRoom(newCode(),name);
+    };
+    app.append(h('div',{class:'coopbox'},
+      h('div',{},h('h3',{},T('coop')),h('p',{},T('coopLead')),S.huAll?h('p',{class:'hu'},'Mindenki csak néhány nyomot lát, a saját tanult nyelvén. Olvassátok fel, osszátok meg, és oldjátok meg együtt!'):null),
+      h('div',{},
+        h('div',{class:'field'},h('label',{for:'coop-name'},T('yourName')),nm),
+        h('div',{class:'field'},h('label',{for:'coop-style'},T('roomStyle')),styleSel),
+        h('button',{class:'btn',style:'width:100%;margin-bottom:12px',onclick:createRoom},T('create')),
+        h('div',{class:'row2'},h('div',{class:'field'},h('label',{for:'coop-code'},T('code')),cd),h('button',{class:'btn ghost',onclick:()=>joinRoom(cd.value,nm.value)},T('join'))))));
+  }
+
+  app.append(h('div',{class:'section-h'},h('h2',{},T('cases')),S.huAll?h('span',{class:'hu'},'Az ügyek'):null));
+  app.append(caseGrid(i=>startCase(i)));
+  const solvedCases=CASES.filter(c=>S.solved[c.id]);
+  if(solvedCases.length){
+    app.append(h('div',{class:'section-h'},h('h2',{},T('notebook')),S.huAll?h('span',{class:'hu'},'A taccuinód'):null));
+    app.append(h('div',{class:'reviews'},...solvedCases.map(cs=>h('button',{class:'reviewchip',onclick:()=>showReview(cs)},
+      h('b',{},caseTitle(cs)),h('small',{},T('time')+' '+fmt(S.solved[cs.id].time)+(S.solved[cs.id].hints?` · ${T('hints')} ${S.solved[cs.id].hints}`:''))))));
+  }
+
+  app.append(h('div',{class:'section-h'},h('h2',{},T('how')),S.huAll?h('span',{class:'hu'},'Szabályok'):null));
+  const objKeys=Object.keys(OBJ), sitKeys=objKeys.filter(k=>OBJ[k].occ), blockKeys=objKeys.filter(k=>!OBJ[k].occ);
+  const icons=[A.object(sitKeys[0]||objKeys[0]),A.object(sitKeys[1]||sitKeys[0]||objKeys[0]),A.object(blockKeys[0]||objKeys[0]),A.pigeon(),A.portrait(lookOf(Object.keys(LOOKS)[0],0),{crop:'head',bg:'pink',label:Object.keys(LOOKS)[0]})];
+  app.append(h('div',{class:'rules'},...T('rules').map((it,k)=>h('div',{class:'rule'},svgEl(icons[k],'ri'),h('p',{},marked(it),' ',sayBtn(it,'')),S.huAll?h('p',{class:'hu'},HU_RULES[k]):null))));
+  const occ=Object.keys(OBJ).filter(k=>OBJ[k].occ), blk=Object.keys(OBJ).filter(k=>!OBJ[k].occ);
+  const oi=k=>h('div',{class:'oi'},svgEl(A.object(k,plain(OBJL[LANG][k][0])),'ic'),plain(OBJL[LANG][k][0]),S.huAll?h('small',{},OBJ[k].hu):null);
+  app.append(h('div',{class:'objs'},
+    h('div',{class:'objbox yes'},h('h4',{},'✓ '+T('yes')),h('div',{class:'ogrid'},...occ.map(oi))),
+    h('div',{class:'objbox no'},h('h4',{},'✕ '+T('no')),h('div',{class:'ogrid'},...blk.map(oi)))));
+  const otherStyle=(STYLES||[]).find(s=>s.id!==PACK.id);
+  app.append(h('footer',{},PACK.name+' · '+Object.values(LANGS).map(l=>l.name).join(' · '),
+    h('a',{class:'sibling',href:chooserHref},' · '+T('styles')),
+    otherStyle?h('a',{class:'sibling',href:styleHref(otherStyle)},' · '+otherStyle.short):null));
+}
+function caseGrid(onPick){
+  const grid=h('div',{class:'cases'});
+  CASES.forEach((cs,i)=>{
+    const sv=S.solved[cs.id];
+    const heads=h('div',{class:'heads','aria-hidden':'true'},...cs.people.slice(0,-1).slice(0,5).map((_,k)=>{const s=h('span');s.append(head(cs,k));return s}));
+    grid.append(h('button',{class:'case',onclick:()=>onPick(i)},
+      h('span',{class:'tape',style:`background-color:${['rgba(255,225,77,.7)','rgba(255,72,176,.5)','rgba(50,85,164,.35)','rgba(0,169,92,.4)'][i%4]}`}),
+      h('span',{class:'typ'},`${T('caso')} ${String(i+1).padStart(2,'0')} · ${cs.size}×${cs.size}`),
+      h('h3',{},caseTitle(cs)), h('span',{class:'flav'},caseFlav(cs)),
+      S.huAll&&!cs.titleHu? h('span',{class:'hu'},cs.flavHu):null, heads,
+      h('span',{class:'meta'}, h('span',{class:'lvl','aria-label':T('levels')[cs.level]},...[1,2,3,4].map(k=>h('b',{class:k<=cs.level?'on':''}))), h('span',{class:'typ'},T('levels')[cs.level]),
+        sv&&!S.coop? h('span',{class:'best'},`✓ ${fmt(sv.time)}`):null),
+      sv&&!S.coop? svgEl(A.stamp(PACK.solvedStamp||'RISOLTO','red'),'stampwrap'):null));
+  });
+  return grid;
+}
+
+/* ---------- lobby ---------- */
+function playerChip(p,k){ const me=S.coop&&p.id===S.coop.me.id;
+  return h('span',{class:'player'},h('span',{class:'av',style:`background:${PCOL[k%PCOL.length]}`},(Array.from(p.name||'?')[0]||'?').toUpperCase()),
+    h('span',{},p.name,me?' ('+T('you')+')':'',k===0?' · '+T('host'):''),h('small',{},(LANGS[p.lang]||LANGS.it).name)); }
+async function shareInvite(){
+  if(!S.coop) return;
+  const url=location.href.split('#')[0]+'#r-'+S.coop.code;
+  try{ await navigator.clipboard.writeText(url); toast(T('copied')); return; }catch(e){}
+  if(navigator.share){ try{ await navigator.share({title:PACK.name,text:T('invite'),url}); return; }catch(e){} }
+  toast(url);
+}
+function renderLobby(app){
+  app.append(topbar());
+  app.append(h('button',{class:'back',onclick:goHub},'← '+T('leave')));
+  const c=S.coop, ps=players(), host=ps[0];
+  app.append(h('div',{class:'lobby'},
+    h('div',{},h('p',{class:'typ',style:'margin:0 0 8px'},T('invite')),
+      h('div',{class:'coderow'},h('span',{class:'bigcode'},c.code),h('button',{class:'btn ghost small',onclick:shareInvite},'🔗 '+T('copyLink'))),
+      h('p',{class:'typ',style:'margin:12px 0 0'},T('roomStyle')+': '+((STYLES.find(s=>s.id===PACK.id)||{}).name||PACK.name))),
+    h('div',{},h('h2',{style:'font-size:1.5rem;margin-bottom:10px'},T('team')),h('div',{class:'players'},...ps.map(playerChip)),
+      !c.ready?h('p',{class:'typ'},c.error?T('offline'):T('connecting')):ps.length<2?h('p',{style:'color:var(--muted)'},T('alone')):null),
+    h('div',{},h('p',{class:'typ',style:'margin:0 0 6px'},T('lang')),langPicker()),
+    isHost()? h('div',{},h('h2',{style:'font-size:1.5rem;margin-bottom:12px'},T('pickCase')),caseGrid(i=>chooseCase(i)))
+            : h('p',{style:'font-size:1.1rem'},fill(T('waitHost'),{n:host?host.name:'…'}))));
+}
+
+/* ---------- case ---------- */
+function roomIndex(cs){ const keys=Object.keys(cs.rooms); return k=>keys.indexOf(k); }
+function suspectCard(cs,i,opts){
+  const P=cs.people.length, victim=P-1, isV=i===victim, nm=cs.people[i][0];
+  const byP=cs.clues.filter(c=>c.p===i);
+  const see=canSee(i), holder=S.coop&&!isV?holderOf(i):null, mine=holder&&holder.id===S.coop.me.id, shared=S.coop&&S.coop.st.shared.includes(i);
+  const open=S.huAll||S.openHu.has(i);
+  const lines=isV?[{it:victimStr(cs),hu:huTxt('victim','Az áldozat. Egyedül volt a gyilkossal.')}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  const card=h('div',{class:'card'+(isV?' victim':'')+(see?'':' locked')+(S.tool===i&&S.phase==='play'?' sel':''),style:opts&&opts.flat?'':`transform:rotate(${[-.8,.6,-.4,.9,-.6,.4,-.9][i%7]}deg)`,'data-i':String(i)},
+    isV?h('span',{class:'vtag'},T('victim')):null,
+    sticker(cs,i),
+    h('div',{class:'nm'},h('b',{},nm),see&&!S.huAll?h('button',{class:'hubtn','aria-pressed':String(open),'aria-label':'HU',onclick:e=>{e.stopPropagation();open?S.openHu.delete(i):S.openHu.add(i);render()}},'HU'):null));
+  if(see){
+    lines.forEach(l=>card.append(h('div',{},h('p',{class:'clue'},marked(l.it),sayBtn(nm+'. '+l.it,nm)),open?h('p',{class:'hu'},marked(l.hu)):null)));
+    if(S.coop&&!isV){ if(mine&&!shared) card.append(h('button',{class:'sharebtn',onclick:e=>{e.stopPropagation();shareClue(i)}},T('share')));
+      else if(mine) card.append(h('span',{class:'mine'},'✓ '+T('yours')));
+      else if(shared) card.append(h('span',{class:'sharedtag'},fill(T('sharedBy'),{n:holder?holder.name:'?'}))); }
+  } else card.append(h('p',{class:'clue'},svgEl(LOCK,'lockic'),h('span',{},fill(T('heldBy'),{n:holder?holder.name:'?'}))));
+  if(S.place[i]) card.append(h('span',{class:'placed'},`✓ R${S.place[i][0]+1} · C${S.place[i][1]+1}`));
+  return card;
+}
+function glossary(cs){
+  const ri=roomIndex(cs), words=[]; const objsHere=[...new Set(Object.values(cs.objs))], G=T('gl');
+  Object.entries(cs.rooms).forEach(([k,r])=>words.push({w:roomName(cs,k),hu:r.hu,ic:h('span',{class:'sw',style:`width:26px;height:26px;background:var(--r${ri(k)})`})}));
+  objsHere.forEach(k=>words.push({w:plain(OBJL[LANG][k][0]),hu:OBJ[k].hu+(OBJ[k].occ?' · ✓':' · ✕'),ic:svgEl(A.object(k),'ic')}));
+  const kw=new Set(cs.clues.map(c=>c.t));
+  [['row','sor','row'],['col','oszlop','col'],['by','mellett','by'],['alone','egyedül','alone'],['only','az egyetlen','onlyon'],['with','ugyanaz a szoba','with'],['dir','É · D · K · Ny','dir'],['corner','sarok','corner'],['not','nem volt','notroom']]
+    .filter(e=>kw.has(e[2])).forEach(([k,hu])=>words.push({w:G[k],hu}));
+  words.push({w:G.victim,hu:huTxt('glVictim','az áldozat')},{w:G.killer,hu:huTxt('glKiller','a gyilkos')});
+  return h('div',{class:'gloss'},...words.map(w=>h('div',{class:'gw'},w.ic||null,h('div',{},h('b',{},w.w),h('p',{class:'hu'},w.hu)),sayBtn(w.w,w.w))));
+}
+let lpTimer=null, lpFired=false;
+function boardEl(cs){
+  const N=cs.size, ri=roomIndex(cs), bad=conflicts();
+  const board=h('div',{class:'board',style:`grid-template-columns:repeat(${N},1fr);grid-template-rows:repeat(${N},1fr)`});
+  const lab={}; for(let r=N-1;r>=0;r--)for(let c=0;c<N;c++){const k=cs.grid[r][c]; if(!lab[k]) lab[k]=r+','+c;}
+  const W='4px solid var(--wall)';
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    const k=cs.grid[r][c], key=r+','+c, o=cs.objs[key];
+    const st=[`background:var(--r${ri(k)})`];
+    if(r>0&&cs.grid[r-1][c]!==k) st.push('border-top:'+W);
+    if(c>0&&cs.grid[r][c-1]!==k) st.push('border-left:'+W);
+    const occ=Object.keys(S.place).find(i=>S.place[i][0]===r&&S.place[i][1]===c);
+    const blocked=o&&!OBJ[o].occ, wt=r===0||cs.grid[r-1][c]!==k, wl=c===0||cs.grid[r][c-1]!==k;
+    const desc=`R${r+1} C${c+1}, ${roomName(cs,k)}`+(o?`, ${plain(OBJL[LANG][o][0])}`:'')+(occ!=null?`, ${cs.people[occ][0]}`:'')+(S.marks.has(key)?', ✕':'');
+    const focused=S.focus&&S.focus[0]===r&&S.focus[1]===c, tabb=focused?0:(S.focus?-1:(r===0&&c===0?0:-1));
+    const cell=h('button',{class:'cell'+(wt?' wt':'')+(wl?' wl':'')+(blocked?' blk':'')+(occ!=null&&bad.has(String(occ))?' bad':''),style:st.join(';'),'aria-label':desc,
+      'data-r':r,'data-c':c,tabindex:tabb,
+      onfocus:()=>{ S.focus=[r,c]; },
+      onkeydown:e=>{
+        const K=e.key;
+        const dr=K==='ArrowUp'?-1:K==='ArrowDown'?1:0, dc=K==='ArrowLeft'?-1:K==='ArrowRight'?1:0;
+        if(dr||dc){ e.preventDefault(); const rr=r+dr, cc=c+dc;
+          if(rr>=0&&rr<N&&cc>=0&&cc<N){ S.focus=[rr,cc]; const next=document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`); if(next){ cell.parentElement.querySelectorAll('.cell').forEach(el=>el.tabIndex=-1); next.tabIndex=0; next.focus(); } }
+        } else if(K==='Delete'||K==='Backspace'){ e.preventDefault(); S.focus=[r,c]; onCell(r,c,true); }
+      },
+      onpointerdown:()=>{ S.focus=[r,c]; lpFired=false; clearTimeout(lpTimer); lpTimer=setTimeout(()=>{ lpFired=true; try{navigator.vibrate&&navigator.vibrate(15)}catch(e){} onCell(r,c,true); },450); },
+      onpointerup:()=>clearTimeout(lpTimer), onpointerleave:()=>clearTimeout(lpTimer), oncontextmenu:e=>e.preventDefault(),
+      onclick:()=>{ S.focus=[r,c]; if(lpFired){ lpFired=false; return; } onCell(r,c,false); }});
+    if(o) cell.append(svgEl(A.object(o),'ob'));
+    if(occ!=null) cell.append(svgEl(A.portrait(lookOf(cs.people[occ][0],+occ),{crop:'head',bg:BGS[occ%BGS.length],label:cs.people[occ][0]}),'pc'));
+    else if(S.marks.has(key)) cell.append(h('span',{class:'xm'},'✕'));
+    if(lab[k]===key) cell.append(h('span',{class:'lab'},roomName(cs,k)));
+    board.append(cell);
+  }
+  const colnums=h('div',{class:'colnums',style:`grid-template-columns:repeat(${N},1fr)`},...Array.from({length:N},(_,i)=>h('span',{},'C'+(i+1))));
+  const rownums=h('div',{class:'rownums',style:`grid-template-rows:repeat(${N},1fr)`},...Array.from({length:N},(_,i)=>h('span',{},'R'+(i+1))));
+  return h('div',{class:'boardwrap'},h('span',{}),colnums,rownums,board);
+}
+function legend(cs){ const ri=roomIndex(cs); return h('div',{class:'legend'},...Object.keys(cs.rooms).map(k=>h('span',{class:'chip'},h('span',{class:'sw',style:`background:var(--r${ri(k)})`}),roomName(cs,k),sayBtn(roomName(cs,k),'')))); }
+function phaseBlock(cs){
+  const wrap=h('div');
+  if(S.phase==='play'){
+    wrap.append(h('div',{class:'actions'},h('button',{class:'btn',onclick:check},T('check')),
+      S.coop?null:h('button',{class:'btn ghost small',onclick:undo,disabled:!S.hist.length},T('undo')),
+      h('button',{class:'btn ghost small',onclick:hint},T('help')),h('button',{class:'btn ghost small',onclick:resetCase},T('restart'))));
+  } else if(S.phase==='accuse'){
+    wrap.append(h('div',{class:'slip'},h('p',{class:'typ',style:'margin:0;color:var(--ok)'},'✓ '+T('allRight')),
+      h('h3',{},T('killerIs'),' ',sayBtn(T('killerIs'),'')),h('div',{class:'line'}),S.huAll?h('p',{class:'hu',style:'margin-bottom:8px'},huTxt('whoKiller','Ki a gyilkos?')):null,
+      h('div',{class:'pick'},...cs.people.slice(0,-1).map(([nm],i)=>h('button',{class:'tool',onclick:()=>accuse(i)},head(cs,i),nm)))));
+  } else {
+    wrap.append(h('div',{class:'slip'},h('h3',{},fill(T('solved'),{n:cs.people[cs.killer][0]})),
+      h('div',{class:'actions'},(!S.coop||isHost())?h('button',{class:'btn',onclick:nextCase},T('next')):null,(!S.coop||isHost())?h('button',{class:'btn ghost small',onclick:resetCase},T('again')):null)));
+  }
+  if(S.msg) wrap.append(h('div',{class:'msg '+(S.msg.kind||''),role:'status'},h('p',{},marked(S.msg.it),' ',sayBtn(S.msg.it,'')),S.huAll?h('p',{class:'hu'},S.msg.hu):null));
+  return wrap;
+}
+function teamBar(){ if(!S.coop) return null; return h('div',{class:'teambar'},h('span',{class:'typ'},T('room')+' '+S.coop.code),...players().map(playerChip)); }
+function caseHead(cs){
+  return h('div',{class:'casehead'},
+    h('div',{style:'min-width:0'},
+      h('span',{class:'typ'},`${T('caso')} ${String(S.idx+1).padStart(2,'0')} · ${T('levels')[cs.level]} · ${cs.size}×${cs.size}`),
+      h('h2',{},caseTitle(cs),' ',sayBtn(caseTitle(cs),'')),
+      h('p',{class:'flav'},caseFlav(cs),' ',sayBtn(caseFlav(cs),'')),
+      S.huAll&&!cs.titleHu?h('p',{class:'hu'},cs.flavHu):null),
+    h('div',{class:'timer',id:'timer'},fmt(curElapsed())));
+}
+function tipBox(){ const k=S.tip%5, tp=T('tips')[k];
+  return h('div',{class:'tip'},svgEl(A.pigeon(),'pg'),h('div',{class:'tb'},h('p',{class:'say-it'},tp,' ',sayBtn(tp,'')),S.huAll?h('p',{class:'hu'},HU_TIPS[k]):null,h('button',{class:'more',onclick:()=>{S.tip++;render()}},T('more')))); }
+
+function renderCase(app){
+  const cs=S.cs;
+  app.append(topbar());
+  app.append(h('button',{class:'back',onclick:goHub},'← '+(S.coop?T('leave'):T('back'))));
+  app.append(caseHead(cs));
+  if(S.coop) app.append(teamBar());
+  if(PH) return renderCasePhone(app,cs);
+  app.append(tipBox());
+  const cards=h('div',{class:'cards'}); cs.people.forEach((_,i)=>cards.append(suspectCard(cs,i)));
+  const left=h('div',{style:'min-width:0'},h('div',{class:'section-h',style:'margin-top:4px'},h('h2',{},T('suspects'))),cards,
+    h('div',{class:'section-h'},h('h2',{},T('words')),S.huAll?h('span',{class:'hu'},'szószedet'):null),glossary(cs));
+  const clip=h('div',{class:'clip'});
+  if(S.phase==='play'){
+    const tools=h('div',{class:'tools',role:'toolbar'});
+    tools.append(h('button',{class:'tool xmark','aria-pressed':String(S.tool==='x'),onclick:()=>{S.tool='x';render()}},T('mark')));
+    cs.people.forEach(([nm],i)=>tools.append(h('button',{class:'tool'+(S.place[i]?' done':''),'aria-pressed':String(S.tool===i),onclick:()=>{S.tool=i;render()}},head(cs,i),shortName(nm))));
+    clip.append(tools);
+    clip.append(h('p',{class:'toolhint'}, S.tool==='x'?T('hintX'):fill(T('hintPlace'),{n:cs.people[S.tool][0]})+' '+T('longpress')));
+    clip.append(h('p',{class:'toolhint kbd'},T('keys')));
+  }
+  clip.append(boardEl(cs), legend(cs), phaseBlock(cs));
+  app.append(h('div',{class:'layout'},left,h('div',{class:'boardcol'},clip)));
+}
+let carouselLock=false;
+function renderCasePhone(app,cs){
+  app.classList.add('ph');
+  const clip=h('div',{class:'clip'}); clip.append(boardEl(cs)); app.append(clip);
+  if(S.phase==='play'){
+    const strip=h('div',{class:'strip',role:'toolbar'});
+    strip.append(h('button',{class:'xb','aria-pressed':String(S.tool==='x'),'aria-label':T('mark'),onclick:()=>{S.tool='x';render()}},'✕'));
+    cs.people.forEach(([nm],i)=>strip.append(h('button',{class:S.place[i]?'done':'','aria-pressed':String(S.tool===i),'aria-label':nm,onclick:()=>{S.tool=i;render()}},head(cs,i))));
+    app.append(strip);
+    app.append(h('p',{class:'toolhint',style:'margin:0 2px'}, S.tool==='x'?T('hintX'):fill(T('hintPlace'),{n:cs.people[S.tool][0]})+' '+T('longpress')));
+  }
+  const car=h('div',{class:'carousel'}); cs.people.forEach((_,i)=>car.append(suspectCard(cs,i,{flat:1})));
+  app.append(car);
+  const sel=S.tool==='x'?0:S.tool;
+  app.append(h('div',{class:'dots','aria-hidden':'true'},...cs.people.map((_,i)=>h('i',{class:i===sel?'on':''}))));
+  requestAnimationFrame(()=>{ const el=car.children[sel]; if(el){ carouselLock=true; car.scrollLeft=el.offsetLeft-(car.clientWidth-el.clientWidth)/2; setTimeout(()=>{carouselLock=false},120); } });
+  let st=null;
+  car.addEventListener('scroll',()=>{ if(carouselLock) return; clearTimeout(st); st=setTimeout(()=>{
+    const mid=car.scrollLeft+car.clientWidth/2; let best=0,bd=1e9;
+    [...car.children].forEach((c,i)=>{ const d=Math.abs(c.offsetLeft+c.clientWidth/2-mid); if(d<bd){bd=d;best=i;} });
+    if(S.phase==='play'&&S.tool!==best){ S.tool=best; render(); }
+  },140); },{passive:true});
+  app.append(phaseBlock(cs));
+  app.append(h('details',{class:'drawer'},h('summary',{},T('tip')),h('div',{class:'inner'},tipBox())));
+  app.append(h('details',{class:'drawer'},h('summary',{},T('words')),h('div',{class:'inner'},glossary(cs))));
+  app.append(h('details',{class:'drawer'},h('summary',{},T('rooms')),h('div',{class:'inner'},legend(cs))));
+}
+function showWin(time){
+  const cs=S.cs, k=cs.people[cs.killer][0];
+  const old=document.querySelector('.modal'); if(old) old.remove();
+  const m=h('div',{class:'modal',role:'dialog','aria-modal':'true'},
+    h('div',{class:'box'},
+      svgEl(A.portrait(lookOf(k,cs.killer),{bg:'red',label:k}),'who'),
+      svgEl(A.stamp(PACK.stampText||'COLPEVOLE','red'),'stp'),
+      h('h3',{},fill(T('solved'),{n:k})),
+      h('p',{class:'typ'},`${T('time')} ${fmt(time)}`+(S.hints?` · ${T('hints')} ${S.hints}`:'')),
+      S.huAll?h('p',{class:'hu'},fill(huTxt('solvedHu','A gyilkos: {n}!'),{n:k})):null,
+      h('div',{class:'actions',style:'justify-content:center'},
+        (!S.coop||isHost())?h('button',{class:'btn',onclick:()=>{m.remove();nextCase()}},T('next')):null,
+        h('button',{class:'btn ghost',onclick:()=>{m.remove();showReview(cs)}},'📖 '+T('review')),
+        h('button',{class:'btn ghost',onclick:()=>{m.remove();if(!S.coop)goHub();}},S.coop?'OK':T('back')))));
+  m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
+  document.body.append(m);
+}
+
+/* ---------- case review (language notebook) ---------- */
+function reviewPerson(cs,i){
+  const nm=cs.people[i][0], isV=i===cs.people.length-1;
+  const byP=cs.clues.filter(c=>c.p===i);
+  const open=S.huAll||S.openHu.has(i);
+  const lines=isV?[{it:victimStr(cs),hu:huTxt('victim','Az áldozat. Egyedül volt a gyilkossal.')}]:byP.map(c=>({it:clueStr(cs,c),hu:huStr(cs,c)}));
+  return h('div',{class:'revperson'+(isV?' victim':'')},
+    head(cs,i),
+    h('div',{class:'revbody'},
+      h('div',{class:'revname'},h('b',{},nm),
+        !S.huAll?h('button',{class:'hubtn','aria-pressed':String(open),'aria-label':'HU',onclick:e=>{e.stopPropagation();open?S.openHu.delete(i):S.openHu.add(i);showReview(cs)}},'HU'):null),
+      ...lines.map(l=>h('div',{class:'revclue'},
+        h('p',{class:'clue'},marked(l.it),sayBtn(nm+'. '+l.it,nm)),
+        open?h('p',{class:'hu'},marked(l.hu)):null))));
+}
+function showReview(cs){
+  const old=document.querySelector('.modal'); if(old) old.remove();
+  if(!cs) return;
+  const sv=S.solved[cs.id], k=cs.people[cs.killer][0];
+  const box=h('div',{class:'box reviewbox'},
+    h('button',{class:'xclose',onclick:()=>m.remove(),'aria-label':T('close')},'✕'),
+    h('div',{class:'revhead'},
+      h('div',{},
+        h('span',{class:'typ'},`${T('caso')} ${String(CASES.indexOf(cs)+1).padStart(2,'0')} · ${cs.size}×${cs.size}`),
+        h('h3',{},caseTitle(cs))),
+      h('button',{class:'pill hu-toggle','aria-pressed':String(S.huAll),onclick:()=>{S.huAll=!S.huAll;store.set('huAll',S.huAll);showReview(cs)}},'HU ',S.huAll?'✓':'–')),
+    h('p',{class:'revsolved'},fill(T('solved'),{n:k})+(sv?` · ${T('time')} ${fmt(sv.time)}`:'')),
+    h('p',{class:'reviewlead'},T('reviewLead')),
+    h('h4',{},T('cluesReview')),
+    h('div',{class:'revlist'},...cs.people.map((_,i)=>reviewPerson(cs,i))),
+    h('h4',{},T('words')),
+    glossary(cs),
+    h('div',{class:'actions',style:'justify-content:flex-end'},h('button',{class:'btn',onclick:()=>m.remove()},T('close'))));
+  const m=h('div',{class:'modal review',role:'dialog','aria-modal':'true'},box);
+  m.addEventListener('click',e=>{ if(e.target===m) m.remove(); });
+  m.tabIndex=-1;
+  m.addEventListener('keydown',e=>{ if(e.key==='Escape') m.remove(); });
+  document.body.append(m);
+  box.scrollTop=0;
+  m.focus();
+}
+
+function render(){ const app=document.getElementById('app'); app.innerHTML=''; app.classList.remove('ph'); document.documentElement.lang=LANG;
+  if(S.view==='lobby'&&S.coop) renderLobby(app); else if(S.view==='case'&&S.cs) renderCase(app); else renderHub(app);
+  if(S.view==='case'&&S.cs&&S.focus&&S.phase==='play'&&!document.querySelector('.modal')){
+    const el=document.querySelector(`.cell[data-r="${S.focus[0]}"][data-c="${S.focus[1]}"]`);
+    if(el&&document.activeElement!==el) el.focus({preventScroll:true});
+  }
+}
+function boot(){ let id=''; try{id=(location.hash||'').slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0) startCase(i); else render(); }
+window.addEventListener('hashchange',()=>{ if(S.coop) return; let id='';try{id=location.hash.slice(1)}catch(e){} const i=CASES.findIndex(c=>c.id===id); if(i>=0&&(!S.cs||S.cs.id!==id)) startCase(i); else if(i<0&&S.view!=='hub'&&!/^r-/.test(id)) goHub();});
+window.addEventListener('pagehide',()=>{ saveProg(); if(S.coop) leaveRoom(); });
+/* Solo clock pauses while the tab is hidden, so away time never inflates best times. */
+document.addEventListener('visibilitychange',()=>{ if(S.coop) return;
+  if(document.hidden){ if(S.view==='case'&&S.phase!=='done'&&!S.frozen){ S.elapsed=curElapsed(); S.frozen=true; } }
+  else if(S.frozen){ S.frozen=false; S.t0=Date.now(); } });
+boot();
+/* A host chose another style for a new room: create it here, then clean the query. */
+(function(){
+  let q=null; try{ q=new URLSearchParams(location.search); }catch(e){ return; }
+  if(q.get('create')==='1' && NET && !S.coop){
+    const name=(q.get('name')||globalStore.get('name','')||'').trim().slice(0,16);
+    joinRoom(newCode(),name);
+    try{ if(S.coop) history.replaceState(null,'',location.pathname+(NET_PARAM?'?net='+encodeURIComponent(NET_PARAM):'')+'#r-'+S.coop.code); }catch(e){}
+  }
+})();
+</script>
+</body>
+</html>

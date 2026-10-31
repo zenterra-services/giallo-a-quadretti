@@ -1,0 +1,55 @@
+/* Scooby a Quadretti — spooky Halloween night theme. */
+:root{
+  --paper:#241A33; --card:#322547; --ink:#F7EBDA; --muted:#B7A6CC; --grid:rgba(232,114,28,.10);
+  --blue:#7FC4C9; --pink:#E8721C; --yellow:#FFD98E; --red:#D96A5A; --ok:#8CC79E; --hu:#A98AD4;
+  --on-yellow:#241A33; --wall:#F7EBDA; --tape:rgba(232,114,28,.45); --shadow:#170F22;
+  --r0:#4A3062; --r1:#2E4460; --r2:#5A3A24; --r3:#2F4A44; --r4:#43305E; --r5:#52342E; --r6:#3A4054;
+  --display:"Baloo 2","Nunito",sans-serif;
+  --body:"Nunito","Segoe UI",sans-serif;
+  --type:"Baloo 2","Nunito",sans-serif;
+  --hand:"Baloo 2",cursive;
+  color-scheme:dark }
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --paper:#FBEFE0; --card:#FFFDF8; --ink:#3A2A4A; --muted:#8A7599; --grid:rgba(232,114,28,.12);
+  --blue:#5AA7AD; --pink:#E8721C; --yellow:#FFD98E; --red:#D95A6E; --ok:#5FA878; --hu:#8E6AC8;
+  --on-yellow:#3A2A4A; --wall:#3A2A4A; --tape:rgba(232,114,28,.45); --shadow:#E3C9A8;
+  --r0:#F1E2FA; --r1:#E0EBF8; --r2:#FFE7C4; --r3:#E0F3EA; --r4:#EDE0F8; --r5:#FFDFD2; --r6:#E4E9F6; color-scheme:light }}
+:root[data-theme="light"]{
+  --paper:#FBEFE0; --card:#FFFDF8; --ink:#3A2A4A; --muted:#8A7599; --grid:rgba(232,114,28,.12);
+  --blue:#5AA7AD; --pink:#E8721C; --yellow:#FFD98E; --red:#D95A6E; --ok:#5FA878; --hu:#8E6AC8;
+  --on-yellow:#3A2A4A; --wall:#3A2A4A; --tape:rgba(232,114,28,.45); --shadow:#E3C9A8;
+  --r0:#F1E2FA; --r1:#E0EBF8; --r2:#FFE7C4; --r3:#E0F3EA; --r4:#EDE0F8; --r5:#FFDFD2; --r6:#E4E9F6; color-scheme:light }
+html,body{background:var(--paper);color:var(--ink)}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),radial-gradient(circle at 85% 8%,rgba(232,114,28,.14),transparent 55%),radial-gradient(circle at 8% 88%,rgba(127,196,201,.14),transparent 55%);background-size:26px 26px,26px 26px,100% 100%,100% 100%}
+.brand h1{letter-spacing:.01em;text-transform:none}
+.brand small{letter-spacing:.1em}
+.mark{background:var(--pink);border-radius:10px;box-shadow:3px 3px 0 var(--blue);transform:rotate(-4deg)}
+.mark i.v{background:var(--blue)}
+.hero h1 .hl{background:var(--pink);color:#fff;box-shadow:5px 5px 0 var(--blue);transform:rotate(-1.5deg);border-radius:10px}
+.hero .actions .btn{background:var(--yellow)}
+.btn{border-radius:999px;border-width:3px;box-shadow:0 4px 0 var(--shadow)}
+.btn.ghost{background:var(--card)}
+.pill{border-radius:999px;border-width:2.5px}
+.pill[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+.say{color:var(--pink)}
+.case{border-radius:18px;border-width:3px;box-shadow:0 6px 0 var(--shadow)}
+.case .tape{background:repeating-linear-gradient(-45deg,var(--tape) 0 8px,transparent 8px 14px),var(--tape);border-radius:12px 0}
+.case .flav{font-style:italic}
+.card{border-radius:16px;border-width:2.5px;box-shadow:0 4px 0 var(--shadow)}
+.clip{border-radius:20px;border-width:3px;box-shadow:0 8px 0 var(--shadow)}
+.board{border-radius:10px;border-width:4px}
+.cell .lab{background:var(--card);border-width:2px;border-radius:999px;transform:rotate(-2deg)}
+.legend .chip{border-radius:999px}
+.slip{border-radius:16px;box-shadow:0 5px 0 var(--shadow)}
+.msg{border-radius:12px}
+.modal .box{border-radius:20px;box-shadow:0 10px 0 var(--shadow)}
+.modal .stp{opacity:.95}
+.reviewchip{border-radius:999px}
+.revperson{border-radius:14px}
+.rule,.objbox{border-radius:14px}
+.coderow .bigcode{background:var(--yellow);box-shadow:0 5px 0 var(--pink);border-radius:14px}
+.casehead{border-bottom:2px dashed var(--muted);padding-bottom:10px}
+.timer{border-radius:999px;box-shadow:0 3px 0 var(--pink)}
+.tip .tb{border-radius:16px 16px 16px 4px}
+.tip .tb .say-it{font-family:var(--display);font-size:1.15rem;font-weight:700}
+footer{font-family:var(--type);font-size:.8rem;letter-spacing:.03em}

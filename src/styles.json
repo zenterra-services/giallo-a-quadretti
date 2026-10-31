@@ -31,5 +31,16 @@
       "hu": "Csokinyuszis céhrejtélyek · 8 rajongói eset"
     },
     "themeColor": "#FF8FB2"
+  },
+  {
+    "id": "scooby",
+    "path": "scooby/",
+    "name": "Scooby a Quadretti",
+    "short": "Scooby",
+    "tagline": {
+      "en": "Spooky-sweet Halloween mysteries · 12 fan cases",
+      "hu": "Spooky Hollow-i halloweeni rejtélyek · 12 rajongói eset"
+    },
+    "themeColor": "#e8721c"
   }
 ]
