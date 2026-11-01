@@ -84,6 +84,7 @@
         case 'kepi': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M32 46 Q32 26 60 26 Q88 26 88 46 Z" fill="' + INK.blue + '"/><path d="M42 26 H78 L76 19 H44 Z" fill="' + INK.red + '"/><path d="M29 44 H91 V51 H29 Z" fill="' + K + '"/></g>'; break;
         case 'fez': s += '<g stroke="' + K + '" stroke-width="2" stroke-linejoin="round"><path d="M44 36 H76 L72 56 H48 Z" fill="' + INK.red + '"/><path d="M60 34 q7 -9 12 -5" fill="none"/><circle cx="72" cy="29" r="3" fill="' + INK.yellow + '"/></g>'; break;
         case 'bowler': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M34 46 Q34 26 60 26 Q86 26 86 46 Z" fill="' + K + '"/><path d="M24 46 Q60 38 96 46 Q90 54 60 52 Q30 54 24 46 Z" fill="' + K + '"/><path d="M36 40 H84 V45 H36 Z" fill="' + INK.red + '" stroke="none"/></g>'; break;
+        case 'boater': s += '<g stroke="' + K + '" stroke-width="2.2" stroke-linejoin="round"><path d="M24 44 Q60 36 96 44 Q90 52 60 50 Q30 52 24 44 Z" fill="' + INK.yellow + '"/><path d="M38 43 V26 Q60 20 82 26 V43 Q60 49 38 43 Z" fill="' + INK.yellow + '"/><path d="M38 34 Q60 40 82 34 V40 Q60 46 38 40 Z" fill="' + INK.red + '" stroke="none"/></g>'; break;
         case 'bigears': s += '<g fill="' + (skin || '#E8C9A0') + '" stroke="' + K + '" stroke-width="2.2"><ellipse cx="27" cy="70" rx="7" ry="10"/><ellipse cx="93" cy="70" rx="7" ry="10"/></g>'; break;
         case 'pipe': s += '<g stroke="' + K + '" stroke-width="2.2" fill="none"><path d="M74 82 q16 0 16 8 q0 7 -9 7"/><path d="M87 96 h8 v8 h-8 z" fill="' + INK.orange + '"/></g>'; break;
         case 'tie': s += '<g stroke="' + K + '" stroke-width="1.8" stroke-linejoin="round"><path d="M56 102 h8 v5 h-8 z" fill="' + K + '"/><path d="M56 107 L60 113 L64 107 L62 128 L58 128 Z" fill="' + INK.red + '"/></g>'; break;
@@ -174,7 +175,7 @@
     }
     // die-cut sticker: offset riso layer, thick white cut line, figure
     var silhouette = hairBack(hs, '#000') + '<path d="' + torso + '"/><ellipse cx="60" cy="64" rx="27" ry="30"/>' + hairFront(hs, '#000') +
-      accFront(acc.filter(function (a) { return ['chef','cap','beanie','tiara','fedora','captain','kepi','fez','bowler','tophat','sailorcap'].indexOf(a) >= 0; }), '#000', '#000');
+      accFront(acc.filter(function (a) { return ['chef','cap','beanie','tiara','fedora','captain','kepi','fez','bowler','boater','tophat','sailorcap'].indexOf(a) >= 0; }), '#000', '#000');
     var sil = silhouette.replace(/fill="[^"]*"/g, '').replace(/fill-opacity="[^"]*"/g, '');
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 146 154" role="img" aria-label="' + (opts.label || '') + '">' + defs +
       '<g transform="translate(5 4)" fill="' + (INK[opts.bg] || INK.yellow) + '" stroke="' + (INK[opts.bg] || INK.yellow) + '" stroke-width="12" stroke-linejoin="round">' + sil + '</g>' +
@@ -238,24 +239,31 @@
   };
   function object(name, label) { var f = OBJ[name]; return f ? wrap(f(), label || name) : ''; }
 
-  /* ---------- mascot: Kapitány Papagáj ---------- */
+  /* ---------- mascot: Sofőr, the chauffeur gorilla (A tizennégy karátos autó) ---------- */
   function pigeon(opts) {
     opts = opts || {};
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Kapitány Papagáj">' +
-      '<ellipse cx="62" cy="112" rx="30" ry="5" fill="#000" fill-opacity=".2"/>' +
-      '<g transform="translate(4 4)" fill="' + INK.pink + '" opacity=".45"><ellipse cx="58" cy="76" rx="34" ry="30"/><circle cx="62" cy="40" r="22"/></g>' +
+    var FUR = '#4A3826', FURD = '#2E2115', FACE = '#C9A074';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Sofőr, a gorilla sofőr">' +
+      '<ellipse cx="60" cy="112" rx="32" ry="5" fill="#000" fill-opacity=".2"/>' +
+      '<g transform="translate(4 4)" fill="' + INK.orange + '" opacity=".45"><ellipse cx="60" cy="72" rx="33" ry="30"/><circle cx="60" cy="36" r="21"/></g>' +
       '<g ' + S + '>' +
-      '<path d="M44 98 l-6 16 M58 100 l0 14 M72 98 l6 16" stroke="' + INK.orange + '" stroke-width="5"/>' +
-      '<path d="M84 70 C102 78 104 100 88 112 C98 96 94 82 78 78 Z" fill="' + INK.blue + '"/>' +
-      '<ellipse cx="58" cy="76" rx="34" ry="30" fill="' + INK.green + '"/>' +
-      '<path d="M86 62 C96 86 80 106 58 106 C76 98 88 84 86 62 Z" fill="' + shade(INK.green, .72) + '" stroke="none"/>' +
-      '<path d="M30 74 C36 58 58 58 66 78 C56 92 38 92 30 74 Z" fill="' + shade(INK.green, .85) + '"/>' +
-      '<circle cx="62" cy="40" r="22" fill="' + INK.red + '"/>' +
-      '<path d="M82 40 q14 2 14 8 q0 6 -14 4 z" fill="' + INK.yellow + '"/>' +
-      '<path d="M40 26 h46 l-6 -12 h-34 z" fill="' + INK.blue + '"/><path d="M34 28 h58" stroke-width="5"/><path d="M42 22 h40" stroke="' + INK.yellow + '" stroke-width="4"/>' +
+      '<path d="M30 62 C18 78 16 94 26 103 L33 97 C27 88 29 75 38 66 Z" fill="' + FUR + '"/>' +
+      '<path d="M90 62 C102 78 104 94 94 103 L87 97 C93 88 91 75 82 66 Z" fill="' + FUR + '"/>' +
+      '<circle cx="27" cy="102" r="7.5" fill="' + FURD + '"/><circle cx="93" cy="102" r="7.5" fill="' + FURD + '"/>' +
+      '<ellipse cx="60" cy="74" rx="33" ry="30" fill="' + FUR + '"/>' +
+      '<path d="M88 58 C98 84 84 102 62 104 C78 96 88 80 88 58 Z" fill="' + FURD + '" stroke="none"/>' +
+      '<ellipse cx="44" cy="104" rx="12" ry="5" fill="' + FUR + '"/><ellipse cx="76" cy="104" rx="12" ry="5" fill="' + FUR + '"/>' +
+      '<circle cx="60" cy="38" r="21" fill="' + FUR + '"/>' +
+      '<circle cx="38" cy="38" r="5.5" fill="' + FUR + '"/><circle cx="82" cy="38" r="5.5" fill="' + FUR + '"/>' +
+      '<circle cx="38" cy="38" r="2.6" fill="' + FACE + '" stroke="none"/><circle cx="82" cy="38" r="2.6" fill="' + FACE + '" stroke="none"/>' +
+      '<ellipse cx="60" cy="45" rx="14" ry="11" fill="' + FACE + '"/>' +
+      '<path d="M46 34 q14 -8 28 0 q-14 -3 -28 0 z" fill="' + FURD + '" stroke="none"/>' +
       '</g>' +
-      '<circle cx="70" cy="40" r="6" fill="' + INK.paper + '" stroke="' + K + '" stroke-width="2.6"/><circle cx="71" cy="40" r="2.6" fill="' + K + '"/>' +
-      '<path d="M74 34 q8 -4 10 4" fill="none" stroke="' + K + '" stroke-width="2.2"/>' +
+      '<g fill="' + K + '"><circle cx="54.5" cy="42" r="2.4"/><circle cx="65.5" cy="42" r="2.4"/></g>' +
+      '<g fill="#fff"><circle cx="55.3" cy="41.2" r=".8"/><circle cx="66.3" cy="41.2" r=".8"/></g>' +
+      '<ellipse cx="57" cy="49" rx="1.6" ry="1.1" fill="' + K + '"/><ellipse cx="63" cy="49" rx="1.6" ry="1.1" fill="' + K + '"/>' +
+      '<path d="M54 53 q6 4 12 0" fill="none" stroke="' + K + '" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<g ' + S + '><path d="M42 28 Q42 10 60 10 Q78 10 78 28 Z" fill="' + INK.blue + '"/><path d="M40 26 H80 V31 H40 Z" fill="' + K + '"/><path d="M44 31 Q60 36 76 31 L76 34 Q60 39 44 34 Z" fill="' + K + '" stroke="none"/><circle cx="60" cy="18" r="3.4" fill="' + INK.yellow + '"/></g>' +
       (opts.lens ? '<g ' + S + ' fill="none"><circle cx="100" cy="86" r="12" fill="#ffffff" fill-opacity=".5"/><path d="M92 95 l-12 12" stroke-width="6"/></g>' : '') +
       '</svg>';
   }
